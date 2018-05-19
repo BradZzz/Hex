@@ -1187,9 +1187,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 414a0fc06528949a0baff4f719b04a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 12
-  height: 8
+  width: 10
+  height: 6
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  players:
+  - {r: 0.95686275, g: 0.2627451, b: 0.21176471, a: 1}
+  - {r: 0, g: 0.5882353, b: 0.53333336, a: 1}
+  - {r: 0.40392157, g: 0.22745098, b: 0.7176471, a: 1}
+  - {r: 1, g: 0.75686276, b: 0.02745098, a: 1}
   cellPrefab: {fileID: 11422220, guid: 94c2312396697489abc866a188f80152, type: 2}
   cellLabelPrefab: {fileID: 11470134, guid: f68794ca03b6f4510b9a5bd6ee9ba2f4, type: 2}
 --- !u!4 &1571186512
@@ -1199,7 +1204,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1571186510}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -32, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1214923524}
@@ -1957,3 +1962,4 @@ MonoBehaviour:
   - {r: 0.07396196, g: 0.21853216, b: 0.83823526, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
   hexGrid: {fileID: 1571186511}
+  timeBetweenClicks: 1

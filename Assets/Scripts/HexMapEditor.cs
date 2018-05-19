@@ -9,15 +9,17 @@ public class HexMapEditor : MonoBehaviour {
 
 	private Color activeColor;
 
+	public float timeBetweenClicks = .001f;  // Allow 3 shots per second
+
+	private float timestamp;
+
 	void Awake () {
 		SelectColor(0);
 	}
 
 	void Update () {
-		if (
-			Input.GetMouseButton(0) &&
-			!EventSystem.current.IsPointerOverGameObject()
-		) {
+		if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject()) {
+			timestamp = Time.time + timeBetweenClicks;
 			HandleInput();
 		}
 	}

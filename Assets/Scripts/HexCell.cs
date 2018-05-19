@@ -9,7 +9,7 @@ public class HexCell : MonoBehaviour {
 
 	public void init(){
 		info = new UnitInfo ();
-		info.playerNo = 0;
+		info.playerNo = -1;
 		info.active = false;
 	}
 
@@ -46,11 +46,32 @@ public class HexCell : MonoBehaviour {
 	}
 
 	private void setNeigbor(HexDirection direction){
-		if (GetNeighbor (direction)) {
-			GetNeighbor (direction).color = Color.magenta;
-			Debug.Log ("Neighbor found for: " + direction.ToString());
-		} else {
-			Debug.Log ("No direction for: " + direction.ToString());
+		if (GetNeighbor (direction) && GetNeighbor (direction).GetPlayer() == -1) {
+			GetNeighbor (direction).color = Color.gray;
 		}
+	}
+
+	public HexDirection getActiveNeigbor (){
+		HexDirection[] dirs = { 
+			HexDirection.NE,
+			HexDirection.NW,
+			HexDirection.SE,
+			HexDirection.SW,
+			HexDirection.W,
+			HexDirection.E
+		};
+		foreach (HexDirection dir in dirs) {
+			if (getActiveNeigbor (dir) > -1) {
+				return dir;
+			}
+		}
+		return HexDirection.None;
+	}
+
+	private int getActiveNeigbor(HexDirection direction){
+		if (GetNeighbor (direction) && GetNeighbor (direction).GetActive()) {
+			return GetNeighbor (direction).GetPlayer ();
+		}
+		return -1;
 	}
 }
