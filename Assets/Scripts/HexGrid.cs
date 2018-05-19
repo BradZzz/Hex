@@ -15,7 +15,8 @@ public class HexGrid : MonoBehaviour {
 
 	public Color defaultColor = Color.white;
 
-	public Color[] players;
+	public Color[] playerColors;
+	public int players = 2;
 
 	public HexCell cellPrefab;
 	public Text cellLabelPrefab;
@@ -44,15 +45,30 @@ public class HexGrid : MonoBehaviour {
 		ResetCells ();
 
 		placePlayer(cells[0], 0, true);
+		placePlayer(cells[1], 0, false);
+		placePlayer (cells [width], 0, false);
+
 		placePlayer(cells[cells.Length - 1], 1, false);
-		placePlayer(cells[cells.Length - width], 2, false);
-		placePlayer(cells[0 + width - 1], 3, false);
+		placePlayer(cells[cells.Length - 2], 1, false);
+		placePlayer(cells[cells.Length - 1 - width], 1, false);
+
+		if (players > 2) {
+			placePlayer(cells[cells.Length - width], 2, false);
+			placePlayer(cells[cells.Length - width + 1], 2, false);
+			placePlayer(cells[cells.Length - width * 2], 2, false);
+		}
+
+		if (players > 3) {
+			placePlayer (cells [0 + width - 1], 3, false);
+			placePlayer (cells [0 + width - 2], 3, false);
+			placePlayer (cells [0 + (width * 2) - 1], 3, false);
+		}
 
 		hexMesh.Triangulate(cells);
 	}
 
 	void placePlayer(HexCell cell, int idx, bool active){
-		cell.color = players[idx];
+		cell.color = playerColors[idx];
 		UnitInfo info = new UnitInfo ();
 		info.playerNo = idx;
 		cell.SetInfo (info);
@@ -83,7 +99,7 @@ public class HexGrid : MonoBehaviour {
 				UnitInfo parent_info = cell.GetNeighbor (dir).GetInfo ();
 				UnitInfo this_info = cell.GetInfo ();
 				cell.SetInfo (parent_info);
-				cell.color = players [player];
+				cell.color = playerColors [player];
 				cell.GetNeighbor (dir).SetActive(false);
 				cell.GetNeighbor (dir).SetInfo(this_info);
 
