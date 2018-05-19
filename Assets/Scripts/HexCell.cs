@@ -7,22 +7,22 @@ public class HexCell : MonoBehaviour {
 	public Color color;
 	public UnitInfo info;
 
+	private bool active;
+
 	public void init(){
 		info = new UnitInfo ();
 		info.playerNo = -1;
-		info.active = false;
+
+		active = false;
 	}
 
+	public UnitInfo GetInfo() { return info; }
+	public void SetInfo(UnitInfo info) { this.info = info; }
+
 	public int GetPlayer() { return info.playerNo; }
-	public void SetPlayer(int playerNo) { info.playerNo = playerNo; }
 
-	public bool GetActive() { return info.active; }
-	public void SetActive(bool active) { info.active = active; }
-
-//	private bool player;
-//
-//	public bool GetPlayer() { return player; }
-//	public void SetPlayer(bool player) { this.player = player; }
+	public bool GetActive() { return active; }
+	public void SetActive(bool active) { this.active = active; }
 
 	[SerializeField]
 	HexCell[] neighbors;

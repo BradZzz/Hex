@@ -5,9 +5,9 @@ public class HexGrid : MonoBehaviour {
 
 	/*
 	 * TODO:
-	 * Start the player in one section of the board and only allow them to move onto the tiles that are shaded red
-	 * add a second player and make sure that the selected charater is toggled correctly when clicked
-	 * 
+	 * add turns to the game board
+	 * allow a user to set the number of players 
+	 * allow a user to cycle through the available players on each turn
 	 */
 
 	public int width = 6;
@@ -43,28 +43,19 @@ public class HexGrid : MonoBehaviour {
 
 		ResetCells ();
 
-//		HexCell cell = cells[0];
-//		cell.color = players[0];
-//		cell.paintNeigbors ();
-//		cell.SetActive (true);
-//		cell.SetPlayer (0);
-//
-//		HexCell cell2 = cells[cells.Length - 1];
-//		cell2.color = players[1];
-//		cell2.SetPlayer (1);
-
 		placePlayer(cells[0], 0, true);
 		placePlayer(cells[cells.Length - 1], 1, false);
 		placePlayer(cells[cells.Length - width], 2, false);
 		placePlayer(cells[0 + width - 1], 3, false);
-
 
 		hexMesh.Triangulate(cells);
 	}
 
 	void placePlayer(HexCell cell, int idx, bool active){
 		cell.color = players[idx];
-		cell.SetPlayer (idx);
+		UnitInfo info = new UnitInfo ();
+		info.playerNo = idx;
+		cell.SetInfo (info);
 		cell.SetActive (active);
 		if (active) {
 			cell.paintNeigbors ();
@@ -89,10 +80,12 @@ public class HexGrid : MonoBehaviour {
 			HexDirection dir = cell.getActiveNeigbor ();
 			if (dir != HexDirection.None) {
 				int player = cell.GetNeighbor (dir).GetPlayer ();
-				cell.SetPlayer (player);
+				UnitInfo parent_info = cell.GetNeighbor (dir).GetInfo ();
+				UnitInfo this_info = cell.GetInfo ();
+				cell.SetInfo (parent_info);
 				cell.color = players [player];
 				cell.GetNeighbor (dir).SetActive(false);
-				cell.GetNeighbor (dir).SetPlayer(-1);
+				cell.GetNeighbor (dir).SetInfo(this_info);
 
 				ResetCells ();
 			}
