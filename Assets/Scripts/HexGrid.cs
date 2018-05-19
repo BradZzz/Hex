@@ -7,6 +7,7 @@ public class HexGrid : MonoBehaviour {
 	 * TODO:
 	 * add turns to the game board
 	 * allow a user to set the number of players 
+	 * set turn and color at the top
 	 * allow a user to cycle through the available players on each turn
 	 */
 
@@ -17,6 +18,7 @@ public class HexGrid : MonoBehaviour {
 
 	public Color[] playerColors;
 	public int players = 2;
+	private int pTurn;
 
 	public HexCell cellPrefab;
 	public Text cellLabelPrefab;
@@ -44,33 +46,52 @@ public class HexGrid : MonoBehaviour {
 
 		ResetCells ();
 
-		placePlayer(cells[0], 0, true);
-		placePlayer(cells[1], 0, false);
-		placePlayer (cells [width], 0, false);
+		placePlayer(cells[0], 0, true, UnitInfo.unitType.Knight);
+		placePlayer(cells[1], 0, false, UnitInfo.unitType.Lancer);
+		placePlayer (cells [width], 0, false, UnitInfo.unitType.Swordsman);
 
-		placePlayer(cells[cells.Length - 1], 1, false);
-		placePlayer(cells[cells.Length - 2], 1, false);
-		placePlayer(cells[cells.Length - 1 - width], 1, false);
+		placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Knight);
+		placePlayer(cells[cells.Length - 2], 1, false, UnitInfo.unitType.Lancer);
+		placePlayer(cells[cells.Length - 1 - width], 1, false, UnitInfo.unitType.Swordsman);
 
 		if (players > 2) {
-			placePlayer(cells[cells.Length - width], 2, false);
-			placePlayer(cells[cells.Length - width + 1], 2, false);
-			placePlayer(cells[cells.Length - width * 2], 2, false);
+			placePlayer(cells[cells.Length - width], 2, false, UnitInfo.unitType.Knight);
+			placePlayer(cells[cells.Length - width + 1], 2, false, UnitInfo.unitType.Lancer);
+			placePlayer(cells[cells.Length - width * 2], 2, false, UnitInfo.unitType.Swordsman);
 		}
 
 		if (players > 3) {
-			placePlayer (cells [0 + width - 1], 3, false);
-			placePlayer (cells [0 + width - 2], 3, false);
-			placePlayer (cells [0 + (width * 2) - 1], 3, false);
+			placePlayer (cells [0 + width - 1], 3, false, UnitInfo.unitType.Knight);
+			placePlayer (cells [0 + width - 2], 3, false, UnitInfo.unitType.Lancer);
+			placePlayer (cells [0 + (width * 2) - 1], 3, false, UnitInfo.unitType.Swordsman);
 		}
 
 		hexMesh.Triangulate(cells);
+
+		pTurn = players - 1;
+		EndTurn ();
 	}
 
-	void placePlayer(HexCell cell, int idx, bool active){
+	public void EndTurn(){
+		pTurn++;
+		if (pTurn == players) {
+			pTurn = 0;
+		}
+		GameObject.Find ("TurnImg").GetComponent<Image>().color = playerColors [pTurn];
+		foreach (HexCell cell in cells) {
+			if (cell.GetPlayer () == pTurn) {
+				cell.EndTurn ();
+			} else {
+				cell.StripTurn();
+			}
+		}
+	}
+
+	void placePlayer(HexCell cell, int idx, bool active, UnitInfo.unitType type){
 		cell.color = playerColors[idx];
 		UnitInfo info = new UnitInfo ();
 		info.playerNo = idx;
+		info.type = type;
 		cell.SetInfo (info);
 		cell.SetActive (active);
 		if (active) {
@@ -84,7 +105,7 @@ public class HexGrid : MonoBehaviour {
 		int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
 
 		HexCell cell = cells [index];
-		if (cell.GetPlayer () > -1) {
+		if (cell.GetPlayer () > -1 && cell.GetInfo().actions > 0) {
 			if (cell.GetActive ()) {
 				ResetCells ();
 			} else {
@@ -95,15 +116,19 @@ public class HexGrid : MonoBehaviour {
 		} else {
 			HexDirection dir = cell.getActiveNeigbor ();
 			if (dir != HexDirection.None) {
-				int player = cell.GetNeighbor (dir).GetPlayer ();
-				UnitInfo parent_info = cell.GetNeighbor (dir).GetInfo ();
-				UnitInfo this_info = cell.GetInfo ();
-				cell.SetInfo (parent_info);
-				cell.color = playerColors [player];
-				cell.GetNeighbor (dir).SetActive(false);
-				cell.GetNeighbor (dir).SetInfo(this_info);
+				if (cell.GetNeighbor (dir).GetInfo().actions > 0) {
+					int player = cell.GetNeighbor (dir).GetPlayer ();
+					UnitInfo parent_info = cell.GetNeighbor (dir).GetInfo ();
+					UnitInfo this_info = cell.GetInfo ();
 
-				ResetCells ();
+					parent_info.actions -= 1;
+					cell.SetInfo (parent_info);
+					cell.color = playerColors [player];
+					cell.GetNeighbor (dir).SetActive(false);
+					cell.GetNeighbor (dir).SetInfo(this_info);
+
+					ResetCells ();
+				}
 			}
 		}
 		hexMesh.Triangulate(cells);
@@ -129,7 +154,6 @@ public class HexGrid : MonoBehaviour {
 		cell.transform.localPosition = position;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 		cell.color = defaultColor;
-		cell.init ();
 
 		if (x > 0) {
 			cell.SetNeighbor(HexDirection.W, cells[i - 1]);
@@ -154,5 +178,6 @@ public class HexGrid : MonoBehaviour {
 		label.rectTransform.anchoredPosition =
 			new Vector2(position.x, position.z);
 		label.text = cell.coordinates.ToStringOnSeparateLines();
+		cell.init (label);
 	}
 }

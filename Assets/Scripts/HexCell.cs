@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class HexCell : MonoBehaviour {
 
@@ -8,16 +9,59 @@ public class HexCell : MonoBehaviour {
 	public UnitInfo info;
 
 	private bool active;
+	private Text label;
 
-	public void init(){
+	public void init(Text label){
 		info = new UnitInfo ();
 		info.playerNo = -1;
+		info.type = UnitInfo.unitType.None;
 
 		active = false;
+		this.label = label;
+		this.label.text = "";
 	}
 
 	public UnitInfo GetInfo() { return info; }
-	public void SetInfo(UnitInfo info) { this.info = info; }
+	public void SetInfo(UnitInfo info) { 
+		this.info = info; 
+		if (this.info.type != UnitInfo.unitType.None) {
+			switch (this.info.type) {
+			case UnitInfo.unitType.Knight:
+				label.text = "K";
+				break;
+			case UnitInfo.unitType.Lancer:
+				label.text = "L";
+				break;
+			case UnitInfo.unitType.Swordsman:
+				label.text = "S";
+				break;
+			}
+		} else {
+			label.text = "";
+		}
+	}
+	public void EndTurn(){
+		if (info.type != UnitInfo.unitType.None) {
+			switch (info.type) {
+			case UnitInfo.unitType.Knight:
+				info.actions = 2;
+				info.attacks = 1;
+				break;
+			case UnitInfo.unitType.Lancer:
+				info.actions = 1;
+				info.attacks = 1;
+				break;
+			case UnitInfo.unitType.Swordsman:
+				info.actions = 1;
+				info.attacks = 1;
+				break;
+			}
+		}
+	}
+	public void StripTurn(){
+		info.actions = 0;
+		info.attacks = 0;
+	}
 
 	public int GetPlayer() { return info.playerNo; }
 
