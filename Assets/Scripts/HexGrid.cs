@@ -92,6 +92,7 @@ public class HexGrid : MonoBehaviour {
 		UnitInfo info = new UnitInfo ();
 		info.playerNo = idx;
 		info.type = type;
+		cell.SetInfoStart(info);
 		cell.SetInfo (info);
 		cell.SetActive (active);
 		if (active) {
@@ -105,13 +106,32 @@ public class HexGrid : MonoBehaviour {
 		int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
 
 		HexCell cell = cells [index];
-		if (cell.GetPlayer () > -1 && cell.GetInfo().actions > 0) {
-			if (cell.GetActive ()) {
-				ResetCells ();
-			} else {
-				ResetCells ();
-				cell.paintNeigbors ();
-				cell.SetActive (true);
+		/*
+		 * Here is where we try to figure out if the player has any more actions
+		 */
+		if (cell.GetPlayer () > -1) {
+			/*
+			 * Figure out the player's turn. if it is the player's turn and the player has more actions, toggle the active
+			 * If it is another player's turn right next to the clicked player and that player has more attacks, attack
+			 */
+			if (cell.GetPlayer () == pTurn && (cell.GetInfo().actions > 0 || cell.GetInfo().attacks > 0)) {
+				if (cell.GetActive ()) {
+					ResetCells ();
+				} else {
+					ResetCells ();
+					cell.paintNeigbors ();
+					cell.SetActive (true);
+				}
+			} else if (cell.GetPlayer () != pTurn) {
+				HexDirection dir = cell.getActiveNeigbor ();
+				if (dir != HexDirection.None) {
+					UnitInfo attacker_info = cell.GetNeighbor (dir).GetInfo ();
+					if (attacker_info.playerNo == pTurn && attacker_info.attacks > 0) {
+						attacker_info.attacks--;
+						cell.TakeHit ();
+						ResetCells ();
+					}
+				}
 			}
 		} else {
 			HexDirection dir = cell.getActiveNeigbor ();

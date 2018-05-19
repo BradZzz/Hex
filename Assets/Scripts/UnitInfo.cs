@@ -11,6 +11,8 @@ public class UnitInfo {
 	public int actions = 0;
 	//How many attacks this unit has left
 	public int attacks = 0;
+	//How much health this unit has
+	public int health = 0;
 
 	public enum unitType {
 		Knight, Swordsman, Lancer, None

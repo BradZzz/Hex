@@ -11,6 +11,15 @@ public class HexCell : MonoBehaviour {
 	private bool active;
 	private Text label;
 
+	private HexDirection[] dirs = { 
+		HexDirection.NE,
+		HexDirection.NW,
+		HexDirection.SE,
+		HexDirection.SW,
+		HexDirection.W,
+		HexDirection.E
+	};
+
 	public void init(Text label){
 		info = new UnitInfo ();
 		info.playerNo = -1;
@@ -22,18 +31,36 @@ public class HexCell : MonoBehaviour {
 	}
 
 	public UnitInfo GetInfo() { return info; }
+	public void SetInfoStart(UnitInfo info) { 
+		this.info = info; 
+		if (this.info.type != UnitInfo.unitType.None) {
+			switch (this.info.type) {
+			case UnitInfo.unitType.Knight:
+				this.info.health = 3;
+				break;
+			case UnitInfo.unitType.Lancer:
+				this.info.health = 3;
+				break;
+			case UnitInfo.unitType.Swordsman:
+				this.info.health = 3;
+				break;
+			}
+		} else {
+			label.text = "";
+		}
+	}
 	public void SetInfo(UnitInfo info) { 
 		this.info = info; 
 		if (this.info.type != UnitInfo.unitType.None) {
 			switch (this.info.type) {
 			case UnitInfo.unitType.Knight:
-				label.text = "K";
+				label.text = "K" + this.info.health.ToString();
 				break;
 			case UnitInfo.unitType.Lancer:
-				label.text = "L";
+				label.text = "L" + this.info.health.ToString();
 				break;
 			case UnitInfo.unitType.Swordsman:
-				label.text = "S";
+				label.text = "S" + this.info.health.ToString();
 				break;
 			}
 		} else {
@@ -96,20 +123,20 @@ public class HexCell : MonoBehaviour {
 	}
 
 	public HexDirection getActiveNeigbor (){
-		HexDirection[] dirs = { 
-			HexDirection.NE,
-			HexDirection.NW,
-			HexDirection.SE,
-			HexDirection.SW,
-			HexDirection.W,
-			HexDirection.E
-		};
 		foreach (HexDirection dir in dirs) {
 			if (getActiveNeigbor (dir) > -1) {
 				return dir;
 			}
 		}
 		return HexDirection.None;
+	}
+	public void TakeHit(){
+		info.health--;
+		if (info.health < 1) {
+			info.playerNo = -1;
+			info.type = UnitInfo.unitType.None;
+		}
+		SetInfo(info);
 	}
 
 	private int getActiveNeigbor(HexDirection direction){
