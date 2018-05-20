@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 public class HexGrid : MonoBehaviour {
 
@@ -18,6 +19,7 @@ public class HexGrid : MonoBehaviour {
 	public Color[] playerColors;
 	public int players = 2;
 	private int pTurn;
+	private bool locked;
 
 	public HexCell cellPrefab;
 	public Text cellLabelPrefab;
@@ -99,46 +101,61 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
-	public void PlayAI(){
-		/*
-		 * Make sure that ai players stuck behind other players wait until those other players have moved
-		 * Make sure that swordsman position themselves near the most enemies
-		 * Make sure lancers position themselves on the other side of adjecent enemies
-		 */
-
-
-		Debug.Log ("Click AI");
-		ResetCells ();
-		HexAI ai = new HexAI (pTurn);
-
-		while (ai.GetNextPlayer(cells)) {
-			HexCell player = ai.GetNextPlayer (cells);
-			if (player) {
-				Debug.Log (player.GetInfo().type.ToString());
-				Debug.Log (player.coordinates.ToString());
-				//HexDirection aEnemy = player.getActiveEnemy ();
-				// If there is something to attack, then attack
-				if (player.getActiveEnemy() != HexDirection.None && player.GetInfo ().attacks > 0) {
-					HexDirection enemyDir = player.getActiveEnemy ();
-					attackCell (player, player.GetNeighbor(enemyDir), enemyDir);
-				} else if (player.GetInfo ().actions > 0) {
-					// If there is nothing to attack, then move the ai
-					HexCell[] path = HexAI.aStar(cells, player);
-					if (path.Length > 0) {
-						moveCell (player, path[path.Length - 1]);
-					} else {
-						player.StripTurn ();
-					}
+	private IEnumerator WaitAndContinue(HexAI ai, float waitTime)
+	{
+		HexCell player = ai.GetNextPlayer (cells);
+		if (player) {
+			if (player.getActiveEnemy () != HexDirection.None && player.GetInfo ().attacks > 0) {
+				HexDirection enemyDir = player.getActiveEnemy ();
+				attackCell (player, player.GetNeighbor (enemyDir), enemyDir);
+			} else if (player.GetInfo ().actions > 0) {
+				HexCell[] path = HexAI.aStar (cells, player);
+				if (path.Length > 0) {
+					moveCell (player, path [path.Length - 1]);
 				} else {
 					player.StripTurn ();
 				}
-				hexMesh.Triangulate(cells);
+			} else {
+				player.StripTurn ();
 			}
+			hexMesh.Triangulate (cells);
+			yield return new WaitForSeconds(waitTime);
+			PlayAI ();
+		} else {
+			yield return new WaitForSeconds(waitTime);
+			EndTurn ();
 		}
+	}
 
-		EndTurn ();
+	public void PlayAI(){
+		ResetCells ();
+		StartCoroutine(WaitAndContinue(new HexAI (pTurn), 0.25f));
 
-//		hexMesh.Triangulate(cells);
+//		while (ai.GetNextPlayer(cells)) {
+//			HexCell player = ai.GetNextPlayer (cells);
+//			if (player) {
+//				StartCoroutine(WaitAndContinue(ai, 0.5f));
+//			}
+//				HexCell player = ai.GetNextPlayer (cells);
+//				if (player) {
+//					if (player.getActiveEnemy() != HexDirection.None && player.GetInfo ().attacks > 0) {
+//						HexDirection enemyDir = player.getActiveEnemy ();
+//						attackCell (player, player.GetNeighbor(enemyDir), enemyDir);
+//					} else if (player.GetInfo ().actions > 0) {
+//						HexCell[] path = HexAI.aStar(cells, player);
+//						if (path.Length > 0) {
+//							moveCell (player, path[path.Length - 1]);
+//						} else {
+//							player.StripTurn ();
+//						}
+//					} else {
+//						player.StripTurn ();
+//					}
+//					hexMesh.Triangulate(cells);
+//				}
+//		}
+
+		//EndTurn ();
 	}
 
 	private void moveCell(HexCell cell, HexCell adjCell){
