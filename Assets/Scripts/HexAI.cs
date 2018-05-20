@@ -40,8 +40,9 @@ public class HexAI {
 		choices.Enqueue (start);
 		int turn = 1;
 		List<HexCell> path = null;
+		List<HexCell> finalDest = null;
 		while (choices.Count > 0) {
-			path = evaluatePaths(tblStore, choices, start, turn++);
+			path = evaluatePaths(tblStore, choices, start, finalDest, turn++);
 			if (path != null) {
 				break;
 			}
@@ -49,7 +50,7 @@ public class HexAI {
 		return path == null ? new HexCell[0] : path.ToArray ();
 	}
 
-	private static List<HexCell> evaluatePaths(Dictionary<HexCell, int> tblStore, Queue<HexCell> choices, HexCell start, int turn) {
+	private static List<HexCell> evaluatePaths(Dictionary<HexCell, int> tblStore, Queue<HexCell> choices, HexCell start, List<HexCell> finalDest, int turn) {
 		Queue<HexCell> toEval = new Queue<HexCell> (choices);
 		choices.Clear ();
 		while (toEval.Count > 0) {
@@ -59,15 +60,48 @@ public class HexAI {
 			foreach(HexDirection dir in dirs) {
 				//HexCell neighbor = nxt.GetNeighbor (dir);
 				if (nxt.GetNeighbor (dir)) {
-					//int nPlayer = nxt.GetNeighbor (dir).GetPlayer ();
-					//int sPlayer = start.GetPlayer();
-					//bool tCK = tblStore.ContainsKey (nxt.GetNeighbor (dir));
-
 					if (nxt.GetNeighbor (dir).GetPlayer() != start.GetPlayer() && !tblStore.ContainsKey(nxt.GetNeighbor (dir))) {
-						tblStore.Add (nxt.GetNeighbor (dir), turn);
-						choices.Enqueue (nxt.GetNeighbor (dir));
-						if (nxt.GetNeighbor (dir).GetPlayer() != -1) {
-							//Destination
+						//The destination here should be different for the swordsman and lancer
+						if (finalDest == null && nxt.GetNeighbor (dir).GetPlayer () != -1) {
+							finalDest = new List<HexCell> ();
+							switch (start.GetInfo ().type) {
+								case UnitInfo.unitType.Lancer:
+									//Look at each side around this cell and check to see if there any other sides with an enemy attached
+									HexDirection[] goodLancer = nxt.GetNeighbor (dir).GetLancerDirs (start.GetPlayer ());
+									if (goodLancer.Length > 0) {
+										foreach (HexDirection lDir in goodLancer) {
+											finalDest.Add (nxt.GetNeighbor (dir).GetNeighbor (lDir));
+										}
+									} else {
+										finalDest.Add (nxt.GetNeighbor (dir));
+										tblStore.Add (nxt.GetNeighbor (dir), turn);
+										choices.Enqueue (nxt.GetNeighbor (dir));
+									}
+									break;
+								case UnitInfo.unitType.Swordsman:
+										//Look at each cell around this cell and see if another is occupied. Move to 
+									HexDirection[] goodSwordsman = nxt.GetNeighbor (dir).GetSwordDirs (start.GetPlayer ());
+									if (goodSwordsman.Length > 0) {
+										foreach (HexDirection lDir in goodSwordsman){
+											finalDest.Add (nxt.GetNeighbor (dir).GetNeighbor(lDir));
+										}
+									} else {
+										finalDest.Add (nxt.GetNeighbor (dir));
+										tblStore.Add (nxt.GetNeighbor (dir), turn);
+										choices.Enqueue (nxt.GetNeighbor (dir));
+									}
+									break;
+								default:
+									finalDest.Add (nxt.GetNeighbor (dir));
+									tblStore.Add (nxt.GetNeighbor (dir), turn);
+									choices.Enqueue (nxt.GetNeighbor (dir));
+									break;
+							}
+						} else {
+							tblStore.Add (nxt.GetNeighbor (dir), turn);
+							choices.Enqueue (nxt.GetNeighbor (dir));
+						}
+						if (finalDest != null && finalDest.Contains(nxt.GetNeighbor (dir))) {
 							List<HexCell> path = iterateBackFromPoint (nxt.GetNeighbor (dir), tblStore);
 							return path;
 						}

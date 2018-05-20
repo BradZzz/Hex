@@ -45,23 +45,23 @@ public class HexGrid : MonoBehaviour {
 
 		ResetCells ();
 
-		placePlayer(cells[0], 0, true, UnitInfo.unitType.Knight);
-		placePlayer(cells[1], 0, false, UnitInfo.unitType.Lancer);
+		placePlayer(cells[0], 0, true, UnitInfo.unitType.Swordsman);
+		placePlayer(cells[1], 0, false, UnitInfo.unitType.Swordsman);
 		placePlayer (cells [width], 0, false, UnitInfo.unitType.Swordsman);
 
-		placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Knight);
-		placePlayer(cells[cells.Length - 2], 1, false, UnitInfo.unitType.Lancer);
+		placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Swordsman);
+		placePlayer(cells[cells.Length - 2], 1, false, UnitInfo.unitType.Swordsman);
 		placePlayer(cells[cells.Length - 1 - width], 1, false, UnitInfo.unitType.Swordsman);
 
 		if (players > 2) {
-			placePlayer(cells[cells.Length - width], 2, false, UnitInfo.unitType.Knight);
-			placePlayer(cells[cells.Length - width + 1], 2, false, UnitInfo.unitType.Lancer);
+			placePlayer(cells[cells.Length - width], 2, false, UnitInfo.unitType.Swordsman);
+			placePlayer(cells[cells.Length - width + 1], 2, false, UnitInfo.unitType.Swordsman);
 			placePlayer(cells[cells.Length - width * 2], 2, false, UnitInfo.unitType.Swordsman);
 		}
 
 		if (players > 3) {
-			placePlayer (cells [width - 1], 3, false, UnitInfo.unitType.Knight);
-			placePlayer (cells [width - 2], 3, false, UnitInfo.unitType.Lancer);
+			placePlayer (cells [width - 1], 3, false, UnitInfo.unitType.Swordsman);
+			placePlayer (cells [width - 2], 3, false, UnitInfo.unitType.Swordsman);
 			placePlayer (cells [width * 2 - 1], 3, false, UnitInfo.unitType.Swordsman);
 		}
 

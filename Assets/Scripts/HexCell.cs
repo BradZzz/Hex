@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class HexCell : MonoBehaviour {
 
@@ -152,6 +153,41 @@ public class HexCell : MonoBehaviour {
 			info.type = UnitInfo.unitType.None;
 		}
 		SetInfo(info);
+	}
+
+	public HexDirection[] GetLancerDirs(int atkPlayer){
+		List<HexDirection> validDirs = new List<HexDirection> ();
+		foreach (HexDirection dir in dirs) {
+			if (GetNeighbor(dir) && GetNeighbor(dir).GetPlayer() > -1 && GetNeighbor(dir).GetPlayer() != atkPlayer) {
+				validDirs.Add (HexUtilities.oppositeSide(dir));
+			}
+		}
+		return validDirs.ToArray ();
+	}
+
+	public HexDirection[] GetSwordDirs(int atkPlayer){
+		int adjEnemy = 1;
+		List<HexDirection> validDirs = new List<HexDirection> ();
+		foreach (HexDirection dir in dirs) {
+			if (GetNeighbor(dir) && GetNeighbor(dir).GetPlayer() == -1) {
+				//Here's an empty space around the enemy. see if there are more than 1 enemy adjoining
+				int thisEnemy = 0;
+				foreach (HexDirection dir2 in dirs) {
+					HexCell surrCell = GetNeighbor (dir).GetNeighbor (dir2);
+					if (surrCell && surrCell.GetPlayer() > -1 && surrCell.GetPlayer() != atkPlayer) {
+						thisEnemy++;
+					}
+				}
+				if (thisEnemy > adjEnemy) {
+					adjEnemy = thisEnemy;
+					validDirs.Clear ();
+					validDirs.Add (dir);
+				} else if (thisEnemy == adjEnemy) {
+					validDirs.Add (dir);
+				}
+			}
+		}
+		return validDirs.ToArray ();
 	}
 
 	private int getActiveNeigbor(HexDirection direction){
