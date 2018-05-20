@@ -107,8 +107,8 @@ public class HexGrid : MonoBehaviour {
 		if (player) {
 			bool moved = false;
 			bool attacked = false;
-			if ((player.GetInfo ().type != UnitInfo.unitType.Knight && player.GetInfo ().actions > 0) || 
-				(player.GetInfo ().type == UnitInfo.unitType.Knight && player.GetInfo ().actions > 1)) {
+			if ((player.GetInfo ().type == UnitInfo.unitType.Swordsman && player.GetInfo ().actions > 0) || 
+				(player.GetInfo ().type != UnitInfo.unitType.Swordsman && player.GetInfo ().actions > 1)) {
 				HexCell[] path = HexAI.aStar (cells, player);
 				if (path.Length > 0) {
 					for (int i = path.Length - 1; i >= 0; i--) {
@@ -126,7 +126,7 @@ public class HexGrid : MonoBehaviour {
 				attacked = true;
 			} 
 			if (!moved && !attacked) {
-				if (player.GetInfo ().type == UnitInfo.unitType.Knight && player.GetInfo ().actions > 0
+				if (player.GetInfo ().type != UnitInfo.unitType.Swordsman && player.GetInfo ().actions > 0
 				    && player.getActiveEnemy () != HexDirection.None) {
 					foreach (HexDirection dir in player.dirs) {
 						HexCell neigh = player.GetNeighbor (dir);
