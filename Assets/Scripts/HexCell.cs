@@ -71,15 +71,15 @@ public class HexCell : MonoBehaviour {
 		if (info.type != UnitInfo.unitType.None) {
 			switch (info.type) {
 			case UnitInfo.unitType.Knight:
-				info.actions = 2;
+				info.actions = 3;
 				info.attacks = 1;
 				break;
 			case UnitInfo.unitType.Lancer:
-				info.actions = 1;
-				info.attacks = 1;
+				info.actions = 2;
+				info.attacks = 2;
 				break;
 			case UnitInfo.unitType.Swordsman:
-				info.actions = 1;
+				info.actions = 2;
 				info.attacks = 1;
 				break;
 			}
@@ -130,6 +130,15 @@ public class HexCell : MonoBehaviour {
 		}
 		return HexDirection.None;
 	}
+
+	public void swordAttackAround (int pTurn){
+		foreach (HexDirection dir in dirs) {
+			if (GetNeighbor (dir) && GetNeighbor (dir).GetPlayer() > -1 && GetNeighbor (dir).GetPlayer() != pTurn) {
+				GetNeighbor (dir).TakeHit ();
+			}
+		}
+	}
+
 	public void TakeHit(){
 		info.health--;
 		if (info.health < 1) {

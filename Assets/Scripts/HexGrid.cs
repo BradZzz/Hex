@@ -5,10 +5,9 @@ public class HexGrid : MonoBehaviour {
 
 	/*
 	 * TODO:
-	 * add turns to the game board
-	 * allow a user to set the number of players 
-	 * set turn and color at the top
-	 * allow a user to cycle through the available players on each turn
+	 * add swordsman and lancer attacks
+	 * add dumb ai
+	 * add A* ai
 	 */
 
 	public int width = 6;
@@ -100,20 +99,32 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
+	public HexDirection oppositeSide(HexDirection dir){
+		switch(dir){
+		case HexDirection.E:
+			return HexDirection.W;
+		case HexDirection.W:
+			return HexDirection.E;
+		case HexDirection.NE:
+			return HexDirection.SW;
+		case HexDirection.NW:
+			return HexDirection.SE;
+		case HexDirection.SW:
+			return HexDirection.NE;
+		case HexDirection.SE:
+			return HexDirection.NW;
+		default:
+			return HexDirection.None;
+		}
+	}
+
 	public void ColorCell (Vector3 position, Color color) {
 		position = transform.InverseTransformPoint(position);
 		HexCoordinates coordinates = HexCoordinates.FromPosition(position);
 		int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
 
 		HexCell cell = cells [index];
-		/*
-		 * Here is where we try to figure out if the player has any more actions
-		 */
 		if (cell.GetPlayer () > -1) {
-			/*
-			 * Figure out the player's turn. if it is the player's turn and the player has more actions, toggle the active
-			 * If it is another player's turn right next to the clicked player and that player has more attacks, attack
-			 */
 			if (cell.GetPlayer () == pTurn && (cell.GetInfo().actions > 0 || cell.GetInfo().attacks > 0)) {
 				if (cell.GetActive ()) {
 					ResetCells ();
@@ -125,10 +136,26 @@ public class HexGrid : MonoBehaviour {
 			} else if (cell.GetPlayer () != pTurn) {
 				HexDirection dir = cell.getActiveNeigbor ();
 				if (dir != HexDirection.None) {
-					UnitInfo attacker_info = cell.GetNeighbor (dir).GetInfo ();
+					HexCell attacker = cell.GetNeighbor (dir);
+					UnitInfo attacker_info = attacker.GetInfo ();
 					if (attacker_info.playerNo == pTurn && attacker_info.attacks > 0) {
 						attacker_info.attacks--;
 						cell.TakeHit ();
+
+						// Lance attack strikes through enemy
+						if (attacker_info.type == UnitInfo.unitType.Lancer) {
+							HexDirection opp = oppositeSide (dir);
+							HexCell oppNeigh = cell.GetNeighbor (opp);
+							if (oppNeigh.GetPlayer() > -1 && oppNeigh.GetPlayer() != pTurn) {
+								oppNeigh.TakeHit ();
+							}
+						}
+
+						// Swordsman attack strikes around hero
+						if (attacker_info.type == UnitInfo.unitType.Swordsman) {
+							attacker.swordAttackAround (pTurn);
+						}
+
 						ResetCells ();
 					}
 				}
