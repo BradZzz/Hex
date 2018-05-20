@@ -158,7 +158,8 @@ public class HexCell : MonoBehaviour {
 	public HexDirection[] GetLancerDirs(int atkPlayer){
 		List<HexDirection> validDirs = new List<HexDirection> ();
 		foreach (HexDirection dir in dirs) {
-			if (GetNeighbor(dir) && GetNeighbor(dir).GetPlayer() > -1 && GetNeighbor(dir).GetPlayer() != atkPlayer) {
+			if (GetNeighbor(dir) && GetNeighbor(dir).GetPlayer() > -1 && GetNeighbor(dir).GetPlayer() != atkPlayer 
+				&& GetNeighbor(HexUtilities.oppositeSide(dir)) && GetNeighbor(HexUtilities.oppositeSide(dir)).GetPlayer() == -1) {
 				validDirs.Add (HexUtilities.oppositeSide(dir));
 			}
 		}

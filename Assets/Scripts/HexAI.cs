@@ -101,10 +101,21 @@ public class HexAI {
 							tblStore.Add (nxt.GetNeighbor (dir), turn);
 							choices.Enqueue (nxt.GetNeighbor (dir));
 						}
-						if (finalDest != null && finalDest.Contains(nxt.GetNeighbor (dir))) {
-							List<HexCell> path = iterateBackFromPoint (nxt.GetNeighbor (dir), tblStore);
-							return path;
+						if (finalDest != null) {
+							foreach (HexCell dest in finalDest) {
+								HexCell endPoint = finalDest.Contains (nxt.GetNeighbor (dir)) ? nxt.GetNeighbor (dir) 
+									: (tblStore.ContainsKey (dest) ? dest : null);
+								if (endPoint != null) {
+									List<HexCell> path = iterateBackFromPoint (endPoint, tblStore);
+									return path;
+								}
+							}
+
 						}
+//						if (finalDest != null && finalDest.Contains(nxt.GetNeighbor (dir))) {
+//							List<HexCell> path = iterateBackFromPoint (nxt.GetNeighbor (dir), tblStore);
+//							return path;
+//						}
 					}
 				}
 			}
