@@ -28,7 +28,7 @@ public class HexCell : MonoBehaviour {
 
 		active = false;
 		this.label = label;
-		this.label.text = "";
+		//this.label.text = "";
 	}
 
 	public UnitInfo GetInfo() { return info; }
@@ -46,8 +46,6 @@ public class HexCell : MonoBehaviour {
 				this.info.health = 3;
 				break;
 			}
-		} else {
-			label.text = "";
 		}
 	}
 	public void SetInfo(UnitInfo info) { 
@@ -132,6 +130,15 @@ public class HexCell : MonoBehaviour {
 	public HexDirection getActiveNeigbor (){
 		foreach (HexDirection dir in dirs) {
 			if (getActiveNeigbor (dir) > -1) {
+				return dir;
+			}
+		}
+		return HexDirection.None;
+	}
+
+	public HexDirection getActiveEnemy (int player){
+		foreach (HexDirection dir in dirs) {
+			if (GetNeighbor (dir) && GetNeighbor (dir).GetPlayer() > -1 && GetNeighbor (dir).GetPlayer() != player) {
 				return dir;
 			}
 		}
