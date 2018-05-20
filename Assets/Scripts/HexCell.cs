@@ -27,7 +27,7 @@ public class HexCell : MonoBehaviour {
 
 		active = false;
 		this.label = label;
-		//this.label.text = "";
+		this.label.text = "";
 	}
 
 	public UnitInfo GetInfo() { return info; }

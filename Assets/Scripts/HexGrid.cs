@@ -100,6 +100,13 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	public void PlayAI(){
+		/*
+		 * Make sure that ai players stuck behind other players wait until those other players have moved
+		 * Make sure that swordsman position themselves near the most enemies
+		 * Make sure lancers position themselves on the other side of adjecent enemies
+		 */
+
+
 		Debug.Log ("Click AI");
 		ResetCells ();
 		HexAI ai = new HexAI (pTurn);
@@ -128,6 +135,8 @@ public class HexGrid : MonoBehaviour {
 				hexMesh.Triangulate(cells);
 			}
 		}
+
+		EndTurn ();
 
 //		hexMesh.Triangulate(cells);
 	}

@@ -1681,7 +1681,7 @@ MonoBehaviour:
   - {r: 0.8980392, g: 0.22352941, b: 0.20784314, a: 1}
   - {r: 0.36862746, g: 0.20784314, b: 0.69411767, a: 1}
   - {r: 0.99215686, g: 0.84705883, b: 0.20784314, a: 1}
-  players: 2
+  players: 4
   cellPrefab: {fileID: 11422220, guid: 94c2312396697489abc866a188f80152, type: 2}
   cellLabelPrefab: {fileID: 11470134, guid: f68794ca03b6f4510b9a5bd6ee9ba2f4, type: 2}
 --- !u!4 &1571186512

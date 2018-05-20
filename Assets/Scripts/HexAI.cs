@@ -10,11 +10,27 @@ public class HexAI {
 	}
 
 	public HexCell GetNextPlayer(HexCell[] cells){
-		foreach(HexCell cell in cells){
+		List<HexCell> playerCells = new List<HexCell> ();
+		foreach (HexCell cell in cells) {
 			if (cell.GetPlayer() == player && (cell.GetInfo().actions > 0 || cell.GetInfo().attacks > 0)) {
-				return cell;
+				playerCells.Add (cell);
 			}
 		}
+		for(int i = 0; i < playerCells.Count; i++) {
+			HexCell[] path = HexAI.aStar(cells, playerCells[i]);
+			if (path.Length > 0) {
+				return playerCells [i];
+			} else if (i == playerCells.Count - 1) {
+				return playerCells [i];
+			}
+		}
+//
+//
+//		foreach(HexCell cell in cells){
+//			if (cell.GetPlayer() == player && (cell.GetInfo().actions > 0 || cell.GetInfo().attacks > 0)) {
+//				return cell;
+//			}
+//		}
 		return null;
 	}
 
