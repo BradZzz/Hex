@@ -28,7 +28,7 @@ public class HexCell : MonoBehaviour {
 
 		active = false;
 		this.label = label;
-		//this.label.text = "";
+		this.label.text = "";
 	}
 
 	public UnitInfo GetInfo() { return info; }
@@ -37,13 +37,13 @@ public class HexCell : MonoBehaviour {
 		if (this.info.type != UnitInfo.unitType.None) {
 			switch (this.info.type) {
 			case UnitInfo.unitType.Knight:
-				this.info.health = 3;
+				this.info.health = 2;
 				break;
 			case UnitInfo.unitType.Lancer:
 				this.info.health = 3;
 				break;
 			case UnitInfo.unitType.Swordsman:
-				this.info.health = 3;
+				this.info.health = 4;
 				break;
 			}
 		}
@@ -70,12 +70,12 @@ public class HexCell : MonoBehaviour {
 		if (info.type != UnitInfo.unitType.None) {
 			switch (info.type) {
 			case UnitInfo.unitType.Knight:
-				info.actions = 3;
+				info.actions = 4;
 				info.attacks = 1;
 				break;
 			case UnitInfo.unitType.Lancer:
-				info.actions = 2;
-				info.attacks = 2;
+				info.actions = 3;
+				info.attacks = 1;
 				break;
 			case UnitInfo.unitType.Swordsman:
 				info.actions = 2;
