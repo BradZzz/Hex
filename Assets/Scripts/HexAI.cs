@@ -127,6 +127,7 @@ public class HexAI {
 		List<HexCell> path = new List<HexCell>();
 		HexCell current = end;
 		int turn = tblStore [end] - 1;
+		path.Add (end);
 
 		while (turn > 0) {
 			HexDirection[] dirs = current.dirs;
