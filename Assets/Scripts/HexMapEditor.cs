@@ -39,4 +39,8 @@ public class HexMapEditor : MonoBehaviour {
 	public void EndTurn () {
 		hexGrid.EndTurn ();
 	}
+
+	public void PlayAI () {
+		hexGrid.PlayAI ();
+	}
 }

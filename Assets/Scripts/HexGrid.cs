@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class HexGrid : MonoBehaviour {
 
 	/*
 	 * TODO:
-	 * add swordsman and lancer attacks
 	 * add dumb ai
 	 * add A* ai
 	 */
@@ -60,9 +60,9 @@ public class HexGrid : MonoBehaviour {
 		}
 
 		if (players > 3) {
-			placePlayer (cells [0 + width - 1], 3, false, UnitInfo.unitType.Knight);
-			placePlayer (cells [0 + width - 2], 3, false, UnitInfo.unitType.Lancer);
-			placePlayer (cells [0 + (width * 2) - 1], 3, false, UnitInfo.unitType.Swordsman);
+			placePlayer (cells [width - 1], 3, false, UnitInfo.unitType.Knight);
+			placePlayer (cells [width - 2], 3, false, UnitInfo.unitType.Lancer);
+			placePlayer (cells [width * 2 - 1], 3, false, UnitInfo.unitType.Swordsman);
 		}
 
 		hexMesh.Triangulate(cells);
@@ -99,22 +99,93 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
-	public HexDirection oppositeSide(HexDirection dir){
-		switch(dir){
-		case HexDirection.E:
-			return HexDirection.W;
-		case HexDirection.W:
-			return HexDirection.E;
-		case HexDirection.NE:
-			return HexDirection.SW;
-		case HexDirection.NW:
-			return HexDirection.SE;
-		case HexDirection.SW:
-			return HexDirection.NE;
-		case HexDirection.SE:
-			return HexDirection.NW;
-		default:
-			return HexDirection.None;
+	public void PlayAI(){
+		Debug.Log ("Click AI");
+		ResetCells ();
+		HexAI ai = new HexAI (pTurn);
+
+		while (ai.GetNextPlayer(cells)) {
+			HexCell player = ai.GetNextPlayer (cells);
+			if (player) {
+				Debug.Log (player.GetInfo().type.ToString());
+				Debug.Log (player.coordinates.ToString());
+				//HexDirection aEnemy = player.getActiveEnemy ();
+				// If there is something to attack, then attack
+				if (player.getActiveEnemy() != HexDirection.None && player.GetInfo ().attacks > 0) {
+					HexDirection enemyDir = player.getActiveEnemy ();
+					attackCell (player, player.GetNeighbor(enemyDir), enemyDir);
+				} else if (player.GetInfo ().actions > 0) {
+					// If there is nothing to attack, then move the ai
+					HexCell[] path = HexAI.aStar(cells, player);
+					if (path.Length > 0) {
+						moveCell (player, path[path.Length - 1]);
+					} else {
+						player.StripTurn ();
+					}
+				} else {
+					player.StripTurn ();
+				}
+				hexMesh.Triangulate(cells);
+			}
+		}
+
+//		hexMesh.Triangulate(cells);
+	}
+
+	private void moveCell(HexCell cell, HexCell adjCell){
+		cell.SetActive(false);
+		adjCell.SetActive(false);
+
+		UnitInfo move_from_info = cell.GetInfo();
+		UnitInfo move_to_info = adjCell.GetInfo();
+
+		move_from_info.actions --;
+
+		int player = cell.GetPlayer ();
+
+		cell.SetInfo (move_to_info);
+		adjCell.SetInfo (move_from_info);
+		adjCell.color = playerColors [player];
+
+		ResetCells ();
+	}
+
+	private void moveCell(HexCell cell, HexDirection dir){
+		if (cell.GetNeighbor (dir).GetInfo().actions > 0) {
+			int player = cell.GetNeighbor (dir).GetPlayer ();
+			UnitInfo parent_info = cell.GetNeighbor (dir).GetInfo ();
+			UnitInfo this_info = cell.GetInfo ();
+
+			parent_info.actions -= 1;
+			cell.SetInfo (parent_info);
+			cell.color = playerColors [player];
+			cell.GetNeighbor (dir).SetActive(false);
+			cell.GetNeighbor (dir).SetInfo(this_info);
+
+			ResetCells ();
+		}
+	}
+
+	private void attackCell(HexCell attacker, HexCell defender, HexDirection dir){
+		UnitInfo attacker_info = attacker.GetInfo ();
+		if (attacker_info.playerNo == pTurn && attacker_info.attacks > 0) {
+			attacker_info.attacks--;
+			// Swordsman attack strikes around hero
+			if (attacker_info.type == UnitInfo.unitType.Swordsman) {
+				attacker.swordAttackAround (pTurn);
+			} else {
+				defender.TakeHit ();
+				// Lance attack strikes through enemy
+				if (attacker_info.type == UnitInfo.unitType.Lancer) {
+					HexDirection opp = HexUtilities.oppositeSide (dir);
+					HexCell oppNeigh = defender.GetNeighbor (opp);
+					if (oppNeigh.GetPlayer() > -1 && oppNeigh.GetPlayer() != pTurn) {
+						oppNeigh.TakeHit ();
+					}
+				}
+			}
+
+			ResetCells ();
 		}
 	}
 
@@ -137,45 +208,46 @@ public class HexGrid : MonoBehaviour {
 				HexDirection dir = cell.getActiveNeigbor ();
 				if (dir != HexDirection.None) {
 					HexCell attacker = cell.GetNeighbor (dir);
-					UnitInfo attacker_info = attacker.GetInfo ();
-					if (attacker_info.playerNo == pTurn && attacker_info.attacks > 0) {
-						attacker_info.attacks--;
-						cell.TakeHit ();
-
-						// Lance attack strikes through enemy
-						if (attacker_info.type == UnitInfo.unitType.Lancer) {
-							HexDirection opp = oppositeSide (dir);
-							HexCell oppNeigh = cell.GetNeighbor (opp);
-							if (oppNeigh.GetPlayer() > -1 && oppNeigh.GetPlayer() != pTurn) {
-								oppNeigh.TakeHit ();
-							}
-						}
-
-						// Swordsman attack strikes around hero
-						if (attacker_info.type == UnitInfo.unitType.Swordsman) {
-							attacker.swordAttackAround (pTurn);
-						}
-
-						ResetCells ();
-					}
+					attackCell(attacker, cell, dir);
+//					UnitInfo attacker_info = attacker.GetInfo ();
+//					if (attacker_info.playerNo == pTurn && attacker_info.attacks > 0) {
+//						attacker_info.attacks--;
+//						// Swordsman attack strikes around hero
+//						if (attacker_info.type == UnitInfo.unitType.Swordsman) {
+//							attacker.swordAttackAround (pTurn);
+//						} else {
+//							cell.TakeHit ();
+//							// Lance attack strikes through enemy
+//							if (attacker_info.type == UnitInfo.unitType.Lancer) {
+//								HexDirection opp = HexUtilities.oppositeSide (dir);
+//								HexCell oppNeigh = cell.GetNeighbor (opp);
+//								if (oppNeigh.GetPlayer() > -1 && oppNeigh.GetPlayer() != pTurn) {
+//									oppNeigh.TakeHit ();
+//								}
+//							}
+//						}
+//
+//						ResetCells ();
+//					}
 				}
 			}
 		} else {
 			HexDirection dir = cell.getActiveNeigbor ();
 			if (dir != HexDirection.None) {
-				if (cell.GetNeighbor (dir).GetInfo().actions > 0) {
-					int player = cell.GetNeighbor (dir).GetPlayer ();
-					UnitInfo parent_info = cell.GetNeighbor (dir).GetInfo ();
-					UnitInfo this_info = cell.GetInfo ();
-
-					parent_info.actions -= 1;
-					cell.SetInfo (parent_info);
-					cell.color = playerColors [player];
-					cell.GetNeighbor (dir).SetActive(false);
-					cell.GetNeighbor (dir).SetInfo(this_info);
-
-					ResetCells ();
-				}
+//				if (cell.GetNeighbor (dir).GetInfo().actions > 0) {
+//					int player = cell.GetNeighbor (dir).GetPlayer ();
+//					UnitInfo parent_info = cell.GetNeighbor (dir).GetInfo ();
+//					UnitInfo this_info = cell.GetInfo ();
+//
+//					parent_info.actions -= 1;
+//					cell.SetInfo (parent_info);
+//					cell.color = playerColors [player];
+//					cell.GetNeighbor (dir).SetActive(false);
+//					cell.GetNeighbor (dir).SetInfo(this_info);
+//
+//					ResetCells ();
+//				}
+				moveCell(cell, dir);
 			}
 		}
 		hexMesh.Triangulate(cells);

@@ -11,7 +11,7 @@ public class HexCell : MonoBehaviour {
 	private bool active;
 	private Text label;
 
-	private HexDirection[] dirs = { 
+	public HexDirection[] dirs = { 
 		HexDirection.NE,
 		HexDirection.NW,
 		HexDirection.SE,
@@ -27,7 +27,7 @@ public class HexCell : MonoBehaviour {
 
 		active = false;
 		this.label = label;
-		this.label.text = "";
+		//this.label.text = "";
 	}
 
 	public UnitInfo GetInfo() { return info; }
@@ -108,12 +108,9 @@ public class HexCell : MonoBehaviour {
 	}
 
 	public void paintNeigbors (){
-		setNeigbor(HexDirection.NE);
-		setNeigbor(HexDirection.NW);
-		setNeigbor(HexDirection.SE);
-		setNeigbor(HexDirection.SW);
-		setNeigbor(HexDirection.W);
-		setNeigbor(HexDirection.E);
+		foreach(HexDirection dir in dirs) {
+			setNeigbor(dir);
+		}
 	}
 
 	private void setNeigbor(HexDirection direction){
@@ -125,6 +122,15 @@ public class HexCell : MonoBehaviour {
 	public HexDirection getActiveNeigbor (){
 		foreach (HexDirection dir in dirs) {
 			if (getActiveNeigbor (dir) > -1) {
+				return dir;
+			}
+		}
+		return HexDirection.None;
+	}
+
+	public HexDirection getActiveEnemy (){
+		foreach (HexDirection dir in dirs) {
+			if (GetNeighbor (dir) && GetNeighbor (dir).GetPlayer() > -1 && GetNeighbor (dir).GetPlayer() != GetPlayer()) {
 				return dir;
 			}
 		}
