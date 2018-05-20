@@ -99,6 +99,15 @@ public class HexCell : MonoBehaviour {
 	[SerializeField]
 	HexCell[] neighbors;
 
+	public HexDirection GetNeighborDir (HexCell cell) {
+		foreach(HexDirection dir in dirs) {
+			if (GetNeighbor(dir) == cell) {
+				return dir;
+			}
+		}
+		return HexDirection.None;
+	}
+
 	public HexCell GetNeighbor (HexDirection direction) {
 		return neighbors[(int)direction];
 	}
