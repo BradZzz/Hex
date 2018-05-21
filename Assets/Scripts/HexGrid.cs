@@ -47,13 +47,19 @@ public class HexGrid : MonoBehaviour {
 
 		ResetCells ();
 
-		placePlayer(cells[0], 0, true, UnitInfo.unitType.Lancer);
+		placePlayer(cells[0], 0, true, UnitInfo.unitType.Knight);
 		placePlayer(cells[1], 0, false, UnitInfo.unitType.Knight);
-		placePlayer (cells [width], 0, false, UnitInfo.unitType.Swordsman);
+		placePlayer (cells [width], 0, false, UnitInfo.unitType.Knight);
+		placePlayer (cells [2], 0, false, UnitInfo.unitType.Lancer);
+		placePlayer (cells [width + 1], 0, false, UnitInfo.unitType.Lancer);
+		placePlayer (cells [2 * width + 1], 0, false, UnitInfo.unitType.Lancer);
 
-		placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Lancer);
-		placePlayer(cells[cells.Length - 2], 1, false, UnitInfo.unitType.Knight);
+		placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Swordsman);
+		placePlayer(cells[cells.Length - 2], 1, false, UnitInfo.unitType.Swordsman);
 		placePlayer(cells[cells.Length - 1 - width], 1, false, UnitInfo.unitType.Swordsman);
+		placePlayer(cells[cells.Length - 3], 1, false, UnitInfo.unitType.Knight);
+		placePlayer(cells[cells.Length - 2 - width], 1, false, UnitInfo.unitType.Knight);
+		placePlayer(cells[cells.Length - 2 - width * 2], 1, false, UnitInfo.unitType.Knight);
 
 		if (players > 2) {
 			placePlayer(cells[cells.Length - width], 2, false, UnitInfo.unitType.Lancer);
@@ -107,8 +113,8 @@ public class HexGrid : MonoBehaviour {
 		if (player) {
 			bool moved = false;
 			bool attacked = false;
-			if ((player.GetInfo ().type == UnitInfo.unitType.Swordsman && player.GetInfo ().actions > 0) || 
-				(player.GetInfo ().type != UnitInfo.unitType.Swordsman && player.GetInfo ().actions > 1)) {
+			if ((player.GetInfo ().type != UnitInfo.unitType.Knight && player.GetInfo ().actions > 0) || 
+				(player.GetInfo ().type == UnitInfo.unitType.Knight && player.GetInfo ().actions > 1)) {
 				HexCell[] path = HexAI.aStar (cells, player);
 				if (path.Length > 0) {
 					for (int i = path.Length - 1; i >= 0; i--) {
