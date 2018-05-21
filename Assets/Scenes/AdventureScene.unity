@@ -1685,11 +1685,6 @@ MonoBehaviour:
   players: 4
   cellPrefab: {fileID: 11422220, guid: 94c2312396697489abc866a188f80152, type: 2}
   cellLabelPrefab: {fileID: 11470134, guid: f68794ca03b6f4510b9a5bd6ee9ba2f4, type: 2}
-  cells: []
-  gridCanvas: {fileID: 0}
-  hexMesh: {fileID: 0}
-  pTurn: 0
-  locked: 0
 --- !u!4 &1571186512
 Transform:
   m_ObjectHideFlags: 0
@@ -1716,8 +1711,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833608eeda8824ab4923580c8221d99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 6
-  height: 6
+  width: 10
+  height: 8
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   playerColors:
   - {r: 0.2627451, g: 0.627451, b: 0.2784314, a: 1}

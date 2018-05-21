@@ -13,10 +13,10 @@ public class TileInfo {
 	public string meta = "";
 
 	public enum tileType {
-		Castle, City, Forest, Grass, Mountain, Treasure, Water,  None
+		Castle, City, Forest, Grass, Road, Mountain, Treasure, Water,  None
 	}
 
 	public enum tileColor {
-		Purple, Brown, DarkGreen, Green, Gray, Gold, Blue,  None
+		Purple, Brown, DarkGreen, Green, Sand, Gray, Gold, Blue,  None
 	}
 }

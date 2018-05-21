@@ -35,12 +35,22 @@ public class HexAI {
 	}
 
 	public static HexCell[] aStar(HexCell[] cells, HexCell start){
+		List<HexCell> finalDest = null;
+		return aStar(cells, start, finalDest);
+	}
+
+	public static HexCell[] aStar(HexCell[] cells, HexCell start, HexCell end){
+		List<HexCell> finalDest = new List<HexCell> ();
+		finalDest.Add (end);
+		return aStar(cells, start, finalDest);
+	}
+
+	public static HexCell[] aStar(HexCell[] cells, HexCell start, List<HexCell> finalDest){
 		Dictionary<HexCell, int> tblStore = new Dictionary<HexCell, int>();
 		Queue<HexCell> choices = new Queue<HexCell> ();
 		choices.Enqueue (start);
 		int turn = 1;
 		List<HexCell> path = null;
-		List<HexCell> finalDest = null;
 		while (choices.Count > 0) {
 			path = evaluatePaths(tblStore, choices, start, finalDest, turn++);
 			if (path != null) {
@@ -60,7 +70,7 @@ public class HexAI {
 			foreach(HexDirection dir in dirs) {
 				//HexCell neighbor = nxt.GetNeighbor (dir);
 				if (nxt.GetNeighbor (dir)) {
-					if (nxt.GetNeighbor (dir).GetPlayer() != start.GetPlayer() && !tblStore.ContainsKey(nxt.GetNeighbor (dir))) {
+					if ((start.GetPlayer() == -1 || nxt.GetNeighbor (dir).GetPlayer() != start.GetPlayer()) && !tblStore.ContainsKey(nxt.GetNeighbor (dir))) {
 						//The destination here should be different for the swordsman and lancer
 						if (finalDest == null && nxt.GetNeighbor (dir).GetPlayer () != -1) {
 							finalDest = new List<HexCell> ();
@@ -112,10 +122,6 @@ public class HexAI {
 							}
 
 						}
-//						if (finalDest != null && finalDest.Contains(nxt.GetNeighbor (dir))) {
-//							List<HexCell> path = iterateBackFromPoint (nxt.GetNeighbor (dir), tblStore);
-//							return path;
-//						}
 					}
 				}
 			}

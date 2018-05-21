@@ -60,6 +60,10 @@ public class HexCell : MonoBehaviour {
 			GetTile ().type = TileInfo.tileType.Grass;
 			GetTile ().color = TileInfo.tileColor.Green;
 			break;
+		case TileInfo.tileType.Road:
+			GetTile ().type = TileInfo.tileType.Road;
+			GetTile ().color = TileInfo.tileColor.Sand;
+			break;
 		case TileInfo.tileType.Mountain:
 			GetTile ().type = TileInfo.tileType.Mountain;
 			GetTile ().color = TileInfo.tileColor.Gray;
@@ -81,13 +85,15 @@ public class HexCell : MonoBehaviour {
 		case TileInfo.tileColor.Brown:
 			return Color.magenta;
 		case TileInfo.tileColor.DarkGreen:
-			return Color.cyan;
+			return new Color(0, .5f, .4f, 1);
 		case TileInfo.tileColor.Gold:
 			return Color.yellow;
 		case TileInfo.tileColor.Gray:
 			return Color.gray;
 		case TileInfo.tileColor.Green:
 			return Color.green;
+		case TileInfo.tileColor.Sand:
+			return new Color(.5f, .4f, .35f, 1);
 		default:
 			return Color.white;
 		}
@@ -169,7 +175,7 @@ public class HexCell : MonoBehaviour {
 				info.attacks = 1;
 				break;
 			case UnitInfo.unitType.Adventure:
-				info.actions = 1;
+				info.actions = 3;
 				info.attacks = 1;
 				break;
 			}
