@@ -6,7 +6,10 @@ public class HexCell : MonoBehaviour {
 
 	public HexCoordinates coordinates;
 
-	public Color color;
+	private Color[] colors;
+	private Color color;
+
+	public TileInfo tile;
 	public UnitInfo info;
 
 	private bool active;
@@ -21,16 +24,94 @@ public class HexCell : MonoBehaviour {
 		HexDirection.E
 	};
 
-	public void init(Text label){
+	public void init(Color[] colors, Text label){
+		this.colors = colors;
+
 		info = new UnitInfo ();
 		info.playerNo = -1;
 		info.type = UnitInfo.unitType.None;
+
+		tile = new TileInfo ();
+		tile.movement = 1;
+		tile.meta = "";
+//		tile.type = TileInfo.tileType.Grass;
+//		tile.color = TileInfo.tileColor.Green;
 
 		active = false;
 		this.label = label;
 		this.label.text = "";
 	}
 
+	public void setType(TileInfo.tileType type){
+		switch(type){
+		case TileInfo.tileType.Castle:
+			GetTile ().type = TileInfo.tileType.Castle;
+			GetTile ().color = TileInfo.tileColor.Blue;
+			break;
+		case TileInfo.tileType.City:
+			GetTile ().type = TileInfo.tileType.City;
+			GetTile ().color = TileInfo.tileColor.Brown;
+			break;
+		case TileInfo.tileType.Forest:
+			GetTile ().type = TileInfo.tileType.Forest;
+			GetTile ().color = TileInfo.tileColor.DarkGreen;
+			break;
+		case TileInfo.tileType.Grass:
+			GetTile ().type = TileInfo.tileType.Grass;
+			GetTile ().color = TileInfo.tileColor.Green;
+			break;
+		case TileInfo.tileType.Mountain:
+			GetTile ().type = TileInfo.tileType.Mountain;
+			GetTile ().color = TileInfo.tileColor.Gray;
+			break;
+		case TileInfo.tileType.Treasure:
+			GetTile ().type = TileInfo.tileType.Treasure;
+			GetTile ().color = TileInfo.tileColor.Gold;
+			break;
+		default:
+			setType (TileInfo.tileType.Grass);
+			break;
+		}
+	}
+
+	private Color getColorTile(TileInfo.tileColor clr) {
+		switch(clr){
+		case TileInfo.tileColor.Blue:
+			return Color.blue;
+		case TileInfo.tileColor.Brown:
+			return Color.magenta;
+		case TileInfo.tileColor.DarkGreen:
+			return Color.cyan;
+		case TileInfo.tileColor.Gold:
+			return Color.yellow;
+		case TileInfo.tileColor.Gray:
+			return Color.gray;
+		case TileInfo.tileColor.Green:
+			return Color.green;
+		default:
+			return Color.white;
+		}
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public Color getColor() {
+		Color tmp = color;
+		if (tile.color != TileInfo.tileColor.None) {
+			if (GetPlayer () > -1) {
+				return (colors[GetPlayer()] + new Color (1, 1, 1, .8f))/2;
+			} else if (tmp != Color.white) {
+				return (getColorTile(tile.color) + new Color (tmp.r, tmp.g, tmp.b, .2f)) / 2;
+			} else {
+				return getColorTile(tile.color);
+			}
+		}
+		return color;
+	}
+
+	public TileInfo GetTile() { return tile; }
 	public UnitInfo GetInfo() { return info; }
 	public void SetInfoStart(UnitInfo info) { 
 		this.info = info; 

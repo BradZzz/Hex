@@ -42,9 +42,12 @@ public class HexGridAdventure : HexGrid {
 //	}
 
 	void Start () {
-		hexMesh.Triangulate(cells);
 
 		ResetCells ();
+
+		foreach (HexCell cell in cells) {
+			cell.setType((TileInfo.tileType) Random.Range(0, 7));
+		}
 
 		placePlayer(cells[0], 0, true, UnitInfo.unitType.Adventure);
 

@@ -13,6 +13,8 @@ public class UnitInfo {
 	public int attacks = 0;
 	//How much health this unit has
 	public int health = 0;
+	//If the background color should be clear or not
+	public bool clear = false;
 
 	public enum unitType {
 		Knight, Swordsman, Lancer, Adventure, None

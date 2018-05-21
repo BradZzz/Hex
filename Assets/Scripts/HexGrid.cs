@@ -85,9 +85,6 @@ public class HexGrid : MonoBehaviour {
 		}
 		GameObject.Find ("TurnImg").GetComponent<Image>().color = playerColors [getPTurn()];
 		foreach (HexCell cell in cells) {
-			if (cell.GetPlayer() > -1) {
-				Debug.Log (cell.GetPlayer().ToString() + " : " + getPTurn().ToString());
-			}
 			if (cell.GetPlayer () == getPTurn()) {
 				cell.EndTurn ();
 			} else {
@@ -97,7 +94,7 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	public void placePlayer(HexCell cell, int idx, bool active, UnitInfo.unitType type){
-		cell.color = playerColors[idx];
+		cell.setColor(playerColors[idx]);
 		UnitInfo info = new UnitInfo ();
 		info.playerNo = idx;
 		info.type = type;
@@ -183,7 +180,7 @@ public class HexGrid : MonoBehaviour {
 
 		cell.SetInfo (move_to_info);
 		adjCell.SetInfo (move_from_info);
-		adjCell.color = playerColors [player];
+		adjCell.setColor(playerColors [player]);
 
 		ResetCells ();
 	}
@@ -196,7 +193,7 @@ public class HexGrid : MonoBehaviour {
 
 			parent_info.actions -= 1;
 			cell.SetInfo (parent_info);
-			cell.color = playerColors [player];
+			cell.setColor(playerColors [player]);
 			cell.GetNeighbor (dir).SetActive(false);
 			cell.GetNeighbor (dir).SetInfo(this_info);
 
@@ -261,7 +258,7 @@ public class HexGrid : MonoBehaviour {
 	public void ResetCells() {
 		foreach (HexCell cell in cells) {
 			if (cell.GetPlayer () == -1) {
-				cell.color = Color.white;
+				cell.setColor(Color.white);
 			}
 			cell.SetActive (false);
 		}
@@ -277,7 +274,7 @@ public class HexGrid : MonoBehaviour {
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
-		cell.color = defaultColor;
+		cell.setColor(defaultColor);
 
 		if (x > 0) {
 			cell.SetNeighbor(HexDirection.W, cells[i - 1]);
@@ -302,6 +299,6 @@ public class HexGrid : MonoBehaviour {
 		label.rectTransform.anchoredPosition =
 			new Vector2(position.x, position.z);
 		label.text = cell.coordinates.ToStringOnSeparateLines();
-		cell.init (label);
+		cell.init (playerColors, label);
 	}
 }

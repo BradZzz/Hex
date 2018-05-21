@@ -6,7 +6,7 @@ public class TileInfo {
 	//The type of unit the player is using
 	public tileType type;
 	//How many actions this unit has left
-	public string color = "";
+	public tileColor color;
 	//How many attacks this unit has left
 	public int movement = 0;
 
@@ -14,5 +14,9 @@ public class TileInfo {
 
 	public enum tileType {
 		Castle, City, Forest, Grass, Mountain, Treasure, Water,  None
+	}
+
+	public enum tileColor {
+		Purple, Brown, DarkGreen, Green, Gray, Gold, Blue,  None
 	}
 }
