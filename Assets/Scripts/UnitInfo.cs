@@ -15,6 +15,6 @@ public class UnitInfo {
 	public int health = 0;
 
 	public enum unitType {
-		Knight, Swordsman, Lancer, None
+		Knight, Swordsman, Lancer, Adventure, None
 	}
 }

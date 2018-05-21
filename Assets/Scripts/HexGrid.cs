@@ -18,16 +18,15 @@ public class HexGrid : MonoBehaviour {
 
 	public Color[] playerColors;
 	public int players = 2;
-	private int pTurn;
-	private bool locked;
 
 	public HexCell cellPrefab;
 	public Text cellLabelPrefab;
 
-	HexCell[] cells;
-
-	Canvas gridCanvas;
-	HexMesh hexMesh;
+	protected HexCell[] cells;
+	protected Canvas gridCanvas;
+	protected HexMesh hexMesh;
+	protected int pTurn;
+	protected bool locked;
 
 	void Awake () {
 		gridCanvas = GetComponentInChildren<Canvas>();
@@ -75,18 +74,21 @@ public class HexGrid : MonoBehaviour {
 
 		hexMesh.Triangulate(cells);
 
-		pTurn = players - 1;
+		setPTurn (players - 1);
 		EndTurn ();
 	}
 
 	public void EndTurn(){
-		pTurn++;
-		if (pTurn == players) {
-			pTurn = 0;
+		setPTurn (getPTurn() + 1);
+		if (getPTurn() == players) {
+			setPTurn (0);
 		}
-		GameObject.Find ("TurnImg").GetComponent<Image>().color = playerColors [pTurn];
+		GameObject.Find ("TurnImg").GetComponent<Image>().color = playerColors [getPTurn()];
 		foreach (HexCell cell in cells) {
-			if (cell.GetPlayer () == pTurn) {
+			if (cell.GetPlayer() > -1) {
+				Debug.Log (cell.GetPlayer().ToString() + " : " + getPTurn().ToString());
+			}
+			if (cell.GetPlayer () == getPTurn()) {
 				cell.EndTurn ();
 			} else {
 				cell.StripTurn();
@@ -94,7 +96,7 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
-	void placePlayer(HexCell cell, int idx, bool active, UnitInfo.unitType type){
+	public void placePlayer(HexCell cell, int idx, bool active, UnitInfo.unitType type){
 		cell.color = playerColors[idx];
 		UnitInfo info = new UnitInfo ();
 		info.playerNo = idx;
@@ -105,6 +107,14 @@ public class HexGrid : MonoBehaviour {
 		if (active) {
 			cell.paintNeigbors ();
 		}
+	}
+
+	protected void setPTurn(int pTurn) {
+		this.pTurn = pTurn;
+	}
+
+	protected int getPTurn() {
+		return pTurn;
 	}
 
 	private IEnumerator WaitAndContinue(HexAI ai, float waitTime)
@@ -157,10 +167,10 @@ public class HexGrid : MonoBehaviour {
 
 	public void PlayAI(){
 		ResetCells ();
-		StartCoroutine(WaitAndContinue(new HexAI (pTurn), 0.25f));
+		StartCoroutine(WaitAndContinue(new HexAI (getPTurn()), 0.25f));
 	}
 
-	private void moveCell(HexCell cell, HexCell adjCell){
+	protected void moveCell(HexCell cell, HexCell adjCell){
 		cell.SetActive(false);
 		adjCell.SetActive(false);
 
@@ -178,7 +188,7 @@ public class HexGrid : MonoBehaviour {
 		ResetCells ();
 	}
 
-	private void moveCell(HexCell cell, HexDirection dir){
+	protected void moveCell(HexCell cell, HexDirection dir){
 		if (cell.GetNeighbor (dir).GetInfo().actions > 0) {
 			int player = cell.GetNeighbor (dir).GetPlayer ();
 			UnitInfo parent_info = cell.GetNeighbor (dir).GetInfo ();
@@ -194,20 +204,20 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
-	private void attackCell(HexCell attacker, HexCell defender){
+	protected void attackCell(HexCell attacker, HexCell defender){
 		UnitInfo attacker_info = attacker.GetInfo ();
-		if (attacker_info.playerNo == pTurn && attacker_info.attacks > 0) {
+		if (attacker_info.playerNo == getPTurn() && attacker_info.attacks > 0) {
 			attacker_info.attacks--;
 			// Swordsman attack strikes around hero
 			if (attacker_info.type == UnitInfo.unitType.Swordsman) {
-				attacker.swordAttackAround (pTurn);
+				attacker.swordAttackAround (getPTurn());
 			} else {
 				defender.TakeHit ();
 				// Lance attack strikes through enemy
 				if (attacker_info.type == UnitInfo.unitType.Lancer) {
 					HexDirection dir = attacker.GetNeighborDir (defender);
 					HexCell farUnit = defender.GetNeighbor (dir);
-					if (farUnit && farUnit.GetPlayer() > -1 && farUnit.GetPlayer() != pTurn) {
+					if (farUnit && farUnit.GetPlayer() > -1 && farUnit.GetPlayer() != getPTurn()) {
 						farUnit.TakeHit ();
 					}
 				}
@@ -224,7 +234,7 @@ public class HexGrid : MonoBehaviour {
 
 		HexCell cell = cells [index];
 		if (cell.GetPlayer () > -1) {
-			if (cell.GetPlayer () == pTurn && (cell.GetInfo().actions > 0 || cell.GetInfo().attacks > 0)) {
+			if (cell.GetPlayer () == getPTurn() && (cell.GetInfo().actions > 0 || cell.GetInfo().attacks > 0)) {
 				if (cell.GetActive ()) {
 					ResetCells ();
 				} else {
@@ -232,7 +242,7 @@ public class HexGrid : MonoBehaviour {
 					cell.paintNeigbors ();
 					cell.SetActive (true);
 				}
-			} else if (cell.GetPlayer () != pTurn) {
+			} else if (cell.GetPlayer () != getPTurn()) {
 				HexDirection dir = cell.getActiveNeigbor ();
 				if (dir != HexDirection.None) {
 					HexCell attacker = cell.GetNeighbor (dir);
@@ -248,7 +258,7 @@ public class HexGrid : MonoBehaviour {
 		hexMesh.Triangulate(cells);
 	}
 
-	void ResetCells() {
+	public void ResetCells() {
 		foreach (HexCell cell in cells) {
 			if (cell.GetPlayer () == -1) {
 				cell.color = Color.white;

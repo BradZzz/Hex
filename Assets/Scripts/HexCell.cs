@@ -45,6 +45,9 @@ public class HexCell : MonoBehaviour {
 			case UnitInfo.unitType.Swordsman:
 				this.info.health = 4;
 				break;
+			case UnitInfo.unitType.Adventure:
+				this.info.health = 1;
+				break;
 			}
 		}
 	}
@@ -60,6 +63,9 @@ public class HexCell : MonoBehaviour {
 				break;
 			case UnitInfo.unitType.Swordsman:
 				label.text = "S" + this.info.health.ToString();
+				break;
+			case UnitInfo.unitType.Adventure:
+				label.text = "A" + this.GetPlayer();
 				break;
 			}
 		} else {
@@ -79,6 +85,10 @@ public class HexCell : MonoBehaviour {
 				break;
 			case UnitInfo.unitType.Swordsman:
 				info.actions = 2;
+				info.attacks = 1;
+				break;
+			case UnitInfo.unitType.Adventure:
+				info.actions = 1;
 				info.attacks = 1;
 				break;
 			}
