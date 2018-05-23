@@ -34,8 +34,6 @@ public class HexCell : MonoBehaviour {
 		tile = new TileInfo ();
 		tile.movement = 1;
 		tile.meta = "";
-//		tile.type = TileInfo.tileType.Grass;
-//		tile.color = TileInfo.tileColor.Green;
 
 		active = false;
 		this.label = label;
@@ -105,6 +103,9 @@ public class HexCell : MonoBehaviour {
 
 	public Color getColor() {
 		Color tmp = color;
+		if (GetTile().fog) {
+			return Color.black;
+		}
 		if (tile.color != TileInfo.tileColor.None) {
 			if (GetPlayer () > -1) {
 				return (colors[GetPlayer()] + new Color (1, 1, 1, .8f))/2;
@@ -215,6 +216,17 @@ public class HexCell : MonoBehaviour {
 	public void paintNeigbors (){
 		foreach(HexDirection dir in dirs) {
 			setNeigbor(dir);
+		}
+	}
+
+	public void removeFog(){
+		if (GetInfo().human == true) {
+			GetTile ().fog = false;
+			foreach (HexDirection dir in dirs) {
+				if (GetNeighbor (dir)) {
+					GetNeighbor (dir).GetTile ().fog = false;
+				}
+			}
 		}
 	}
 

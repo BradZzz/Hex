@@ -7,8 +7,10 @@ public class TileInfo {
 	public tileType type;
 	//How many actions this unit has left
 	public tileColor color;
-	//How many attacks this unit has left
+	//The movement penalty / bonus for landing on this tile
 	public int movement = 0;
+	//Fog of war is active on this tile
+	public bool fog = false;
 
 	public string meta = "";
 

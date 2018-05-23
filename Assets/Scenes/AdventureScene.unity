@@ -1711,8 +1711,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833608eeda8824ab4923580c8221d99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 10
-  height: 8
+  width: 20
+  height: 16
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   playerColors:
   - {r: 0.2627451, g: 0.627451, b: 0.2784314, a: 1}

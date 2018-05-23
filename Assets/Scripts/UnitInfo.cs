@@ -5,6 +5,8 @@ public class UnitInfo {
 	
 	//The player number
 	public int playerNo;
+	//Non-AI player
+	public bool human = false;
 	//The type of unit the player is using
 	public unitType type;
 	//How many actions this unit has left
