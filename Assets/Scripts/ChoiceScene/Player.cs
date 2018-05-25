@@ -3,24 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-//
-//	// Use this for initialization
-//	void Start () {
-//		
-//	}
-//	
-//	// Update is called once per frame
-//	void Update () {
-//		
-//	}
 
 	public float speed = 100f;
+	public float shotInterval = 1f;
+	public GameObject shot;
+
+	private float lastShot = 0;
+
+	void Start () {}
 
 	void Update()
 	{
 		/*
 		 * Check here to make sure the player cannot leave the box
 		 */
+		lastShot -= Time.deltaTime;
 
 		float mv = speed * Time.deltaTime;
 		if(Input.GetKey(KeyCode.RightArrow))
@@ -40,6 +37,18 @@ public class Player : MonoBehaviour {
 		{
 			transform.Translate(new Vector3(0,mv,0));
 			//transform.Translate(new Vector3(0,mv,mv));
+		}
+		if(Input.GetKey(KeyCode.Space))
+		{
+			if (lastShot <= 0) {
+				Debug.Log ("Space");
+				GameObject sht = Instantiate(shot);
+				Vector3 cPos = transform.position;
+				cPos.y += 10;
+				sht.transform.position = cPos;
+
+				lastShot = shotInterval;
+			}
 		}
 	}
 
