@@ -28,16 +28,16 @@ public class Player : MonoBehaviour {
 		{
 			transform.Translate(new Vector3(-mv,0,0));
 		}
-		if(Input.GetKey(KeyCode.DownArrow))
-		{
-			transform.Translate(new Vector3(0,-mv,0));
-			//transform.Translate(new Vector3(0,-mv,-mv));
-		}
-		if(Input.GetKey(KeyCode.UpArrow))
-		{
-			transform.Translate(new Vector3(0,mv,0));
-			//transform.Translate(new Vector3(0,mv,mv));
-		}
+//		if(Input.GetKey(KeyCode.DownArrow))
+//		{
+//			transform.Translate(new Vector3(0,-mv,0));
+//			//transform.Translate(new Vector3(0,-mv,-mv));
+//		}
+//		if(Input.GetKey(KeyCode.UpArrow))
+//		{
+//			transform.Translate(new Vector3(0,mv,0));
+//			//transform.Translate(new Vector3(0,mv,mv));
+//		}
 		if(Input.GetKey(KeyCode.Space))
 		{
 			if (lastShot <= 0) {

@@ -7,39 +7,45 @@ public class ChoicePanel : MonoBehaviour {
 //	public float speed = 20;
 	public GameObject panelParent;
 	public GameObject player;
+	public GameObject enemy;
+
+	public float enemyGenSpeed = 5f;
+	private float enemyGenTimer = 0;
 
 	private GameObject thisPlayer;
+	private int windowH;
 
 	//At the start we need to pull out the player 
 	//and attach it to the panel gameobject 
 	void Start () {
+		windowH = (int)panelParent.GetComponent<RectTransform> ().rect.height;
+
 		thisPlayer = Instantiate(player);
 		thisPlayer.transform.SetParent(panelParent.transform, false);
-		thisPlayer.transform.localPosition = new Vector3(0,0,0);
+		thisPlayer.transform.localPosition = new Vector3(0,-windowH/4-50,0);
 		thisPlayer.transform.localScale = new Vector3(200, 200, 1);
 	}
 
-//	void Update()
-//	{
-//		float mv = speed * Time.deltaTime;
-//		if(Input.GetKey(KeyCode.RightArrow))
-//		{
-//			thisPlayer.transform.Translate(new Vector3(mv,0,0));
-//		}
-//		if(Input.GetKey(KeyCode.LeftArrow))
-//		{
-//			thisPlayer.transform.Translate(new Vector3(-mv,0,0));
-//		}
-//		if(Input.GetKey(KeyCode.DownArrow))
-//		{
-//			thisPlayer.transform.Translate(new Vector3(0,-mv,-mv));
-//		}
-//		if(Input.GetKey(KeyCode.UpArrow))
-//		{
-//			thisPlayer.transform.Translate(new Vector3(0,mv,mv));
-//		}
-//	}
-//
+	void Update()
+	{
+		enemyGenTimer -= Time.deltaTime;
+		if(enemyGenTimer < 0)
+		{
+			genEnemy ();
+			enemyGenTimer = enemyGenSpeed;
+		}
+
+	}
+
+	void genEnemy() {
+		float x = Random.Range (-windowH / 3, windowH / 3);
+
+		GameObject thisEnemy = Instantiate(enemy);
+		thisEnemy.transform.SetParent(panelParent.transform, false);
+		thisEnemy.transform.localPosition = new Vector3(x,windowH/4+50,0);
+		thisEnemy.transform.localScale = new Vector3(200, 200, 1);
+	}
+
 //	private Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
 //	{
 //		Texture2D result = new Texture2D(targetWidth, targetHeight, source.format, true);
