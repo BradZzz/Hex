@@ -5,7 +5,7 @@ using UnityEngine;
 public class ChoicePanel : MonoBehaviour {
 
 	public enum minigameType {
-		Asteroids, Pop, Shoot, Town, None
+		Asteroids, Jump, Pop, Shoot, Town, None
 	}
 
 	public GameObject panelParent;
@@ -29,6 +29,15 @@ public class ChoicePanel : MonoBehaviour {
 	private int windowH;
 	private int windowW;
 
+	private float eGenSpeed(){
+		switch(gameType){
+		case ChoicePanel.minigameType.Jump:
+			return 2f;
+		default:
+			return enemyGenSpeed;
+		}
+	}
+
 	//At the start we need to pull out the player 
 	//and attach it to the panel gameobject 
 	void Start () {
@@ -39,15 +48,21 @@ public class ChoicePanel : MonoBehaviour {
 
 		if (gameType != minigameType.Pop) {
 			thisPlayer = Instantiate(player);
+			Rigidbody2D body = thisPlayer.GetComponent<Rigidbody2D> ();
 
 			switch(gameType) {
 			case minigameType.Asteroids:
-				Rigidbody2D body = thisPlayer.GetComponent<Rigidbody2D> ();
 				body.gravityScale = .35f;
 				body.mass = .5f;
 				body.angularDrag = .05f;
 
 				thisPlayer.transform.localPosition = new Vector3(0,windowH/4-50,0);
+				break;
+			case minigameType.Jump:
+				body.mass = .002f;
+				body.gravityScale = .5f;
+
+				thisPlayer.transform.localPosition = new Vector3(-windowW/4,windowH/4-50,0);
 				break;
 			case minigameType.Town:
 				this.thisPlayer.GetComponent<Player> ().speed = 20f;
@@ -75,12 +90,12 @@ public class ChoicePanel : MonoBehaviour {
 	{
 		gameTimer -= Time.deltaTime;
 
-		if (minigameType.Shoot == gameType || minigameType.Asteroids == gameType) {
+		if (minigameType.Shoot == gameType || minigameType.Asteroids == gameType || minigameType.Jump == gameType) {
 			enemyGenTimer -= Time.deltaTime;
 			if(enemyGenTimer < 0)
 			{
 				genEnemy (gameType);
-				enemyGenTimer = enemyGenSpeed;
+				enemyGenTimer = eGenSpeed();
 			}
 		}
 
@@ -155,23 +170,26 @@ public class ChoicePanel : MonoBehaviour {
 	}
 
 	void genEnemy(ChoicePanel.minigameType type) {
-		float x = Random.Range (-windowW / 3, windowW / 3);
-		float y = Random.Range (-windowH / 3, windowH / 3);
+		float x = Random.Range (-3.5f * windowW / 10, 3.5f * windowW / 10);
+		float y = Random.Range (-3.5f * windowH / 10, 3.5f * windowH / 10);
 
 		GameObject thisEnemy = Instantiate(enemy);
 		thisEnemy.transform.SetParent(panelParent.transform, false);
 		thisEnemy.transform.localPosition = new Vector3(x,windowH/4+50,0);
 		thisEnemy.transform.localScale = new Vector3(200, 200, 1);
 
-		if (type == ChoicePanel.minigameType.Asteroids) {
+		if (type == ChoicePanel.minigameType.Asteroids || type == ChoicePanel.minigameType.Jump) {
+			float difficulty = -.07f;
+
 			Rigidbody2D body = thisEnemy.GetComponent<Rigidbody2D> ();
 			body.mass = 0;
 			body.angularDrag = 0;
 			body.gravityScale = 0;
 
-			body.AddForce(new Vector2(-.1f,Random.Range (-.1f,.05f)),ForceMode2D.Force);
+			body.AddForce(new Vector2(difficulty,0),ForceMode2D.Force);
 
-			thisEnemy.transform.localPosition = new Vector3(windowW/4+50,y,0);
+			thisEnemy.transform.localPosition = new Vector3(3*windowW/10,y,0);
+			thisEnemy.transform.localScale = new Vector3(900, 900, 1);
 		}
 	}
 
@@ -197,17 +215,9 @@ public class ChoicePanel : MonoBehaviour {
 		thisClick.GetComponent<SpriteRenderer> ().color = meshColor;
 		if (meshColor == Color.red) {
 			thisClick.tag = "Enemy";
-//			thisClick.transform.localScale = new Vector3 (100, 100, 1);
-//
-//			Vector3 temp = thisClick.GetComponent<RectTransform>().localScale;
-//			temp.x = temp.x / 2;
-//			temp.y = temp.y / 2;
-//			thisClick.GetComponent<RectTransform>().localScale = new Vector3(10f,10f,1);
 		} else {
 			thisClick.transform.localScale = new Vector3 (150, 150, 1);
 		}
 		thisClick.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range (-.1f,.1f),Random.Range (-.1f,.1f)),ForceMode2D.Force);
-
-		//thisClick.transform.rotation = Quaternion.Euler(Random.Range (-1, 1), Random.Range (-1, 1), Random.Range (-1, 1));
 	}
 }

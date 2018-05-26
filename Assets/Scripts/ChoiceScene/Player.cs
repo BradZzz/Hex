@@ -23,6 +23,8 @@ public class Player : MonoBehaviour {
 		switch(mv) {
 		case actionDir.Up:
 			switch(type){
+			case ChoicePanel.minigameType.Jump:
+				return false;
 			case ChoicePanel.minigameType.Shoot:
 				return false;
 			case ChoicePanel.minigameType.Asteroids:
@@ -32,6 +34,8 @@ public class Player : MonoBehaviour {
 			}
 		case actionDir.Down:
 			switch(type){
+			case ChoicePanel.minigameType.Jump:
+				return false;
 			case ChoicePanel.minigameType.Shoot:
 				return false;
 			case ChoicePanel.minigameType.Asteroids:
@@ -41,11 +45,15 @@ public class Player : MonoBehaviour {
 			}
 		case actionDir.Left:
 			switch(type){
+			case ChoicePanel.minigameType.Jump:
+				return false;
 			default:
 				return true;
 			}
 		case actionDir.Right:
 			switch(type){
+			case ChoicePanel.minigameType.Jump:
+				return false;
 			default:
 				return true;
 			}
@@ -97,9 +105,15 @@ public class Player : MonoBehaviour {
 		}
 		if(Input.GetKey(KeyCode.Space) && canMove(actionDir.Action))
 		{
-			if (type == ChoicePanel.minigameType.Asteroids) {
-				Debug.Log ("Space");
-				GetComponent<Rigidbody2D>().AddForce(transform.up * (speed / 2), ForceMode2D.Force);
+			if (type == ChoicePanel.minigameType.Asteroids || type == ChoicePanel.minigameType.Jump) {
+				switch(type){
+				case ChoicePanel.minigameType.Jump:
+					GetComponent<Rigidbody2D> ().AddForce (transform.up * .02f, ForceMode2D.Force);
+					break;
+				case ChoicePanel.minigameType.Asteroids:
+					GetComponent<Rigidbody2D> ().AddForce (transform.up * (speed / 2), ForceMode2D.Force);
+					break;
+				}
 			} else {
 				if (lastShot <= 0) {
 					GameObject sht = Instantiate(shot);
