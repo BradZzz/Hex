@@ -22,10 +22,10 @@ GameObject:
   - component: {fileID: 212776236647671828}
   - component: {fileID: 61354852050839322}
   - component: {fileID: 50760921250588434}
-  - component: {fileID: 114850619251538428}
+  - component: {fileID: 114158035690505302}
   m_Layer: 0
-  m_Name: Shop
-  m_TagString: Item
+  m_Name: Popper
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1414170089787622}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.035868, y: -7.4994125, z: 0.60301065}
+  m_LocalPosition: {x: 9.035868, y: -7.4994125, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,7 +88,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1}
   m_EdgeRadius: 0
---- !u!114 &114850619251538428
+--- !u!114 &114158035690505302
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -96,9 +96,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1414170089787622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80081d5782556480cab09a81b67a739d, type: 3}
+  m_Script: {fileID: 11500000, guid: c2407ff8185de48609796672d1c3bf77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0.2
+  health: 3
 --- !u!212 &212776236647671828
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -133,7 +135,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4d02636cfdee24b05841ff630227c608, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4351f53800fc34e60a002142992d53fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

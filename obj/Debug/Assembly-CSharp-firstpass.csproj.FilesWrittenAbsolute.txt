@@ -1,7 +1,7 @@
-/Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/Assembly-CSharp.dll.mdb
-/Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/Assembly-CSharp.dll
-/Users/brad/Documents/new_git/HexPuzzle/obj/Debug/Assembly-CSharp.dll
-/Users/brad/Documents/new_git/HexPuzzle/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/Assembly-CSharp-firstpass.dll.mdb
+/Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/Assembly-CSharp-firstpass.dll
+/Users/brad/Documents/new_git/HexPuzzle/obj/Debug/Assembly-CSharp-firstpass.dll
+/Users/brad/Documents/new_git/HexPuzzle/obj/Debug/Assembly-CSharp-firstpass.dll.mdb
 /Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/UnityEngine.dll
 /Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/UnityEditor.dll
 /Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/UnityEngine.UIAutomation.dll
@@ -48,5 +48,3 @@
 /Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/Unity.Cecil.Mdb.dll
 /Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll
 /Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.xml
-/Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/Assembly-CSharp-firstpass.dll
-/Users/brad/Documents/new_git/HexPuzzle/Temp/bin/Debug/Assembly-CSharp-firstpass.dll.mdb
