@@ -5,7 +5,7 @@ using UnityEngine;
 public class ChoicePanel : MonoBehaviour {
 
 	public enum minigameType {
-		Jump, Pop, Shoot, Town, None
+		Asteroids, Pop, Shoot, Town, None
 	}
 
 	public GameObject panelParent;
@@ -38,17 +38,27 @@ public class ChoicePanel : MonoBehaviour {
 		gameTimer = gameTimeLimit;
 
 		if (gameType != minigameType.Pop) {
+			thisPlayer = Instantiate(player);
+
 			switch(gameType) {
-			case minigameType.Shoot:
-				thisPlayer = Instantiate(player);
+			case minigameType.Asteroids:
+				Rigidbody2D body = thisPlayer.GetComponent<Rigidbody2D> ();
+				body.gravityScale = .35f;
+				body.mass = .5f;
+				body.angularDrag = .05f;
+
+				thisPlayer.transform.localPosition = new Vector3(0,windowH/4-50,0);
 				break;
 			case minigameType.Town:
-				thisPlayer = Instantiate(player);
+				this.thisPlayer.GetComponent<Player> ().speed = 20f;
+				thisPlayer.transform.localPosition = new Vector3 (0, -windowH / 4 - 50, 0);
+				break;
+			default:
+				thisPlayer.transform.localPosition = new Vector3(0,-windowH/4-50,0);
 				break;
 			}
 			
 			thisPlayer.transform.SetParent(panelParent.transform, false);
-			thisPlayer.transform.localPosition = new Vector3(0,-windowH/4-50,0);
 			thisPlayer.transform.localScale = new Vector3(200, 200, 1);
 
 			thisPlayer.GetComponent<Player> ().setType (gameType);
@@ -65,11 +75,11 @@ public class ChoicePanel : MonoBehaviour {
 	{
 		gameTimer -= Time.deltaTime;
 
-		if (minigameType.Shoot == gameType) {
+		if (minigameType.Shoot == gameType || minigameType.Asteroids == gameType) {
 			enemyGenTimer -= Time.deltaTime;
 			if(enemyGenTimer < 0)
 			{
-				genEnemy ();
+				genEnemy (gameType);
 				enemyGenTimer = enemyGenSpeed;
 			}
 		}
@@ -97,7 +107,7 @@ public class ChoicePanel : MonoBehaviour {
 	private static GUIStyle _staticHealthStyle;
 
 	void OnGUI() {
-		if (gameTimer > 0) {
+		if (gameTimer > 0 && gameType != ChoicePanel.minigameType.Town) {
 			RectTransform boxRect = panelParent.GetComponent<RectTransform>();
 			Vector3 guiPosition = transform.position;
 			guiPosition.x -= 4 * boxRect.rect.width / 10;
@@ -144,13 +154,25 @@ public class ChoicePanel : MonoBehaviour {
 			}
 	}
 
-	void genEnemy() {
-		float x = Random.Range (-windowH / 3, windowH / 3);
+	void genEnemy(ChoicePanel.minigameType type) {
+		float x = Random.Range (-windowW / 3, windowW / 3);
+		float y = Random.Range (-windowH / 3, windowH / 3);
 
 		GameObject thisEnemy = Instantiate(enemy);
 		thisEnemy.transform.SetParent(panelParent.transform, false);
 		thisEnemy.transform.localPosition = new Vector3(x,windowH/4+50,0);
 		thisEnemy.transform.localScale = new Vector3(200, 200, 1);
+
+		if (type == ChoicePanel.minigameType.Asteroids) {
+			Rigidbody2D body = thisEnemy.GetComponent<Rigidbody2D> ();
+			body.mass = 0;
+			body.angularDrag = 0;
+			body.gravityScale = 0;
+
+			body.AddForce(new Vector2(-.1f,Random.Range (-.1f,.05f)),ForceMode2D.Force);
+
+			thisEnemy.transform.localPosition = new Vector3(windowW/4+50,y,0);
+		}
 	}
 
 	void genStore() {

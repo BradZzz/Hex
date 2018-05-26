@@ -25,7 +25,7 @@ public class Player : MonoBehaviour {
 			switch(type){
 			case ChoicePanel.minigameType.Shoot:
 				return false;
-			case ChoicePanel.minigameType.Jump:
+			case ChoicePanel.minigameType.Asteroids:
 				return false;
 			default:
 				return true;
@@ -34,22 +34,18 @@ public class Player : MonoBehaviour {
 			switch(type){
 			case ChoicePanel.minigameType.Shoot:
 				return false;
-			case ChoicePanel.minigameType.Jump:
+			case ChoicePanel.minigameType.Asteroids:
 				return false;
 			default:
 				return true;
 			}
 		case actionDir.Left:
 			switch(type){
-			case ChoicePanel.minigameType.Jump:
-				return false;
 			default:
 				return true;
 			}
 		case actionDir.Right:
 			switch(type){
-			case ChoicePanel.minigameType.Jump:
-				return false;
 			default:
 				return true;
 			}
@@ -77,30 +73,42 @@ public class Player : MonoBehaviour {
 		float mv = speed * Time.deltaTime;
 		if(Input.GetKey(KeyCode.RightArrow) && canMove(actionDir.Right))
 		{
-			transform.Translate(new Vector3(mv,0,0));
+			if (type == ChoicePanel.minigameType.Asteroids) {
+				GetComponent<Rigidbody2D> ().AddTorque (-speed / 2);
+			} else {
+				transform.Translate (new Vector3 (mv, 0, 0));
+			}
 		}
 		if(Input.GetKey(KeyCode.LeftArrow) && canMove(actionDir.Left))
 		{
-			transform.Translate(new Vector3(-mv,0,0));
+			if (type == ChoicePanel.minigameType.Asteroids) {
+				GetComponent<Rigidbody2D> ().AddTorque (speed / 2);
+			} else { 
+				transform.Translate (new Vector3 (-mv, 0, 0));
+			}
 		}
 		if(Input.GetKey(KeyCode.DownArrow) && canMove(actionDir.Down))
 		{
-			transform.Translate(new Vector3(0,-mv,0));
+			transform.Translate (new Vector3 (0, -mv, 0));
 		}
 		if(Input.GetKey(KeyCode.UpArrow) && canMove(actionDir.Up))
 		{
-			transform.Translate(new Vector3(0,mv,0));
+			transform.Translate (new Vector3 (0, mv, 0));
 		}
 		if(Input.GetKey(KeyCode.Space) && canMove(actionDir.Action))
 		{
-			if (lastShot <= 0) {
+			if (type == ChoicePanel.minigameType.Asteroids) {
 				Debug.Log ("Space");
-				GameObject sht = Instantiate(shot);
-				Vector3 cPos = transform.position;
-				cPos.y += 10;
-				sht.transform.position = cPos;
+				GetComponent<Rigidbody2D>().AddForce(transform.up * (speed / 2), ForceMode2D.Force);
+			} else {
+				if (lastShot <= 0) {
+					GameObject sht = Instantiate(shot);
+					Vector3 cPos = transform.position;
+					cPos.y += 10;
+					sht.transform.position = cPos;
 
-				lastShot = shotInterval;
+					lastShot = shotInterval;
+				}
 			}
 		}
 	}

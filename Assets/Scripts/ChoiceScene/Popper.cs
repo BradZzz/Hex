@@ -16,7 +16,7 @@ public class Popper : MonoBehaviour {
 		Debug.Log("Collision : " + collision.gameObject.name);
 		Debug.Log ("Tag: " + collision.gameObject.tag);
 		if (collision.gameObject.tag.Equals("Wall")) {
-			Vector2 forceVec = -GetComponent<Rigidbody2D>().velocity.normalized * 20f;
+			//Vector2 forceVec = -GetComponent<Rigidbody2D>().velocity.normalized * 20f;
 			GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range (-.1f,.1f),Random.Range (-.1f,.1f)),ForceMode2D.Force);
 		} else if (collision.gameObject.tag.Equals("Enemy") && !gameObject.tag.Equals("Enemy")) {
 			health--;
