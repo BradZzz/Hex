@@ -152,6 +152,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114816095106927916, guid: 754f81d7370cf492584da90ad599712c,
+        type: 2}
+      propertyPath: choices.Array.data[0].options.Array.data[1].result
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 754f81d7370cf492584da90ad599712c, type: 2}
   m_IsPrefabParent: 0
@@ -1047,7 +1052,7 @@ Prefab:
     - target: {fileID: 114371036453954236, guid: 429f5277c647c4291a3b5fc41fc5ead6,
         type: 2}
       propertyPath: gameType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114371036453954236, guid: 429f5277c647c4291a3b5fc41fc5ead6,
         type: 2}
@@ -1064,7 +1069,7 @@ Prefab:
     - target: {fileID: 114371036453954236, guid: 429f5277c647c4291a3b5fc41fc5ead6,
         type: 2}
       propertyPath: gameTimeLimit
-      value: 60
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114371036453954236, guid: 429f5277c647c4291a3b5fc41fc5ead6,
         type: 2}

@@ -11,5 +11,6 @@ public class InfoButton : MonoBehaviour {
 
 	public void buttonClicked(int clkBtn){
 		Debug.Log ("Button Clicked: " + clkBtn.ToString());
+		GameObject.Find ("ChoicePanel").GetComponent<ChoicePanel> ().selectChoice (clkBtn);
 	}
 }

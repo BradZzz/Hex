@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ChoicePanel : MonoBehaviour {
 
@@ -31,8 +32,12 @@ public class ChoicePanel : MonoBehaviour {
 	private ChoiceGlossary glossy;
 
 	private GameObject thisPlayer;
+	private GameObject infoPnl;
+	private GameObject[] infoBtns;
 	private int windowH;
 	private int windowW;
+
+	private OptionInfo[] lstOptions;
 
 	private float eGenSpeed(){
 		switch(gameType){
@@ -46,9 +51,36 @@ public class ChoicePanel : MonoBehaviour {
 	//At the start we need to pull out the player 
 	//and attach it to the panel gameobject 
 	void Start () {
-		glossy = cGlossary.GetComponent<ChoiceGlossary> ();
+		infoBtns = new GameObject[6];
+		for (int i = 0; i < 6; i++) {
+			infoBtns [i] = GameObject.Find ("Button_0" + (i + 1).ToString ());
+		}
+		infoPnl = GameObject.Find ("InfoPanel");
 
+		glossy = cGlossary.GetComponent<ChoiceGlossary> ();
 		populateInfoPanel (glossy);
+	}
+
+	public void selectChoice(int btn) {
+		ChoiceInfo choice = glossy.choices [0];
+		OptionInfo option = lstOptions [btn - 1];
+		if (!option.reaction.Equals ("<confirm/>")) {
+			GameObject.Find ("InfoDescription").GetComponent<Text> ().text = option.reaction;
+
+			OptionInfo final = new OptionInfo ();
+			final.TextOptions = new string[]{ "Continue" };
+			final.result = option.result == OptionInfo.resultType.MiniGame ? option.result : OptionInfo.resultType.None;
+			final.reaction = "<confirm/>";
+
+			populateInfoButtons (new OptionInfo[]{ final });
+		} else {
+			if (option.result == OptionInfo.resultType.MiniGame) {
+				infoPnl.SetActive (false);
+				start ();
+			} else {
+				SceneManager.LoadScene ("AdventureScene");
+			}
+		}
 	}
 
 	public void start () {
@@ -102,19 +134,45 @@ public class ChoicePanel : MonoBehaviour {
 		started = true;
 	}
 
+	public void end(bool result) {
+		ChoiceInfo choice = glossy.choices [0];
+
+		infoPnl.SetActive (true);
+		panelParent.SetActive (false);
+
+		if (result) {
+			GameObject.Find ("InfoDescription").GetComponent<Text> ().text = choice.winningGreeting;
+		} else {
+			GameObject.Find ("InfoDescription").GetComponent<Text> ().text = choice.losingGreeting;
+		}
+
+		OptionInfo final = new OptionInfo ();
+		final.TextOptions = new string[]{ "Continue on your way" };
+		final.result = OptionInfo.resultType.None;
+		final.reaction = "<confirm/>";
+
+		populateInfoButtons(new OptionInfo[]{final});
+	}
+
 	void populateInfoPanel(ChoiceGlossary glossy){
 		ChoiceInfo choice = glossy.choices [0];
 		GameObject.Find ("InfoHeader").GetComponent<Text> ().text = choice.name;
 		GameObject.Find ("InfoDescription").GetComponent<Text> ().text = choice.openingGreeting;
 
-		for (int i = 1; i < 7; i++) {
-			if (choice.options.Length > i - 1) {
-				GameObject.Find ("Button_0" + i.ToString()).transform.transform.Find("Text").GetComponent<Text> ().text = choice.options[i - 1].TextOptions[0];
-				GameObject.Find ("Button_0" + i.ToString()).SetActive(true);
+		populateInfoButtons(choice.options);
+	}
+
+	void populateInfoButtons(OptionInfo[] options){
+		for (int i = 0; i < 6; i++) {
+			if (i < options.Length) {
+				infoBtns [i].SetActive (true);
+				infoBtns [i].transform.transform.Find("Text").GetComponent<Text> ().text = options[i].TextOptions[0];
 			} else {
-				GameObject.Find ("Button_0" + i.ToString()).SetActive(false);
+				infoBtns [i].SetActive (false);
 			}
 		}
+
+		lstOptions = options;
 	}
 
 	void Update()
@@ -155,49 +213,53 @@ public class ChoicePanel : MonoBehaviour {
 	private static GUIStyle _staticHealthStyle;
 
 	void OnGUI() {
-		if (started && gameTimer > 0 && gameType != ChoicePanel.minigameType.Town) {
-			RectTransform boxRect = panelParent.GetComponent<RectTransform>();
-			Vector3 guiPosition = transform.position;
-			guiPosition.x -= 4 * boxRect.rect.width / 10;
-			guiPosition.y += 5.5f * boxRect.rect.height / 10;
+		if (started && gameType != ChoicePanel.minigameType.Town) {
+			if (gameTimer > 0) {
+				RectTransform boxRect = panelParent.GetComponent<RectTransform>();
+				Vector3 guiPosition = transform.position;
+				guiPosition.x -= 4 * boxRect.rect.width / 10;
+				guiPosition.y += 5.5f * boxRect.rect.height / 10;
 
-			float bxWidth = 8.94f * boxRect.rect.width / 10;
+				float bxWidth = 8.94f * boxRect.rect.width / 10;
 
-			Rect bRect = new Rect (guiPosition.x - 18, guiPosition.y - 38, bxWidth + 4, 32);
+				Rect bRect = new Rect (guiPosition.x - 18, guiPosition.y - 38, bxWidth + 4, 32);
 
-			if (_staticRectTexture == null) {
-				_staticRectTexture = new Texture2D (1, 1);
+				if (_staticRectTexture == null) {
+					_staticRectTexture = new Texture2D (1, 1);
+				}
+				if (_staticRectStyle == null) {
+					_staticRectStyle = new GUIStyle ();
+				}
+
+				_staticRectTexture.SetPixel (0, 0, Color.black);
+				_staticRectTexture.Apply ();
+
+				_staticRectStyle.normal.background = _staticRectTexture;
+
+				GUI.Box (bRect, GUIContent.none, _staticRectStyle);
+
+				Rect hRect = new Rect (guiPosition.x - 16, guiPosition.y - 35, 
+					bxWidth * (float)gameTimer / (float)gameTimeLimit, 26);
+
+				if (_staticHealthTexture == null) {
+					_staticHealthTexture = new Texture2D (1, 1);
+				}
+				if (_staticHealthStyle == null) {
+					_staticHealthStyle = new GUIStyle ();
+				}
+
+				_staticHealthTexture.SetPixel (0, 0, Color.yellow);
+				_staticHealthTexture.Apply ();
+
+				_staticHealthStyle.normal.background = _staticHealthTexture;
+
+				GUI.Box (hRect, GUIContent.none, _staticHealthStyle);
+
+				Debug.Log (guiPosition.ToString());
+			} else {
+				end(false);
 			}
-			if (_staticRectStyle == null) {
-				_staticRectStyle = new GUIStyle ();
-			}
-
-			_staticRectTexture.SetPixel (0, 0, Color.black);
-			_staticRectTexture.Apply ();
-
-			_staticRectStyle.normal.background = _staticRectTexture;
-
-			GUI.Box (bRect, GUIContent.none, _staticRectStyle);
-
-			Rect hRect = new Rect (guiPosition.x - 16, guiPosition.y - 35, 
-				bxWidth * (float)gameTimer / (float)gameTimeLimit, 26);
-
-			if (_staticHealthTexture == null) {
-				_staticHealthTexture = new Texture2D (1, 1);
-			}
-			if (_staticHealthStyle == null) {
-				_staticHealthStyle = new GUIStyle ();
-			}
-
-			_staticHealthTexture.SetPixel (0, 0, Color.yellow);
-			_staticHealthTexture.Apply ();
-
-			_staticHealthStyle.normal.background = _staticHealthTexture;
-
-			GUI.Box (hRect, GUIContent.none, _staticHealthStyle);
-
-			Debug.Log (guiPosition.ToString());
-			}
+		}
 	}
 
 	void genEnemy(ChoicePanel.minigameType type) {
