@@ -4,11 +4,66 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+	private enum actionDir {
+		Up, Down, Left, Right, Action
+	}
+
 	public float speed = 100f;
 	public float shotInterval = 1f;
 	public GameObject shot;
 
 	private float lastShot = 0;
+	private ChoicePanel.minigameType type = ChoicePanel.minigameType.None;
+
+	public void setType(ChoicePanel.minigameType type) {
+		this.type = type;
+	}
+
+	private bool canMove(actionDir mv){
+		switch(mv) {
+		case actionDir.Up:
+			switch(type){
+			case ChoicePanel.minigameType.Shoot:
+				return false;
+			case ChoicePanel.minigameType.Jump:
+				return false;
+			default:
+				return true;
+			}
+		case actionDir.Down:
+			switch(type){
+			case ChoicePanel.minigameType.Shoot:
+				return false;
+			case ChoicePanel.minigameType.Jump:
+				return false;
+			default:
+				return true;
+			}
+		case actionDir.Left:
+			switch(type){
+			case ChoicePanel.minigameType.Jump:
+				return false;
+			default:
+				return true;
+			}
+		case actionDir.Right:
+			switch(type){
+			case ChoicePanel.minigameType.Jump:
+				return false;
+			default:
+				return true;
+			}
+		case actionDir.Action:
+			switch(type){
+			case ChoicePanel.minigameType.Town:
+				return false;
+			default:
+				return true;
+			}
+		default:
+			return true;
+		}
+	}
 
 	void Start () {}
 
@@ -20,25 +75,23 @@ public class Player : MonoBehaviour {
 		lastShot -= Time.deltaTime;
 
 		float mv = speed * Time.deltaTime;
-		if(Input.GetKey(KeyCode.RightArrow))
+		if(Input.GetKey(KeyCode.RightArrow) && canMove(actionDir.Right))
 		{
 			transform.Translate(new Vector3(mv,0,0));
 		}
-		if(Input.GetKey(KeyCode.LeftArrow))
+		if(Input.GetKey(KeyCode.LeftArrow) && canMove(actionDir.Left))
 		{
 			transform.Translate(new Vector3(-mv,0,0));
 		}
-//		if(Input.GetKey(KeyCode.DownArrow))
-//		{
-//			transform.Translate(new Vector3(0,-mv,0));
-//			//transform.Translate(new Vector3(0,-mv,-mv));
-//		}
-//		if(Input.GetKey(KeyCode.UpArrow))
-//		{
-//			transform.Translate(new Vector3(0,mv,0));
-//			//transform.Translate(new Vector3(0,mv,mv));
-//		}
-		if(Input.GetKey(KeyCode.Space))
+		if(Input.GetKey(KeyCode.DownArrow) && canMove(actionDir.Down))
+		{
+			transform.Translate(new Vector3(0,-mv,0));
+		}
+		if(Input.GetKey(KeyCode.UpArrow) && canMove(actionDir.Up))
+		{
+			transform.Translate(new Vector3(0,mv,0));
+		}
+		if(Input.GetKey(KeyCode.Space) && canMove(actionDir.Action))
 		{
 			if (lastShot <= 0) {
 				Debug.Log ("Space");

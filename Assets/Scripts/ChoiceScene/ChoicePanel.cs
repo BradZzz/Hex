@@ -5,12 +5,11 @@ using UnityEngine;
 public class ChoicePanel : MonoBehaviour {
 
 	public enum minigameType {
-		Pop, Shoot, Town, None
+		Jump, Pop, Shoot, Town, None
 	}
 
 	public GameObject panelParent;
 	public GameObject player;
-	public GameObject navPlayer;
 	public GameObject enemy;
 	public GameObject shop;
 	public GameObject clickable;
@@ -38,18 +37,21 @@ public class ChoicePanel : MonoBehaviour {
 
 		gameTimer = gameTimeLimit;
 
-		if (gameType == minigameType.Shoot || gameType == minigameType.Town) {
+		if (gameType != minigameType.Pop) {
 			switch(gameType) {
 			case minigameType.Shoot:
 				thisPlayer = Instantiate(player);
 				break;
 			case minigameType.Town:
-				thisPlayer = Instantiate(navPlayer);
+				thisPlayer = Instantiate(player);
 				break;
 			}
+			
 			thisPlayer.transform.SetParent(panelParent.transform, false);
 			thisPlayer.transform.localPosition = new Vector3(0,-windowH/4-50,0);
 			thisPlayer.transform.localScale = new Vector3(200, 200, 1);
+
+			thisPlayer.GetComponent<Player> ().setType (gameType);
 
 			if (gameType == minigameType.Town) {
 				for (int i = 0; i < 20; i++) {
