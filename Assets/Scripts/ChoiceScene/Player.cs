@@ -82,7 +82,7 @@ public class Player : MonoBehaviour {
 		if(Input.GetKey(KeyCode.RightArrow) && canMove(actionDir.Right))
 		{
 			if (type == ChoicePanel.minigameType.Asteroids) {
-				GetComponent<Rigidbody2D> ().AddTorque (-speed / 2);
+				GetComponent<Rigidbody2D> ().AddTorque (-.01f);
 			} else {
 				transform.Translate (new Vector3 (mv, 0, 0));
 			}
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour {
 		if(Input.GetKey(KeyCode.LeftArrow) && canMove(actionDir.Left))
 		{
 			if (type == ChoicePanel.minigameType.Asteroids) {
-				GetComponent<Rigidbody2D> ().AddTorque (speed / 2);
+				GetComponent<Rigidbody2D> ().AddTorque (.01f);
 			} else { 
 				transform.Translate (new Vector3 (-mv, 0, 0));
 			}
@@ -106,14 +106,15 @@ public class Player : MonoBehaviour {
 		if(Input.GetKey(KeyCode.Space) && canMove(actionDir.Action))
 		{
 			if (type == ChoicePanel.minigameType.Asteroids || type == ChoicePanel.minigameType.Jump) {
-				switch(type){
-				case ChoicePanel.minigameType.Jump:
-					GetComponent<Rigidbody2D> ().AddForce (transform.up * .02f, ForceMode2D.Force);
-					break;
-				case ChoicePanel.minigameType.Asteroids:
-					GetComponent<Rigidbody2D> ().AddForce (transform.up * (speed / 2), ForceMode2D.Force);
-					break;
-				}
+//				switch(type){
+//				case ChoicePanel.minigameType.Jump:
+//					GetComponent<Rigidbody2D> ().AddForce (transform.up * .02f, ForceMode2D.Force);
+//					break;
+//				case ChoicePanel.minigameType.Asteroids:
+//					GetComponent<Rigidbody2D> ().AddForce (transform.up * (speed / 2), ForceMode2D.Force);
+//					break;
+//				}
+				GetComponent<Rigidbody2D> ().AddForce (transform.up * .02f, ForceMode2D.Force);
 			} else {
 				if (lastShot <= 0) {
 					GameObject sht = Instantiate(shot);

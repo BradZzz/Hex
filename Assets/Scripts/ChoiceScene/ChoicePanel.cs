@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChoicePanel : MonoBehaviour {
 
@@ -13,6 +14,7 @@ public class ChoicePanel : MonoBehaviour {
 	public GameObject enemy;
 	public GameObject shop;
 	public GameObject clickable;
+	public GameObject cGlossary;
 
 	public minigameType gameType;
 
@@ -24,6 +26,9 @@ public class ChoicePanel : MonoBehaviour {
 
 	public float clickableGenSpeed = 5f;
 	private float clickableGenTimer = 0;
+
+	private bool started = false;
+	private ChoiceGlossary glossy;
 
 	private GameObject thisPlayer;
 	private int windowH;
@@ -41,6 +46,12 @@ public class ChoicePanel : MonoBehaviour {
 	//At the start we need to pull out the player 
 	//and attach it to the panel gameobject 
 	void Start () {
+		glossy = cGlossary.GetComponent<ChoiceGlossary> ();
+
+		populateInfoPanel (glossy);
+	}
+
+	public void start () {
 		windowH = (int)panelParent.GetComponent<RectTransform> ().rect.height;
 		windowW = (int)panelParent.GetComponent<RectTransform> ().rect.width;
 
@@ -52,9 +63,12 @@ public class ChoicePanel : MonoBehaviour {
 
 			switch(gameType) {
 			case minigameType.Asteroids:
-				body.gravityScale = .35f;
-				body.mass = .5f;
-				body.angularDrag = .05f;
+//				body.gravityScale = .35f;
+//				body.mass = .5f;
+//				body.angularDrag = .05f;
+
+				body.mass = .002f;
+				body.gravityScale = .5f;
 
 				thisPlayer.transform.localPosition = new Vector3(0,windowH/4-50,0);
 				break;
@@ -72,7 +86,7 @@ public class ChoicePanel : MonoBehaviour {
 				thisPlayer.transform.localPosition = new Vector3(0,-windowH/4-50,0);
 				break;
 			}
-			
+
 			thisPlayer.transform.SetParent(panelParent.transform, false);
 			thisPlayer.transform.localScale = new Vector3(200, 200, 1);
 
@@ -84,33 +98,52 @@ public class ChoicePanel : MonoBehaviour {
 				}
 			}
 		}
+
+		started = true;
+	}
+
+	void populateInfoPanel(ChoiceGlossary glossy){
+		ChoiceInfo choice = glossy.choices [0];
+		GameObject.Find ("InfoHeader").GetComponent<Text> ().text = choice.name;
+		GameObject.Find ("InfoDescription").GetComponent<Text> ().text = choice.openingGreeting;
+
+		for (int i = 1; i < 7; i++) {
+			if (choice.options.Length > i - 1) {
+				GameObject.Find ("Button_0" + i.ToString()).transform.transform.Find("Text").GetComponent<Text> ().text = choice.options[i - 1].TextOptions[0];
+				GameObject.Find ("Button_0" + i.ToString()).SetActive(true);
+			} else {
+				GameObject.Find ("Button_0" + i.ToString()).SetActive(false);
+			}
+		}
 	}
 
 	void Update()
 	{
-		gameTimer -= Time.deltaTime;
+		if (started) {
+			gameTimer -= Time.deltaTime;
 
-		if (minigameType.Shoot == gameType || minigameType.Asteroids == gameType || minigameType.Jump == gameType) {
-			enemyGenTimer -= Time.deltaTime;
-			if(enemyGenTimer < 0)
-			{
-				genEnemy (gameType);
-				enemyGenTimer = eGenSpeed();
-			}
-		}
-
-		if (minigameType.Pop == gameType) {
-			clickableGenTimer -= Time.deltaTime;
-			if(clickableGenTimer < 0)
-			{
-				for (int i = 0; i < 7; i++) {
-					if (i < 2) {
-						genClickable (Color.green);
-					} else {
-						genClickable (Color.red);
-					}
+			if (minigameType.Shoot == gameType || minigameType.Asteroids == gameType || minigameType.Jump == gameType) {
+				enemyGenTimer -= Time.deltaTime;
+				if(enemyGenTimer < 0)
+				{
+					genEnemy (gameType);
+					enemyGenTimer = eGenSpeed();
 				}
-				clickableGenTimer = clickableGenSpeed;
+			}
+
+			if (minigameType.Pop == gameType) {
+				clickableGenTimer -= Time.deltaTime;
+				if(clickableGenTimer < 0)
+				{
+					for (int i = 0; i < 7; i++) {
+						if (i < 2) {
+							genClickable (Color.green);
+						} else {
+							genClickable (Color.red);
+						}
+					}
+					clickableGenTimer = clickableGenSpeed;
+				}
 			}
 		}
 	}
@@ -122,7 +155,7 @@ public class ChoicePanel : MonoBehaviour {
 	private static GUIStyle _staticHealthStyle;
 
 	void OnGUI() {
-		if (gameTimer > 0 && gameType != ChoicePanel.minigameType.Town) {
+		if (started && gameTimer > 0 && gameType != ChoicePanel.minigameType.Town) {
 			RectTransform boxRect = panelParent.GetComponent<RectTransform>();
 			Vector3 guiPosition = transform.position;
 			guiPosition.x -= 4 * boxRect.rect.width / 10;
@@ -130,7 +163,6 @@ public class ChoicePanel : MonoBehaviour {
 
 			float bxWidth = 8.94f * boxRect.rect.width / 10;
 
-			//Black Box Base
 			Rect bRect = new Rect (guiPosition.x - 18, guiPosition.y - 38, bxWidth + 4, 32);
 
 			if (_staticRectTexture == null) {
@@ -147,7 +179,6 @@ public class ChoicePanel : MonoBehaviour {
 
 			GUI.Box (bRect, GUIContent.none, _staticRectStyle);
 
-			//Health Overlay
 			Rect hRect = new Rect (guiPosition.x - 16, guiPosition.y - 35, 
 				bxWidth * (float)gameTimer / (float)gameTimeLimit, 26);
 

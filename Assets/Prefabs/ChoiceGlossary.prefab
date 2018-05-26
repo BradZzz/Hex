@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1355868056895238}
+  m_IsPrefabParent: 1
+--- !u!1 &1355868056895238
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4940398238588216}
+  - component: {fileID: 114816095106927916}
+  m_Layer: 0
+  m_Name: ChoiceGlossary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4940398238588216
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1355868056895238}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.30134, y: -18.932564, z: 99.9448}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114816095106927916
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1355868056895238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9541b20a741b4514a7bf31b079ab9d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  choices:
+  - name: Casual Bear
+    image: bear
+    openingGreeting: You come across a casual bear in the forest. He's looking at
+      you in more than a casual way.
+    winningGreeting: You have swayed the bear with your supreme style and good looks.
+      As you leave you see him setting forest fires in the distance.
+    losingGreeting: The bear looks at you with a blank stare as he slowly douses your
+      mangled corpse in gasoline and lights it on fire. The memory of you is lost
+      in the resulting destruction and millions of dollars in property damages.
+    options:
+    - TextOptions:
+      - Challenge him to a race
+      reaction: The bear accepts your challenge. Prepare to face him in a battle of
+        wits!
+      result: 2
+    - TextOptions:
+      - Ask him where he's going
+      reaction: The bear doesn't understand what you're trying to say. After a few
+        minutes of frustration, he decides to walk away.
+      result: 4
+    - TextOptions:
+      - Direct him to nearest honeycomb
+      reaction: The bear grows angry at the greatest of all bear insults, the inability
+        to find honeycomb for himself.
+      result: 1
+    - TextOptions:
+      - Play your magical fiddle
+      reaction: The fiddle excites the bear in a way he hasn't felt in years. After
+        letting out a dance, he decides to give you an ancient bear amulet!
+      result: 3
+    - TextOptions:
+      - Insult his mother
+      reaction: The bear charges after you, but you are able to avoid his attacks
+        thanks to your good looks and quick thinking. The bear stumbles and falls,
+        giving you a chance to escape
+      result: 0
