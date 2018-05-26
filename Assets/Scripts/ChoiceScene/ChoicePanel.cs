@@ -4,35 +4,56 @@ using UnityEngine;
 
 public class ChoicePanel : MonoBehaviour {
 
-//	public float speed = 20;
+	public enum minigameType {
+		Shoot, Town, None
+	}
+
 	public GameObject panelParent;
 	public GameObject player;
+	public GameObject navPlayer;
 	public GameObject enemy;
+	public GameObject shop;
+
+	public minigameType gameType;
 
 	public float enemyGenSpeed = 5f;
 	private float enemyGenTimer = 0;
 
 	private GameObject thisPlayer;
 	private int windowH;
+	private int windowW;
 
 	//At the start we need to pull out the player 
 	//and attach it to the panel gameobject 
 	void Start () {
 		windowH = (int)panelParent.GetComponent<RectTransform> ().rect.height;
+		windowW = (int)panelParent.GetComponent<RectTransform> ().rect.width;
 
-		thisPlayer = Instantiate(player);
+		if (gameType == minigameType.Shoot) {
+			thisPlayer = Instantiate(player);
+		} else if (gameType == minigameType.Town) {
+			thisPlayer = Instantiate(navPlayer);
+		}
 		thisPlayer.transform.SetParent(panelParent.transform, false);
 		thisPlayer.transform.localPosition = new Vector3(0,-windowH/4-50,0);
 		thisPlayer.transform.localScale = new Vector3(200, 200, 1);
+
+		if (gameType == minigameType.Town) {
+			for (int i = 0; i < 20; i++) {
+				genStore ();
+			}
+		}
 	}
 
 	void Update()
 	{
-		enemyGenTimer -= Time.deltaTime;
-		if(enemyGenTimer < 0)
-		{
-			genEnemy ();
-			enemyGenTimer = enemyGenSpeed;
+		if (minigameType.Shoot == gameType) {
+			enemyGenTimer -= Time.deltaTime;
+			if(enemyGenTimer < 0)
+			{
+				genEnemy ();
+				enemyGenTimer = enemyGenSpeed;
+			}
 		}
 
 	}
@@ -46,29 +67,13 @@ public class ChoicePanel : MonoBehaviour {
 		thisEnemy.transform.localScale = new Vector3(200, 200, 1);
 	}
 
-//	private Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
-//	{
-//		Texture2D result = new Texture2D(targetWidth, targetHeight, source.format, true);
-//		Color[] rpixels = result.GetPixels(0);
-//		float incX = (1.0f / (float)targetWidth);
-//		float incY = (1.0f / (float)targetHeight);
-//		for (int px = 0; px < rpixels.Length; px++)
-//		{
-//			rpixels[px] = source.GetPixelBilinear(incX * ((float)px % targetWidth), incY * ((float)Mathf.Floor(px / targetWidth)));
-//		}
-//		result.SetPixels(rpixels, 0);
-//		result.Apply();
-//		return result;
-//
-//	}
+	void genStore() {
+		float x = Random.Range (-windowW / 3, windowW / 3);
+		float y = Random.Range (-windowH / 3, windowH / 3);
 
-//	// Use this for initialization
-//	void Start () {
-//		
-//	}
-//	
-//	// Update is called once per frame
-//	void Update () {
-//		
-//	}
+		GameObject thisShop = Instantiate(shop);
+		thisShop.transform.SetParent(panelParent.transform, false);
+		thisShop.transform.localPosition = new Vector3(x,y,0);
+		thisShop.transform.localScale = new Vector3(200, 200, 1);
+	}
 }

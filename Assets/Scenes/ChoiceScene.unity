@@ -443,6 +443,23 @@ Prefab:
       value: 
       objectReference: {fileID: 1414170089787622, guid: 1d234fa2f51af41aea6e1ed446b868c1,
         type: 2}
+    - target: {fileID: 114371036453954236, guid: 429f5277c647c4291a3b5fc41fc5ead6,
+        type: 2}
+      propertyPath: navPlayer
+      value: 
+      objectReference: {fileID: 1593639394831160, guid: daed3b690a27b4258beac559e5d69c62,
+        type: 2}
+    - target: {fileID: 114371036453954236, guid: 429f5277c647c4291a3b5fc41fc5ead6,
+        type: 2}
+      propertyPath: gameType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114371036453954236, guid: 429f5277c647c4291a3b5fc41fc5ead6,
+        type: 2}
+      propertyPath: shop
+      value: 
+      objectReference: {fileID: 1414170089787622, guid: 56a4117ee8d37448d8da96c735178c3f,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 429f5277c647c4291a3b5fc41fc5ead6, type: 2}
   m_IsPrefabParent: 0

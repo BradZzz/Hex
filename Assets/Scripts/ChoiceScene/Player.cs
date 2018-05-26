@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
 
 	void Start () {}
 
-	void Update()
+	protected void Update()
 	{
 		/*
 		 * Check here to make sure the player cannot leave the box
