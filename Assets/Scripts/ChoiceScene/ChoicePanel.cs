@@ -69,7 +69,8 @@ public class ChoicePanel : MonoBehaviour {
 
 			OptionInfo final = new OptionInfo ();
 			final.TextOptions = new string[]{ "Continue" };
-			final.result = option.result == OptionInfo.resultType.MiniGame ? option.result : OptionInfo.resultType.None;
+			final.result = (option.result == OptionInfo.resultType.MiniGame || option.result == OptionInfo.resultType.Battle)
+				? option.result : OptionInfo.resultType.None;
 			final.reaction = "<confirm/>";
 
 			populateInfoButtons (new OptionInfo[]{ final });
@@ -77,7 +78,9 @@ public class ChoicePanel : MonoBehaviour {
 			if (option.result == OptionInfo.resultType.MiniGame) {
 				infoPnl.SetActive (false);
 				start ();
-			} else {
+			} else if (option.result == OptionInfo.resultType.Battle) {
+				SceneManager.LoadScene ("BattleScene");
+			}else {
 				SceneManager.LoadScene ("AdventureScene");
 			}
 		}

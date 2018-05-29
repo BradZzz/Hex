@@ -1,15 +1,20 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ChoiceScene/Player.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ChoiceScene/ChoicePanel.cs">
     <Files>
-      <File FileName="Assets/Scripts/ChoiceScene/ChoicePanel.cs" Line="16" Column="3" />
+      <File FileName="Assets/Scripts/ChoiceScene/Enemy.cs" Line="17" Column="3" />
+      <File FileName="Assets/Scripts/ChoiceScene/ChoicePanel.cs" Line="155" Column="3" />
+      <File FileName="Assets/Scripts/ChoiceScene/InfoButton.cs" Line="8" Column="3" />
+      <File FileName="Assets/Scripts/ChoiceScene/Player.cs" Line="93" Column="45" />
       <File FileName="Assets/Scripts/HexGridAdventure.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/HexCell.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/HexGrid.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/HexAI.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Meta/TileInfo.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ChoiceScene/Player.cs" Line="15" Column="15" />
-      <File FileName="Assets/Scripts/ChoiceScene/Shot.cs" Line="29" Column="22" />
+      <File FileName="Assets/Scripts/ChoiceScene/Shot.cs" Line="16" Column="3" />
+      <File FileName="Assets/Scripts/Meta/ChoiceInfo.cs" Line="12" Column="2" />
+      <File FileName="Assets/Scripts/Meta/OptionInfo.cs" Line="9" Column="27" />
+      <File FileName="Assets/Scripts/ChoiceScene/ChoiceGlossary.cs" Line="7" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
