@@ -4,9 +4,9 @@
 public class TileInfo {
 	
 	//The type of unit the player is using
-	public tileType type;
+	public tileType type = TileInfo.tileType.None;
 	//How many actions this unit has left
-	public tileColor color;
+	public tileColor color = TileInfo.tileColor.None;
 	//The movement penalty / bonus for landing on this tile
 	public int movement = 0;
 	//Fog of war is active on this tile

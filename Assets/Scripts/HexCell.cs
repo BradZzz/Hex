@@ -71,7 +71,8 @@ public class HexCell : MonoBehaviour {
 			GetTile ().color = TileInfo.tileColor.Gold;
 			break;
 		default:
-			setType (TileInfo.tileType.Grass);
+			GetTile ().type = TileInfo.tileType.None;
+			GetTile ().color = TileInfo.tileColor.None;
 			break;
 		}
 	}
