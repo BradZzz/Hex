@@ -40,6 +40,10 @@ public class HexCell : MonoBehaviour {
 		this.label.text = "";
 	}
 
+	public void setLabel(string txt) {
+		label.text = txt;
+	}
+
 	public void setType(TileInfo.tileType type){
 		switch(type){
 		case TileInfo.tileType.Castle:
@@ -120,6 +124,7 @@ public class HexCell : MonoBehaviour {
 	}
 
 	public TileInfo GetTile() { return tile; }
+	public void SetTile(TileInfo tile) { this.tile = tile; }
 	public UnitInfo GetInfo() { return info; }
 	public void SetInfoStart(UnitInfo info) { 
 		this.info = info; 

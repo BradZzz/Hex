@@ -11,6 +11,8 @@ public class TileInfo {
 	public int movement = 0;
 	//Fog of war is active on this tile
 	public bool fog = false;
+	//If this tile has an interaction stored in it
+	public bool interaction = false;
 
 	public string meta = "";
 

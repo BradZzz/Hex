@@ -13,9 +13,9 @@ public class Player : MonoBehaviour {
 	public GameObject shot;
 
 	private float lastShot = 0;
-	private ChoicePanel.minigameType type = ChoicePanel.minigameType.None;
+	private MiniGameController.minigameType type = MiniGameController.minigameType.None;
 
-	public void setType(ChoicePanel.minigameType type) {
+	public void setType(MiniGameController.minigameType type) {
 		this.type = type;
 	}
 
@@ -23,43 +23,43 @@ public class Player : MonoBehaviour {
 		switch(mv) {
 		case actionDir.Up:
 			switch(type){
-			case ChoicePanel.minigameType.Jump:
+			case MiniGameController.minigameType.Jump:
 				return false;
-			case ChoicePanel.minigameType.Shoot:
+			case MiniGameController.minigameType.Shoot:
 				return false;
-			case ChoicePanel.minigameType.Asteroids:
+			case MiniGameController.minigameType.Asteroids:
 				return false;
 			default:
 				return true;
 			}
 		case actionDir.Down:
 			switch(type){
-			case ChoicePanel.minigameType.Jump:
+			case MiniGameController.minigameType.Jump:
 				return false;
-			case ChoicePanel.minigameType.Shoot:
+			case MiniGameController.minigameType.Shoot:
 				return false;
-			case ChoicePanel.minigameType.Asteroids:
+			case MiniGameController.minigameType.Asteroids:
 				return false;
 			default:
 				return true;
 			}
 		case actionDir.Left:
 			switch(type){
-			case ChoicePanel.minigameType.Jump:
+			case MiniGameController.minigameType.Jump:
 				return false;
 			default:
 				return true;
 			}
 		case actionDir.Right:
 			switch(type){
-			case ChoicePanel.minigameType.Jump:
+			case MiniGameController.minigameType.Jump:
 				return false;
 			default:
 				return true;
 			}
 		case actionDir.Action:
 			switch(type){
-			case ChoicePanel.minigameType.Town:
+			case MiniGameController.minigameType.Town:
 				return false;
 			default:
 				return true;
@@ -81,7 +81,7 @@ public class Player : MonoBehaviour {
 		float mv = speed * Time.deltaTime;
 		if(Input.GetKey(KeyCode.RightArrow) && canMove(actionDir.Right))
 		{
-			if (type == ChoicePanel.minigameType.Asteroids) {
+			if (type == MiniGameController.minigameType.Asteroids) {
 				GetComponent<Rigidbody2D> ().AddTorque (-.01f);
 			} else {
 				transform.Translate (new Vector3 (mv, 0, 0));
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour {
 		}
 		if(Input.GetKey(KeyCode.LeftArrow) && canMove(actionDir.Left))
 		{
-			if (type == ChoicePanel.minigameType.Asteroids) {
+			if (type == MiniGameController.minigameType.Asteroids) {
 				GetComponent<Rigidbody2D> ().AddTorque (.01f);
 			} else { 
 				transform.Translate (new Vector3 (-mv, 0, 0));
@@ -105,7 +105,7 @@ public class Player : MonoBehaviour {
 		}
 		if(Input.GetKey(KeyCode.Space) && canMove(actionDir.Action))
 		{
-			if (type == ChoicePanel.minigameType.Asteroids || type == ChoicePanel.minigameType.Jump) {
+			if (type == MiniGameController.minigameType.Asteroids || type == MiniGameController.minigameType.Jump) {
 //				switch(type){
 //				case ChoicePanel.minigameType.Jump:
 //					GetComponent<Rigidbody2D> ().AddForce (transform.up * .02f, ForceMode2D.Force);

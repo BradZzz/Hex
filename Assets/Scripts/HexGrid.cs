@@ -122,22 +122,6 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	protected virtual void checkEnd(){
-		// pass
-
-//		bool playersLeft = checkCells (true);
-//		bool enemyLeft = checkCells (false);
-//
-//		Debug.Log ("Player: " + playersLeft.ToString());
-//		Debug.Log ("Enemy: " + enemyLeft.ToString());
-//
-//		if (!playersLeft || !enemyLeft) {
-//			if (!playersLeft) {
-//				Debug.Log ("Enemy Wins!");
-//			} else {
-//				Debug.Log ("Player Wins!");
-//			}
-//			SceneManager.LoadScene ("ChoiceScene");
-//		}
 		Debug.Log("Regular CheckEnd");
 	}
 
@@ -295,6 +279,10 @@ public class HexGrid : MonoBehaviour {
 		hexMesh.Triangulate(cells);
 	}
 
+	protected virtual void CheckInteraction() {
+//		Debug.Log("Regular CheckInteraction");
+	}
+
 	public void ResetCells() {
 		foreach (HexCell cell in cells) {
 			if (cell.GetPlayer () == -1) {
@@ -302,6 +290,13 @@ public class HexGrid : MonoBehaviour {
 			}
 			cell.SetActive (false);
 		}
+		foreach (HexCell cell in cells) {
+			if (cell.GetPlayer () == -1) {
+				cell.setColor(Color.white);
+			}
+			cell.SetActive (false);
+		}
+		CheckInteraction ();
 		checkEnd ();
 	}
 
