@@ -14,17 +14,16 @@ public class MiniGameController : MonoBehaviour {
 	public GameObject enemy;
 	public GameObject shop;
 	public GameObject clickable;
-	public GameObject cGlossary;
 
 	public minigameType gameType;
 
 	public float gameTimeLimit = 20f;
 	private float gameTimer;
 
-	public float enemyGenSpeed = 5f;
+	public float enemyGenSpeed = 2f;
 	private float enemyGenTimer = 0;
 
-	public float clickableGenSpeed = 5f;
+	public float clickableGenSpeed = 2f;
 	private float clickableGenTimer = 0;
 
 	private bool started = false;
@@ -162,6 +161,7 @@ public class MiniGameController : MonoBehaviour {
 				enemyGenTimer -= Time.deltaTime;
 				if(enemyGenTimer < 0)
 				{
+					Debug.Log ("Gen Speed: " + eGenSpeed().ToString());
 					genEnemy (gameType);
 					enemyGenTimer = eGenSpeed();
 				}
@@ -185,7 +185,7 @@ public class MiniGameController : MonoBehaviour {
 	}
 
 	public void end(bool result) {
-		SceneManager.LoadScene ("ChoiceScene");
+		//SceneManager.LoadScene ("ChoiceScene");
 	}
 
 	void genStore() {
@@ -204,11 +204,11 @@ public class MiniGameController : MonoBehaviour {
 
 		GameObject thisEnemy = Instantiate(enemy);
 		thisEnemy.transform.SetParent(panelParent.transform, false);
-		thisEnemy.transform.localPosition = new Vector3(x,windowH/4+50,0);
+		thisEnemy.transform.localPosition = new Vector3(x,6*windowH/10,0);
 		thisEnemy.transform.localScale = new Vector3(200, 200, 1);
 
 		if (type == MiniGameController.minigameType.Asteroids || type == MiniGameController.minigameType.Jump) {
-			float difficulty = -.07f;
+			float difficulty = -.14f;
 
 			Rigidbody2D body = thisEnemy.GetComponent<Rigidbody2D> ();
 			body.mass = 0;
@@ -217,7 +217,7 @@ public class MiniGameController : MonoBehaviour {
 
 			body.AddForce(new Vector2(difficulty,0),ForceMode2D.Force);
 
-			thisEnemy.transform.localPosition = new Vector3(3*windowW/10,y,0);
+			thisEnemy.transform.localPosition = new Vector3(6*windowW/10,y,0);
 			thisEnemy.transform.localScale = new Vector3(900, 900, 1);
 		}
 	}

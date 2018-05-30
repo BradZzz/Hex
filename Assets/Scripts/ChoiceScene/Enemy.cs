@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
+	private int health = 2;
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.gameObject.tag.Equals("Wall")) {
-			Destroy (gameObject);
+			health--;
+			if (health == 0) {
+				Destroy (gameObject);
+			}
 		} else if (other.gameObject.tag.Equals("Player")) {
 			Destroy (gameObject);
 		} else if (other.gameObject.tag.Equals("Projectile")) {

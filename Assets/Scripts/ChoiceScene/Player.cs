@@ -69,7 +69,11 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void Start () {}
+	void Start () {
+		if (type == MiniGameController.minigameType.Shoot) {
+			speed *= 2f; 
+		}
+	}
 
 	protected void Update()
 	{

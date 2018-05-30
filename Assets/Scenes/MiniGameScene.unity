@@ -561,11 +561,10 @@ MonoBehaviour:
   enemy: {fileID: 1414170089787622, guid: 1d234fa2f51af41aea6e1ed446b868c1, type: 2}
   shop: {fileID: 1414170089787622, guid: 56a4117ee8d37448d8da96c735178c3f, type: 2}
   clickable: {fileID: 1414170089787622, guid: ed84271d125974e1589aa78bdde647b6, type: 2}
-  cGlossary: {fileID: 1355868056895238, guid: 754f81d7370cf492584da90ad599712c, type: 2}
   gameType: 3
   gameTimeLimit: 20
-  enemyGenSpeed: 5
-  clickableGenSpeed: 5
+  enemyGenSpeed: 1
+  clickableGenSpeed: 1
 --- !u!4 &1581385010
 Transform:
   m_ObjectHideFlags: 0

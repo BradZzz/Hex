@@ -12,7 +12,7 @@ public class Shot : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		Debug.Log("Collision : " + collision.gameObject.name);
+		Debug.Log("Collision shot: " + collision.gameObject.name);
 		Destroy (gameObject);
 	}
 
@@ -28,5 +28,23 @@ public class Shot : MonoBehaviour {
 	{
 		//Output the Collision to the console
 		Debug.Log("Stay : " + collision.gameObject.name);
+	}
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		Debug.Log("OnTriggerEnter2D shot: " + other.gameObject.name);
+		Destroy (gameObject);
+	}
+
+	//Detect when there is a collision starting
+	void OnTriggerExit2D(Collider2D other)
+	{
+		Debug.Log("shot OnTriggerExit2D: " + other.gameObject.name);
+	}
+
+	//Detect when there is are ongoing Collisions
+	void OnTriggerStay2D(Collider2D other)
+	{
+		Debug.Log("shot OnTriggerStay2D: " + other.gameObject.name);
 	}
 }
