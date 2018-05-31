@@ -1399,7 +1399,7 @@ GameObject:
   - component: {fileID: 1056282772}
   - component: {fileID: 1056282771}
   m_Layer: 5
-  m_Name: army
+  m_Name: armyInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2983,7 +2983,7 @@ GameObject:
   - component: {fileID: 2141514541}
   - component: {fileID: 2141514540}
   m_Layer: 5
-  m_Name: move
+  m_Name: moveInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

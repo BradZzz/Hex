@@ -27,6 +27,8 @@ public class InfoButton : MonoBehaviour {
 
 		GameInfo nGame = new GameInfo ();
 		nGame.name = "General Reginald Longbottom";
+		nGame.movement = 3;
+		nGame.fatigue = 0;
 		nGame.roster = new UnitInfo[armySize];
 		for (int i = 0; i < armySize; i++) {
 			UnitInfo info = new UnitInfo ();

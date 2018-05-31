@@ -6,8 +6,37 @@ using UnityEngine.SceneManagement;
 
 public class HexGridAdventure : HexGrid {
 
+  string getRecruitStr(GameInfo game){
+    string army = "";
+    foreach(UnitInfo unit in game.roster){
+      switch (unit.type) {
+      case UnitInfo.unitType.Knight:
+        army+="K";
+        break;
+      case UnitInfo.unitType.Lancer:
+        army+="L";
+        break;
+      case UnitInfo.unitType.Swordsman:
+        army+="S";
+        break;
+      }
+    }
+    return army;
+  }
+
+  string getMoveStr(GameInfo game){
+    int mLeft = game.movement - game.fatigue;
+    return game.movement.ToString() + "(" + mLeft.ToString() + ")";
+  }
+
+  void LateUpdate()
+  {
+    Debug.Log("Late Update");
+    GameObject.Find ("moveInfo").GetComponent<Text> ().text = getMoveStr(game);
+  }
+
 	void Start () {
-		Debug.Log ("Hero: " + game.name);
+		GameObject.Find ("armyInfo").GetComponent<Text> ().text = getRecruitStr(game);
 
 		TileInfo[] bTiles = BaseSaver.getTiles ();
 		UnitInfo[] bUnits = BaseSaver.getUnits ();

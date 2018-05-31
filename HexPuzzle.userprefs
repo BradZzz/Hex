@@ -1,25 +1,15 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ChoiceScene/InfoButton.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/HexGridAdventure.cs">
     <Files>
-      <File FileName="Assets/Scripts/ChoiceScene/ChoicePanel.cs" Line="101" Column="7" />
-      <File FileName="Assets/Scripts/HexGridBattle.cs" Line="67" Column="2" />
-      <File FileName="Assets/Scripts/HexGrid.cs" Line="124" Column="11" />
+      <File FileName="Assets/Scripts/HexGridAdventure.cs" Line="29" Column="1" />
+      <File FileName="Assets/Scripts/HexGrid.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/HexCell.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/HexMetrics.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/HexUtilities.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Meta/TileInfo.cs" Line="7" Column="42" />
-      <File FileName="Assets/Scripts/Utils/JsonHelper.cs" Line="2" Column="11" />
-      <File FileName="Assets/Scripts/HexMapEditor.cs" Line="44" Column="1" />
-      <File FileName="Assets/Scripts/Savers/BaseSaver.cs" Line="32" Column="14" />
-      <File FileName="Assets/Scripts/Meta/ChoiceInfo.cs" Line="5" Column="24" />
-      <File FileName="Assets/Scripts/Meta/OptionInfo.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ChoiceScene/InfoButton.cs" Line="19" Column="45" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/brad/Documents/new_git/HexPuzzle/Assets/Scripts/HexAI.cs" line="111" column="1" />
+      <Breakpoint file="/Users/brad/Documents/new_git/HexPuzzle/Assets/Scripts/HexGridAdventure.cs" line="95" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
