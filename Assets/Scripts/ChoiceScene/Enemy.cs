@@ -23,12 +23,12 @@ public class Enemy : MonoBehaviour {
 	//Detect when there is a collision starting
 	void OnTriggerExit2D(Collider2D other)
 	{
-		Debug.Log("OnTriggerExit2D: " + other.gameObject.name);
+		//Debug.Log("OnTriggerExit2D: " + other.gameObject.name);
 	}
 
 	//Detect when there is are ongoing Collisions
 	void OnTriggerStay2D(Collider2D other)
 	{
-		Debug.Log("OnTriggerStay2D: " + other.gameObject.name);
+		//Debug.Log("OnTriggerStay2D: " + other.gameObject.name);
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MiniGameController : MonoBehaviour {
 
@@ -34,6 +35,7 @@ public class MiniGameController : MonoBehaviour {
 	private GameObject[] infoBtns;
 	private int windowH;
 	private int windowW;
+	private int points = 0;
 
 	private float eGenSpeed(){
 		switch(gameType){
@@ -44,8 +46,15 @@ public class MiniGameController : MonoBehaviour {
 		}
 	}
 
+	public void addPoints(int pts) {
+		points += pts;
+		panelParent.transform.Find ("Score").GetComponent<Text> ().text = points.ToString ();
+	}
+
 	// Use this for initialization
 	void Start () {
+		points = 0;
+
 		windowH = (int)panelParent.GetComponent<RectTransform> ().rect.height;
 		windowW = (int)panelParent.GetComponent<RectTransform> ().rect.width;
 
@@ -53,6 +62,8 @@ public class MiniGameController : MonoBehaviour {
 
 		if (gameType != minigameType.Pop) {
 			thisPlayer = Instantiate(player);
+			thisPlayer.GetComponent<Player> ().init (this, gameType);
+
 			Rigidbody2D body = thisPlayer.GetComponent<Rigidbody2D> ();
 
 			switch(gameType) {
@@ -73,7 +84,7 @@ public class MiniGameController : MonoBehaviour {
 				thisPlayer.transform.localPosition = new Vector3(-windowW/4,windowH/4-50,0);
 				break;
 			case minigameType.Town:
-				this.thisPlayer.GetComponent<Player> ().speed = 20f;
+				thisPlayer.GetComponent<Player> ().speed = 20f;
 				thisPlayer.transform.localPosition = new Vector3 (0, -windowH / 4 - 50, 0);
 				break;
 			default:
@@ -83,8 +94,6 @@ public class MiniGameController : MonoBehaviour {
 
 			thisPlayer.transform.SetParent(panelParent.transform, false);
 			thisPlayer.transform.localScale = new Vector3(200, 200, 1);
-
-			thisPlayer.GetComponent<Player> ().setType (gameType);
 
 			if (gameType == minigameType.Town) {
 				for (int i = 0; i < 20; i++) {
@@ -185,7 +194,12 @@ public class MiniGameController : MonoBehaviour {
 	}
 
 	public void end(bool result) {
-		//SceneManager.LoadScene ("ChoiceScene");
+		BattleInfo battle = new BattleInfo ();
+		battle.won = true;
+		BaseSaver.putBattle (battle);
+
+		SceneManager.LoadScene ("ChoiceScene");
+//		Debug.Log("Final Points: " + points.ToString());
 	}
 
 	void genStore() {

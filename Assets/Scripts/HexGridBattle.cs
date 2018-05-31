@@ -7,14 +7,25 @@ using UnityEngine.SceneManagement;
 public class HexGridBattle : HexGrid {
 
 	void Start () {
-		hexMesh.Triangulate(cells);
+		Queue<HexCell> availableCells = new Queue<HexCell> ();
+		availableCells.Enqueue (cells[0]);
+		for (int i = 0; i < game.roster.Length; i++) {
+			HexCell cell = availableCells.Dequeue ();
+			foreach(HexDirection dir in cell.dirs){
+				HexCell n = cell.GetNeighbor (dir);
+				if (n) {
+					availableCells.Enqueue (n);
+				}
+			}
+			placePlayer(cell, 0, false, game.roster[i].type, true);
+		}
 
 		//		ResetCells ();
 
-		placePlayer(cells[0], 0, true, UnitInfo.unitType.Knight, true);
-		placePlayer(cells[1], 0, false, UnitInfo.unitType.Knight, true);
-		placePlayer (cells [width], 0, false, UnitInfo.unitType.Knight, true);
-		placePlayer (cells [2], 0, false, UnitInfo.unitType.Knight, true);
+//		placePlayer(cells[0], 0, true, UnitInfo.unitType.Knight, true);
+//		placePlayer(cells[1], 0, false, UnitInfo.unitType.Knight, true);
+//		placePlayer (cells [width], 0, false, UnitInfo.unitType.Knight, true);
+//		placePlayer (cells [2], 0, false, UnitInfo.unitType.Knight, true);
 
 
 
@@ -52,15 +63,17 @@ public class HexGridBattle : HexGrid {
 		bool playersLeft = checkCells (true);
 		bool enemyLeft = checkCells (false);
 
-//		Debug.Log ("Player: " + playersLeft.ToString());
-//		Debug.Log ("Enemy: " + enemyLeft.ToString());
-
 		if (!playersLeft || !enemyLeft) {
 			if (!playersLeft) {
 				Debug.Log ("Enemy Wins!");
 			} else {
 				Debug.Log ("Player Wins!");
 			}
+				
+			BattleInfo battle = new BattleInfo ();
+			battle.won = playersLeft;
+			BaseSaver.putBattle (battle);
+
 			SceneManager.LoadScene ("ChoiceScene");
 		}
 	}

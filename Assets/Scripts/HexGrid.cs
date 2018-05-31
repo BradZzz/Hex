@@ -29,7 +29,13 @@ public class HexGrid : MonoBehaviour {
 	protected int pTurn;
 	protected bool locked;
 
+	public GameInfo game;
+
 	void Awake () {
+		game = BaseSaver.getGame ();
+
+		GameObject.Find ("HeaderTxt").GetComponent<Text> ().text = game.name;
+
 		gridCanvas = GetComponentInChildren<Canvas>();
 		hexMesh = GetComponentInChildren<HexMesh>();
 
@@ -127,7 +133,7 @@ public class HexGrid : MonoBehaviour {
 
 	protected bool checkCells(bool human) {
 		foreach (HexCell cell in cells) {
-			if (human && cell.GetInfo ().human) {
+			if (human && cell.GetInfo ().human && cell.GetPlayer() > -1) {
 				return true;
 			} else if (!human && !cell.GetInfo ().human && cell.GetPlayer() > -1) {
 				return true;

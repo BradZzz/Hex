@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class HexGridAdventure : HexGrid {
 
 	void Start () {
+		Debug.Log ("Hero: " + game.name);
+
 		TileInfo[] bTiles = BaseSaver.getTiles ();
 		UnitInfo[] bUnits = BaseSaver.getUnits ();
 
@@ -91,13 +93,15 @@ public class HexGridAdventure : HexGrid {
 		bool playersLeft = checkCells (true);
 		bool enemyLeft = checkCells (false);
 
+		Debug.Log ("checkEnd: " + playersLeft.ToString() + " / " + enemyLeft.ToString());
+
 		if (!playersLeft || !enemyLeft) {
 			if (!playersLeft) {
 				Debug.Log ("Enemy Wins!");
 			} else {
 				Debug.Log ("Player Wins!");
 			}
-			//SceneManager.LoadScene ("MainMenuScene");
+			SceneManager.LoadScene ("MainMenuScene");
 		}
 	}
 

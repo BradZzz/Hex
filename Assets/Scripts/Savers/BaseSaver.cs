@@ -4,13 +4,83 @@ using UnityEngine;
 
 public class BaseSaver {
 
+	private static string GAME = "game";
+
+	private static string BATTLE_INFO = "battle_info";
+
 	private static string CHOICE = "choice";
 	private static string CHOICE_PICKED = "choice_pick";
 
-	//The info of the objects on the tile
 	private static string BOARD_UNIT = "board_unit";
-	// The info for the tiles themselves
 	private static string BOARD_TILE = "board_tile";
+
+	public static void resetAll() {
+		resetGame ();
+		resetBattle ();
+		resetChoice ();
+		resetBoard ();
+	}
+
+	/*
+	 * Player
+	 * 
+	 */
+
+	public static void resetGame() {
+		PlayerPrefs.SetString (GAME, "");
+
+		Debug.Log ("Game reset");
+	}
+
+	public static void putGame(GameInfo info) {
+		string json = JsonUtility.ToJson (info);
+		PlayerPrefs.SetString (GAME, json);
+
+		Debug.Log ("Game set: " + json);
+	}
+
+
+	public static GameInfo getGame(){
+		string json = PlayerPrefs.GetString (GAME);
+		if (json.Length == 0) {
+			return null;
+		}
+		Debug.Log ("Game got");
+		return JsonUtility.FromJson<GameInfo> (json);
+	}
+
+	/*
+	 * Battle
+	 * 
+	 */
+
+	public static void resetBattle() {
+		PlayerPrefs.SetString (BATTLE_INFO, "");
+
+		Debug.Log ("Battle reset");
+	}
+
+	public static void putBattle(BattleInfo info) {
+		string json = JsonUtility.ToJson (info);
+		PlayerPrefs.SetString (BATTLE_INFO, json);
+
+		Debug.Log ("Battle set: " + json);
+	}
+
+
+	public static BattleInfo getBattle(){
+		string json = PlayerPrefs.GetString (BATTLE_INFO);
+		if (json.Length == 0) {
+			return null;
+		}
+		Debug.Log ("Battle got");
+		return JsonUtility.FromJson<BattleInfo> (json);
+	}
+
+	/*
+	 * Choices
+	 *
+	 */
 
 	public static void resetChoice() {
 		PlayerPrefs.SetString (CHOICE, "");
@@ -34,9 +104,8 @@ public class BaseSaver {
 		if (json.Length == 0) {
 			return null;
 		}
-		return JsonUtility.FromJson<ChoiceInfo> (json);
-
 		Debug.Log ("Choices got");
+		return JsonUtility.FromJson<ChoiceInfo> (json);
 	}
 
 	public static int getPicked(){
@@ -47,6 +116,11 @@ public class BaseSaver {
 		return int.Parse (json);
 
 	}
+
+	/*
+	 * Board
+	 * 
+	 */
 
 	public static void resetBoard(){
 		PlayerPrefs.SetString (BOARD_UNIT, "");

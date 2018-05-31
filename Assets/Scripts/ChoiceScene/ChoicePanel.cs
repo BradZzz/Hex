@@ -39,7 +39,7 @@ public class ChoicePanel : MonoBehaviour {
 		OptionInfo option = lstOptions [btn - 1];
 
 		if (callback) {
-			GameObject.Find ("InfoDescription").GetComponent<Text> ().text = choice.losingGreeting;
+			GameObject.Find ("InfoDescription").GetComponent<Text> ().text = BaseSaver.getBattle().won ? choice.winningGreeting : choice.losingGreeting;
 
 			OptionInfo final = new OptionInfo ();
 			final.TextOptions = new string[]{ "Continue" };

@@ -14,6 +14,12 @@ public class Player : MonoBehaviour {
 
 	private float lastShot = 0;
 	private MiniGameController.minigameType type = MiniGameController.minigameType.None;
+	private MiniGameController controllerPrime;
+
+	public void init(MiniGameController controllerPrime, MiniGameController.minigameType type) {
+		this.controllerPrime = controllerPrime;
+		setType (type);
+	}
 
 	public void setType(MiniGameController.minigameType type) {
 		this.type = type;
@@ -122,6 +128,7 @@ public class Player : MonoBehaviour {
 			} else {
 				if (lastShot <= 0) {
 					GameObject sht = Instantiate(shot);
+					sht.GetComponent<Shot> ().init (controllerPrime);
 					Vector3 cPos = transform.position;
 					cPos.y += 10;
 					sht.transform.position = cPos;

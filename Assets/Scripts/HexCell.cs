@@ -281,6 +281,7 @@ public class HexCell : MonoBehaviour {
 		info.health--;
 		if (info.health < 1) {
 			info.playerNo = -1;
+			info.human = false;
 			info.type = UnitInfo.unitType.None;
 		}
 		SetInfo(info);
