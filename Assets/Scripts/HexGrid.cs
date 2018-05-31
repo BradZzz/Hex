@@ -61,6 +61,7 @@ public class HexGrid : MonoBehaviour {
 				cell.StripTurn();
 			}
 		}
+		postEndCheck(getPTurn());
 	}
 
 	public void placePlayer(HexCell cell, int idx, bool active, UnitInfo.unitType type, bool human){
@@ -88,6 +89,10 @@ public class HexGrid : MonoBehaviour {
 	protected virtual void checkEnd(){
 		Debug.Log("Regular CheckEnd");
 	}
+
+  protected virtual void postEndCheck(int turn){
+    Debug.Log("Regular postEndCheck");
+  }
 
 	protected bool checkCells(bool human) {
 		foreach (HexCell cell in cells) {
@@ -169,6 +174,8 @@ public class HexGrid : MonoBehaviour {
 		adjCell.setColor(playerColors [player]);
 		adjCell.removeFog ();
 
+		movedCell(adjCell);
+
 		ResetCells ();
 	}
 
@@ -185,8 +192,14 @@ public class HexGrid : MonoBehaviour {
 			cell.GetNeighbor (dir).SetInfo(this_info);
 			cell.removeFog ();
 
+      movedCell(cell);
+
 			ResetCells ();
 		}
+	}
+
+	protected virtual void movedCell(HexCell cell) {
+    Debug.Log("Regular movedCell");
 	}
 
 	protected void attackCell(HexCell attacker, HexCell defender){
@@ -244,7 +257,7 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	protected virtual void CheckInteraction() {
-//		Debug.Log("Regular CheckInteraction");
+		Debug.Log("Regular CheckInteraction");
 	}
 
 	public void ResetCells() {

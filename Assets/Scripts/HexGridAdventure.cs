@@ -42,19 +42,28 @@ public class HexGridAdventure : HexGrid {
 		UnitInfo[] bUnits = BaseSaver.getUnits ();
 
 		if (bTiles != null && bUnits != null) {
+		  game = BaseSaver.getGame ();
 			for (int i = 0; i < cells.Length; i++) {
 				cells [i].SetInfo (bUnits[i]);
 				cells [i].SetTile (bTiles[i]);
 
-				if (bUnits[i].human){
-					Debug.Log("Player tile");
-					Debug.Log(bUnits[i].ToString());
-				}
+        if (bUnits[i].human) {
+          int mv = game.movement - game.fatigue;
+          cells [i].GetInfo().actions = mv < 0 ? 0 : mv;
+        }
+
 				if (bTiles[i].interaction) {
 					cells [i].setLabel ("I");
 				}
 			}
+
+			hexMesh.Triangulate(cells);
+			GameObject.Find ("TurnImg").GetComponent<Image>().color = playerColors [0];
+			setPTurn (0);
+			ResetCells ();
+
 			BaseSaver.resetBoard ();
+
 		} else {
 			foreach(HexCell cell in cells) {
 				cell.GetTile ().fog = true;
@@ -111,12 +120,27 @@ public class HexGridAdventure : HexGrid {
 					}
 				}
 			}
+
+			hexMesh.Triangulate(cells);
+      setPTurn (players - 1);
+      EndTurn ();
+      ResetCells ();
 		}
-		hexMesh.Triangulate(cells);
-		setPTurn (players - 1);
-		EndTurn ();
-		ResetCells ();
 	}
+
+  protected override void movedCell(HexCell cell) {
+    if (cell.GetInfo().human) {
+      game.fatigue++;
+    }
+    BaseSaver.putGame (game);
+  }
+
+  protected override void postEndCheck(int turn) {
+    if (turn == 0) {
+      game.fatigue=0;
+      BaseSaver.putGame (game);
+    }
+  }
 
 	protected override void checkEnd(){
 		bool playersLeft = checkCells (true);

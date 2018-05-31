@@ -9,4 +9,11 @@ public class GameInfo {
 	public int fatigue;
 
 	public UnitInfo[] roster;
+
+	public void PrintInfo() {
+	  Debug.Log("Name: " + name);
+	  Debug.Log("Movement: " + movement.ToString());
+	  Debug.Log("Fatigue: " + fatigue.ToString());
+	  Debug.Log("Roster: " + roster.Length);
+	}
 }

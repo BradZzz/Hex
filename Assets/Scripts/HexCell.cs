@@ -166,6 +166,7 @@ public class HexCell : MonoBehaviour {
 			label.text = "";
 		}
 	}
+
 	public void EndTurn(){
 		if (info.type != UnitInfo.unitType.None) {
 			switch (info.type) {
@@ -188,6 +189,7 @@ public class HexCell : MonoBehaviour {
 			}
 		}
 	}
+
 	public void StripTurn(){
 		info.actions = 0;
 		info.attacks = 0;
