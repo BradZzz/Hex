@@ -272,8 +272,12 @@ public class HexCell : MonoBehaviour {
 	}
 
 	private void setNeigbor(HexDirection direction){
-		if (GetNeighbor (direction) && GetNeighbor (direction).GetPlayer() == -1) {
-      GetNeighbor (direction).color = MOVE_COLOR;
+    if (GetNeighbor (direction)){
+      if (GetNeighbor (direction).GetPlayer () == -1) {
+        GetNeighbor (direction).color = MOVE_COLOR;
+      } else if (GetNeighbor (direction).GetPlayer () != GetInfo().playerNo) {
+        GetNeighbor (direction).color = ATTACK_COLOR;
+      }
 		}
 	}
 
