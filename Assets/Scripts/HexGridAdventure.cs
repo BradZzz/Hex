@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class HexGridAdventure : HexGrid {
 
+  int turn = 0;
+  bool toggle = false;
+
   string getRecruitStr(GameInfo game){
     string army = "";
     foreach(UnitInfo unit in game.roster){
@@ -25,19 +28,41 @@ public class HexGridAdventure : HexGrid {
   }
 
   string getMoveStr(GameInfo game){
-    int mLeft = game.movement - game.fatigue;
-    return game.movement.ToString() + "(" + mLeft.ToString() + ")";
+    if (game.movement + game.fatigue == 0) {
+      return "";
+    } else {
+        int mLeft = game.movement - game.fatigue;
+        return game.movement.ToString() + "(" + mLeft.ToString() + ")";
+    }
+  }
+
+  void updateArmyInfo(GameInfo game){
+      GameObject.Find ("HeaderTxt").GetComponent<Text> ().text = game.name;
+      GameObject.Find ("armyInfo").GetComponent<Text> ().text = getRecruitStr(game);
+      GameObject.Find ("moveInfo").GetComponent<Text> ().text = getMoveStr(game);
   }
 
   void LateUpdate()
   {
-    Debug.Log("Late Update");
-    GameObject.Find ("moveInfo").GetComponent<Text> ().text = getMoveStr(game);
+  	if (turn == 0) {
+  		updateArmyInfo(game);
+    	foreach(HexCell cell in cells) {
+  			if (cell.GetInfo().human){
+            //Toggle this to change how the camera follows the player in adventure mode
+  					moveCamera (cell.gameObject.transform.position + new Vector3(0,45,-45));
+  			}
+      }
+  	} else {
+  		GameInfo nGame = new GameInfo ();
+  		nGame.name = "Sir Kingsly";
+  		nGame.movement = 0;
+  		nGame.fatigue = 0;
+  		nGame.roster = new UnitInfo[0];
+  		updateArmyInfo(nGame);
+  	}
   }
 
 	void Start () {
-		GameObject.Find ("armyInfo").GetComponent<Text> ().text = getRecruitStr(game);
-
 		TileInfo[] bTiles = BaseSaver.getTiles ();
 		UnitInfo[] bUnits = BaseSaver.getUnits ();
 
@@ -47,14 +72,14 @@ public class HexGridAdventure : HexGrid {
 				cells [i].SetInfo (bUnits[i]);
 				cells [i].SetTile (bTiles[i]);
 
-        if (bUnits[i].human) {
-          int mv = game.movement - game.fatigue;
-          cells [i].GetInfo().actions = mv < 0 ? 0 : mv;
-        }
+          if (bUnits[i].human) {
+            int mv = game.movement - game.fatigue;
+            cells [i].GetInfo().actions = mv < 0 ? 0 : mv;
+          }
 
-				if (bTiles[i].interaction) {
-					cells [i].setLabel ("I");
-				}
+//				if (bTiles[i].interaction) {
+//					cells [i].setLabel ("I");
+//				}
 			}
 
 			hexMesh.Triangulate(cells);
@@ -69,7 +94,7 @@ public class HexGridAdventure : HexGrid {
 				cell.GetTile ().fog = true;
 			}
 				
-			placePlayer(cells[0], 0, true, UnitInfo.unitType.Adventure, true);
+			placePlayer(cells[0], 0, false, UnitInfo.unitType.Adventure, true);
 
 			cells [0].removeFog ();
 
@@ -106,20 +131,20 @@ public class HexGridAdventure : HexGrid {
 					int chp = Random.Range(0, 4);
 					if (chp == 0) {
 						cell.GetTile ().interaction = true;
-						cell.setLabel ("I");
+//						cell.setLabel ("I");
 					}
 				}
 			}
-
-			foreach (HexCell cell in cells){
-				if (cell.GetPlayer() == -1) {
-					int chp = Random.Range(0, 4);
-					if (chp == 0) {
-						cell.GetTile ().interaction = true;
-						cell.setLabel ("I");
-					}
-				}
-			}
+//			foreach (HexCell cell in cells){
+//				if (cell.GetPlayer() == -1) {
+//					int chp = Random.Range(0, 4);
+//					if (chp == 0) {
+//						cell.GetTile ().interaction = true;
+//						cell.setLabel ("I");
+//					}
+//				}
+//      30,55,-60 / 20,0,0
+//			}
 
 			hexMesh.Triangulate(cells);
       setPTurn (players - 1);
@@ -135,12 +160,15 @@ public class HexGridAdventure : HexGrid {
     BaseSaver.putGame (game);
   }
 
-  protected override void postEndCheck(int turn) {
-    if (turn == 0) {
-      game.fatigue=0;
-      BaseSaver.putGame (game);
-    }
-  }
+	protected override void postEndCheck(int turn) {
+		this.turn = turn;
+		if (turn == 0) {
+			game.fatigue = 0;
+			BaseSaver.putGame (game);
+		} else {
+			PlayAI ();
+		}
+	}
 
 	protected override void checkEnd(){
 		bool playersLeft = checkCells (true);

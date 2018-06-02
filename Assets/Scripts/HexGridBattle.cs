@@ -51,6 +51,10 @@ public class HexGridBattle : HexGrid {
 		//			placePlayer (cells [width * 2 - 1], 3, false, UnitInfo.unitType.Swordsman, true);
 		//		}
 
+    foreach (HexCell cell in cells) {
+      cell.setType(TileInfo.tileType.Road);
+    }
+
 		hexMesh.Triangulate(cells);
 
 		setPTurn (players - 1);

@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class HexCell : MonoBehaviour {
 
+  private static Color MOVE_COLOR = Color.green;
+  private static Color SELECT_COLOR = Color.yellow;
+  private static Color ATTACK_COLOR = Color.red;
+
 	public HexCoordinates coordinates;
 
 	private Color[] colors;
@@ -13,7 +17,7 @@ public class HexCell : MonoBehaviour {
 	public UnitInfo info;
 
 	private bool active;
-	private Text label;
+//	private Text label;
 
 	public HexDirection[] dirs = { 
 		HexDirection.NE,
@@ -24,7 +28,7 @@ public class HexCell : MonoBehaviour {
 		HexDirection.E
 	};
 
-	public void init(Color[] colors, Text label){
+	public void init(Color[] colors){
 		this.colors = colors;
 
 		info = new UnitInfo ();
@@ -36,49 +40,50 @@ public class HexCell : MonoBehaviour {
 		tile.meta = "";
 
 		active = false;
-		this.label = label;
-		this.label.text = "";
+//		this.label = label;
+//		this.label.text = "";
 	}
 
-	public void setLabel(string txt) {
-		label.text = txt;
-	}
+//	public void setLabel(string txt) {
+//		label.text = txt;
+//	}
 
 	public void setType(TileInfo.tileType type){
 		switch(type){
 		case TileInfo.tileType.Castle:
 			GetTile ().type = TileInfo.tileType.Castle;
-			GetTile ().color = TileInfo.tileColor.Blue;
+//			GetTile ().color = TileInfo.tileColor.Blue;
 			break;
 		case TileInfo.tileType.City:
 			GetTile ().type = TileInfo.tileType.City;
-			GetTile ().color = TileInfo.tileColor.Brown;
+//			GetTile ().color = TileInfo.tileColor.Brown;
 			break;
 		case TileInfo.tileType.Forest:
 			GetTile ().type = TileInfo.tileType.Forest;
-			GetTile ().color = TileInfo.tileColor.DarkGreen;
+//			GetTile ().color = TileInfo.tileColor.DarkGreen;
 			break;
 		case TileInfo.tileType.Grass:
 			GetTile ().type = TileInfo.tileType.Grass;
-			GetTile ().color = TileInfo.tileColor.Green;
+//			GetTile ().color = TileInfo.tileColor.Green;
 			break;
 		case TileInfo.tileType.Road:
 			GetTile ().type = TileInfo.tileType.Road;
-			GetTile ().color = TileInfo.tileColor.Sand;
+//			GetTile ().color = TileInfo.tileColor.Sand;
 			break;
 		case TileInfo.tileType.Mountain:
 			GetTile ().type = TileInfo.tileType.Mountain;
-			GetTile ().color = TileInfo.tileColor.Gray;
+//			GetTile ().color = TileInfo.tileColor.Gray;
 			break;
 		case TileInfo.tileType.Treasure:
 			GetTile ().type = TileInfo.tileType.Treasure;
-			GetTile ().color = TileInfo.tileColor.Gold;
+//			GetTile ().color = TileInfo.tileColor.Gold;
 			break;
 		default:
 			GetTile ().type = TileInfo.tileType.None;
-			GetTile ().color = TileInfo.tileColor.None;
+//			GetTile ().color = TileInfo.tileColor.None;
 			break;
 		}
+    GetTile ().color = TileInfo.tileColor.None;
 	}
 
 	private Color getColorTile(TileInfo.tileColor clr) {
@@ -106,20 +111,46 @@ public class HexCell : MonoBehaviour {
 		this.color = color;
 	}
 
+  public void updateTile() {
+    TileSprite sprT = gameObject.GetComponent<TileSprite> ();
+    if (sprT) {
+      if (tile.fog) {
+        sprT.setTile(TileInfo.tileType.None);
+      } else {
+        sprT.setTile(tile.type);
+      }
+
+      sprT.setUnit (info);
+    }
+
+//    if (info.human) {
+//      sprT.setText ("A0");
+//    } else if (info.playerNo > -1) {
+//      sprT.setText ("A1");
+//    } else if (tile.interaction) {
+//      sprT.setText ("I");
+//    } else {
+//      sprT.setText ("");
+//    }
+  }
+
 	public Color getColor() {
 		Color tmp = color;
 		if (GetTile().fog) {
 			return Color.black;
 		}
-		if (tile.color != TileInfo.tileColor.None) {
-			if (GetPlayer () > -1) {
-				return (colors[GetPlayer()] + new Color (1, 1, 1, .8f))/2;
-			} else if (tmp != Color.white) {
-				return (getColorTile(tile.color) + new Color (tmp.r, tmp.g, tmp.b, .2f)) / 2;
-			} else {
-				return getColorTile(tile.color);
-			}
-		}
+    if (GetActive()) {
+      return SELECT_COLOR;
+    }
+//		if (tile.color != TileInfo.tileColor.None) {
+//			if (GetPlayer () > -1) {
+//				return (colors[GetPlayer()] + new Color (1, 1, 1, .8f))/2;
+//			} else if (tmp != Color.white) {
+//				return (getColorTile(tile.color) + new Color (tmp.r, tmp.g, tmp.b, .2f)) / 2;
+//			} else {
+//				return getColorTile(tile.color);
+//			}
+//		}
 		return color;
 	}
 
@@ -147,24 +178,24 @@ public class HexCell : MonoBehaviour {
 	}
 	public void SetInfo(UnitInfo info) { 
 		this.info = info; 
-		if (this.info.type != UnitInfo.unitType.None) {
-			switch (this.info.type) {
-			case UnitInfo.unitType.Knight:
-				label.text = "K" + this.info.health.ToString();
-				break;
-			case UnitInfo.unitType.Lancer:
-				label.text = "L" + this.info.health.ToString();
-				break;
-			case UnitInfo.unitType.Swordsman:
-				label.text = "S" + this.info.health.ToString();
-				break;
-			case UnitInfo.unitType.Adventure:
-				label.text = "A" + this.GetPlayer();
-				break;
-			}
-		} else {
-			label.text = "";
-		}
+//		if (this.info.type != UnitInfo.unitType.None) {
+//			switch (this.info.type) {
+//			case UnitInfo.unitType.Knight:
+//				label.text = "K" + this.info.health.ToString();
+//				break;
+//			case UnitInfo.unitType.Lancer:
+//				label.text = "L" + this.info.health.ToString();
+//				break;
+//			case UnitInfo.unitType.Swordsman:
+//				label.text = "S" + this.info.health.ToString();
+//				break;
+//			case UnitInfo.unitType.Adventure:
+//				label.text = "A" + this.GetPlayer();
+//				break;
+//			}
+//		} else {
+//			label.text = "";
+//		}
 	}
 
 	public void EndTurn(){
@@ -222,9 +253,11 @@ public class HexCell : MonoBehaviour {
 	}
 
 	public void paintNeigbors (){
-		foreach(HexDirection dir in dirs) {
-			setNeigbor(dir);
-		}
+    if (GetInfo().actions > 0) {
+  		foreach(HexDirection dir in dirs) {
+  			setNeigbor(dir);
+  		}
+    }
 	}
 
 	public void removeFog(){
@@ -240,7 +273,7 @@ public class HexCell : MonoBehaviour {
 
 	private void setNeigbor(HexDirection direction){
 		if (GetNeighbor (direction) && GetNeighbor (direction).GetPlayer() == -1) {
-			GetNeighbor (direction).color = Color.gray;
+      GetNeighbor (direction).color = MOVE_COLOR;
 		}
 	}
 

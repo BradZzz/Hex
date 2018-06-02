@@ -6,11 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class HexGrid : MonoBehaviour {
 
-	/*
-	 * TODO:
-	 * add dumb ai
-	 * add A* ai
-	 */
+	public GameObject camera;
 
 	public int width = 6;
 	public int height = 6;
@@ -65,7 +61,7 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	public void placePlayer(HexCell cell, int idx, bool active, UnitInfo.unitType type, bool human){
-		cell.setColor(playerColors[idx]);
+		//cell.setColor(playerColors[idx]);
 		UnitInfo info = new UnitInfo ();
 		info.playerNo = idx;
 		info.type = type;
@@ -90,9 +86,9 @@ public class HexGrid : MonoBehaviour {
 		Debug.Log("Regular CheckEnd");
 	}
 
-  protected virtual void postEndCheck(int turn){
-    Debug.Log("Regular postEndCheck");
-  }
+	protected virtual void postEndCheck(int turn){
+	    Debug.Log("Regular postEndCheck");
+	}
 
 	protected bool checkCells(bool human) {
 		foreach (HexCell cell in cells) {
@@ -171,7 +167,7 @@ public class HexGrid : MonoBehaviour {
 
 		cell.SetInfo (move_to_info);
 		adjCell.SetInfo (move_from_info);
-		adjCell.setColor(playerColors [player]);
+		//adjCell.setColor(playerColors [player]);
 		adjCell.removeFog ();
 
 		movedCell(adjCell);
@@ -187,12 +183,12 @@ public class HexGrid : MonoBehaviour {
 
 			parent_info.actions -= 1;
 			cell.SetInfo (parent_info);
-			cell.setColor(playerColors [player]);
+			//cell.setColor(playerColors [player]);
 			cell.GetNeighbor (dir).SetActive(false);
 			cell.GetNeighbor (dir).SetInfo(this_info);
 			cell.removeFog ();
 
-      movedCell(cell);
+      		movedCell(cell);
 
 			ResetCells ();
 		}
@@ -256,22 +252,19 @@ public class HexGrid : MonoBehaviour {
 		hexMesh.Triangulate(cells);
 	}
 
+	protected virtual void moveCamera(Vector3 pos){
+		camera.transform.position = pos;
+	}
+
 	protected virtual void CheckInteraction() {
 		Debug.Log("Regular CheckInteraction");
 	}
 
 	public void ResetCells() {
 		foreach (HexCell cell in cells) {
-			if (cell.GetPlayer () == -1) {
-				cell.setColor(Color.white);
-			}
+      cell.setColor(Color.white);
 			cell.SetActive (false);
-		}
-		foreach (HexCell cell in cells) {
-			if (cell.GetPlayer () == -1) {
-				cell.setColor(Color.white);
-			}
-			cell.SetActive (false);
+      cell.updateTile ();
 		}
 		CheckInteraction ();
 		checkEnd ();
@@ -307,11 +300,10 @@ public class HexGrid : MonoBehaviour {
 			}
 		}
 
-		Text label = Instantiate<Text>(cellLabelPrefab);
-		label.rectTransform.SetParent(gridCanvas.transform, false);
-		label.rectTransform.anchoredPosition =
-			new Vector2(position.x, position.z);
-		label.text = cell.coordinates.ToStringOnSeparateLines();
-		cell.init (playerColors, label);
+//		Text label = Instantiate<Text>(cellLabelPrefab);
+//		label.rectTransform.SetParent(gridCanvas.transform, false);
+//		label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
+//		label.text = cell.coordinates.ToStringOnSeparateLines();
+		cell.init (playerColors);
 	}
 }
