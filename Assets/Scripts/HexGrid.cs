@@ -49,7 +49,10 @@ public class HexGrid : MonoBehaviour {
 		if (getPTurn() == players) {
 			setPTurn (0);
 		}
-		GameObject.Find ("TurnImg").GetComponent<Image>().color = playerColors [getPTurn()];
+    GameObject turnI = GameObject.Find ("TurnImg");
+    if (turnI) {
+      turnI.GetComponent<Image>().color = playerColors [getPTurn()];
+    }
 		foreach (HexCell cell in cells) {
 			if (cell.GetPlayer () == getPTurn()) {
 				cell.EndTurn ();
@@ -188,7 +191,7 @@ public class HexGrid : MonoBehaviour {
 			cell.GetNeighbor (dir).SetInfo(this_info);
 			cell.removeFog ();
 
-      		movedCell(cell);
+      movedCell(cell);
 
 			ResetCells ();
 		}

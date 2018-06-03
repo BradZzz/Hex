@@ -9,6 +9,19 @@ public class TileSprite : MonoBehaviour {
   public Sprite Lancer;
   public Sprite Swordsman;
 
+  public Sprite GetCharacterImage(UnitInfo unit) { 
+    switch (unit.type) {
+    case UnitInfo.unitType.Knight:
+      return Knight;
+    case UnitInfo.unitType.Lancer:
+      return Lancer;
+    case UnitInfo.unitType.Swordsman:
+      return Swordsman;
+    default:
+      return Knight;
+    }
+  }
+
   public Sprite[] Castle;
   public Sprite[] City;
   public Sprite[] Forest;

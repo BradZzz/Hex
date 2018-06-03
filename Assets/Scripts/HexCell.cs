@@ -176,6 +176,19 @@ public class HexCell : MonoBehaviour {
 			}
 		}
 	}
+  public string GetCharacterName() { 
+    switch (GetInfo().type) {
+    case UnitInfo.unitType.Knight:
+      return "Major Mouse";
+    case UnitInfo.unitType.Lancer:
+      return "Frontline Fox";
+    case UnitInfo.unitType.Swordsman:
+      return "Hack n' Hog";
+    default:
+      return "";
+    }
+  }
+
 	public void SetInfo(UnitInfo info) { 
 		this.info = info; 
 //		if (this.info.type != UnitInfo.unitType.None) {
@@ -252,7 +265,17 @@ public class HexCell : MonoBehaviour {
 		cell.neighbors[(int)direction.Opposite()] = this;
 	}
 
+  public void updateUIInfo(){
+    GameObject.Find ("HeaderTxt").GetComponent<Text> ().text = GetCharacterName();
+    GameObject.Find ("CharImage").GetComponent<Image> ().sprite = gameObject.GetComponent<TileSprite> ().GetCharacterImage (GetInfo());
+
+    GameObject.Find ("HealthText").GetComponent<Text> ().text = GetInfo().health.ToString();
+    GameObject.Find ("ActionText").GetComponent<Text> ().text = GetInfo().actions.ToString();
+  }
+
 	public void paintNeigbors (){
+    updateUIInfo ();
+
     if (GetInfo().actions > 0) {
   		foreach(HexDirection dir in dirs) {
   			setNeigbor(dir);
@@ -275,7 +298,7 @@ public class HexCell : MonoBehaviour {
     if (GetNeighbor (direction)){
       if (GetNeighbor (direction).GetPlayer () == -1) {
         GetNeighbor (direction).color = MOVE_COLOR;
-      } else if (GetNeighbor (direction).GetPlayer () != GetInfo().playerNo) {
+      } else if (GetNeighbor (direction).GetPlayer () != GetInfo().playerNo && GetInfo().attacks > 0) {
         GetNeighbor (direction).color = ATTACK_COLOR;
       }
 		}

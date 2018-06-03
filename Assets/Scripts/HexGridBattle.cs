@@ -63,6 +63,16 @@ public class HexGridBattle : HexGrid {
 		ResetCells ();
 	}
 
+  protected override void postEndCheck(int turn) {
+    if (turn != 0) {
+      PlayAI ();
+    }
+  }
+
+  protected override void movedCell(HexCell cell) {
+    cell.updateUIInfo ();
+  }
+
 	protected override void checkEnd(){
 		bool playersLeft = checkCells (true);
 		bool enemyLeft = checkCells (false);
