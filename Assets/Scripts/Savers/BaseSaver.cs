@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BaseSaver {
 
+  private static string MAPS = "maps";
+
 	private static string GAME = "game";
 
 	private static string BATTLE_INFO = "battle_info";
@@ -20,6 +22,68 @@ public class BaseSaver {
 		resetChoice ();
 		resetBoard ();
 	}
+
+  /*
+   * Maps
+   */
+
+  public static void resetMaps() {
+    PlayerPrefs.SetString (MAPS, "");
+
+    Debug.Log ("Maps reset");
+  }
+
+  /*
+  * Here we need to put the map into an array and save
+  */
+  public static void putMap(MapInfo info) {
+    string json = PlayerPrefs.GetString (MAPS);
+    MapInfo[] maps;
+    if (json.Length == 0) {
+      maps = new MapInfo[1];
+      maps[0] = info;
+    } else {
+      bool found = false;
+      List<MapInfo> lMaps = new List<MapInfo>(JsonHelper.FromJson<MapInfo>(json));
+      for (int i = 0; i < lMaps.Count; i++) {
+        if (lMaps[i].name.Equals(info.name)) {
+          found = true;
+          lMaps[i] = info;
+        }
+      }
+//      foreach (MapInfo map in lMaps) {
+//        if (map.name.Equals(info.name)) {
+//          found = true;
+//          map = info;
+//        }
+//      }
+      if (!found) {
+        lMaps.Add(info);
+      }
+      maps = lMaps.ToArray();
+    }
+
+    json = JsonHelper.ToJson(maps);
+    PlayerPrefs.SetString (MAPS, json);
+
+//    BattleSerializeable[] thisBattle = JsonHelper.FromJson<BattleSerializeable>(newInfo);
+//
+//    string json = JsonUtility.ToJson (info);
+//    PlayerPrefs.SetString (MAPS, json);
+    Debug.Log ("Map set: " + json);
+  }
+
+  /*
+  * here we need to take the saved array and return it
+  */
+  public static MapInfo[] getMaps(){
+    string json = PlayerPrefs.GetString (MAPS);
+    if (json.Length == 0) {
+      return null;
+    }
+    Debug.Log ("Maps got");
+    return JsonHelper.FromJson<MapInfo>(json);
+  }
 
 	/*
 	 * Player

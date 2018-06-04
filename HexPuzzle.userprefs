@@ -1,15 +1,15 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/HexGridEdit.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/TileSprite.cs">
     <Files>
       <File FileName="Assets/Scripts/HexGridEdit.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/HexAdventureGenerator.cs" Line="20" Column="53" />
-      <File FileName="Assets/Scripts/HexGrid.cs" Line="236" Column="2" />
-      <File FileName="Assets/Scripts/TileSprite.cs" Line="6" Column="1" />
-      <File FileName="Assets/Scripts/HexCell.cs" Line="122" Column="50" />
-      <File FileName="Assets/Scripts/HexGridAdventure.cs" Line="9" Column="16" />
-      <File FileName="Assets/Scripts/HexMapAdventure.cs" Line="28" Column="3" />
-      <File FileName="Assets/Scripts/HexMapEditor.cs" Line="25" Column="27" />
+      <File FileName="Assets/Scripts/HexAdventureGenerator.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HexGrid.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/TileSprite.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HexCell.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HexGridAdventure.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HexMapAdventure.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HexMapEditor.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Meta/TileInfo.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

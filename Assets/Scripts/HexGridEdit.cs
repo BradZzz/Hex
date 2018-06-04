@@ -40,6 +40,38 @@ public class HexGridEdit : HexGrid {
 		}
 	}
 
+  public void SaveMap(){
+    Debug.Log("Save Map Clicked");
+//    Debug.Log(GameObject.Find ("MapNameField").GetComponent<InputField> ().text);
+//
+    List<TileInfo> mTiles = new List<TileInfo> ();
+
+    MapInfo map = new MapInfo ();
+    map.h = height;
+    map.w = width;
+    map.name = GameObject.Find ("MapNameField").GetComponent<InputField> ().text;
+
+    foreach(HexCell cell in cells){
+      mTiles.Add (cell.GetTile());
+    }
+      
+    map.tiles = mTiles.ToArray ();
+
+    BaseSaver.putMap (map);
+
+    Debug.Log ("Saved");
+
+    Debug.Log ("Current Maps");
+
+    foreach(MapInfo mp in BaseSaver.getMaps ()){
+      Debug.Log (mp.name);
+    }
+  }
+
+  public void ResetMaps(){
+    BaseSaver.resetMaps ();
+  }
+
 //  int turn = 0;
 //  bool toggle = false;
 //
