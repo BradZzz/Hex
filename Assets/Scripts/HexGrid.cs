@@ -27,7 +27,7 @@ public class HexGrid : MonoBehaviour {
 
 	public GameInfo game;
 
-	void Awake () {
+	protected virtual void Awake () {
 		game = BaseSaver.getGame ();
 
 		GameObject.Find ("HeaderTxt").GetComponent<Text> ().text = game.name;
@@ -197,10 +197,6 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
-	protected virtual void movedCell(HexCell cell) {
-    Debug.Log("Regular movedCell");
-	}
-
 	protected void attackCell(HexCell attacker, HexCell defender){
 		UnitInfo attacker_info = attacker.GetInfo ();
 		if (attacker_info.playerNo == getPTurn() && attacker_info.attacks > 0) {
@@ -221,8 +217,21 @@ public class HexGrid : MonoBehaviour {
 			}
 
 			ResetCells ();
+      Attacked(attacker);
 		}
 	}
+
+  protected virtual void Attacked(HexCell cell){
+    Debug.Log("Attacked");
+  }
+
+  protected virtual void Deactivated(HexCell cell){
+    Debug.Log("Deactivated");
+  }
+
+  protected virtual void movedCell(HexCell cell) {
+    Debug.Log("Regular movedCell");
+  }
 
 	public void ColorCell (Vector3 position, Color color) {
 		position = transform.InverseTransformPoint(position);
@@ -234,6 +243,7 @@ public class HexGrid : MonoBehaviour {
 			if (cell.GetPlayer () == getPTurn() && (cell.GetInfo().actions > 0 || cell.GetInfo().attacks > 0)) {
 				if (cell.GetActive ()) {
 					ResetCells ();
+          Deactivated (cell);
 				} else {
 					ResetCells ();
 					cell.paintNeigbors ();
@@ -263,7 +273,7 @@ public class HexGrid : MonoBehaviour {
 		Debug.Log("Regular CheckInteraction");
 	}
 
-	public void ResetCells() {
+	protected virtual void ResetCells() {
 		foreach (HexCell cell in cells) {
       cell.setColor(Color.white);
 			cell.SetActive (false);
@@ -273,7 +283,7 @@ public class HexGrid : MonoBehaviour {
 		checkEnd ();
 	}
 
-	void CreateCell (int x, int z, int i) {
+	protected virtual void CreateCell (int x, int z, int i) {
 		Vector3 position;
 		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
 		position.y = 0f;

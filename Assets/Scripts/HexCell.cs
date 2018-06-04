@@ -49,40 +49,47 @@ public class HexCell : MonoBehaviour {
 //	}
 
 	public void setType(TileInfo.tileType type){
-		switch(type){
-		case TileInfo.tileType.Castle:
-			GetTile ().type = TileInfo.tileType.Castle;
-//			GetTile ().color = TileInfo.tileColor.Blue;
-			break;
-		case TileInfo.tileType.City:
-			GetTile ().type = TileInfo.tileType.City;
-//			GetTile ().color = TileInfo.tileColor.Brown;
-			break;
-		case TileInfo.tileType.Forest:
-			GetTile ().type = TileInfo.tileType.Forest;
-//			GetTile ().color = TileInfo.tileColor.DarkGreen;
-			break;
-		case TileInfo.tileType.Grass:
-			GetTile ().type = TileInfo.tileType.Grass;
-//			GetTile ().color = TileInfo.tileColor.Green;
-			break;
-		case TileInfo.tileType.Road:
-			GetTile ().type = TileInfo.tileType.Road;
-//			GetTile ().color = TileInfo.tileColor.Sand;
-			break;
-		case TileInfo.tileType.Mountain:
-			GetTile ().type = TileInfo.tileType.Mountain;
-//			GetTile ().color = TileInfo.tileColor.Gray;
-			break;
-		case TileInfo.tileType.Treasure:
-			GetTile ().type = TileInfo.tileType.Treasure;
-//			GetTile ().color = TileInfo.tileColor.Gold;
-			break;
-		default:
-			GetTile ().type = TileInfo.tileType.None;
-//			GetTile ().color = TileInfo.tileColor.None;
-			break;
-		}
+	  GetTile ().type = type;
+
+
+//		switch(type){
+//		case TileInfo.tileType.Castle:
+//			GetTile ().type = TileInfo.tileType.Castle;
+////			GetTile ().color = TileInfo.tileColor.Blue;
+//			break;
+//		case TileInfo.tileType.City:
+//			GetTile ().type = TileInfo.tileType.City;
+////			GetTile ().color = TileInfo.tileColor.Brown;
+//			break;
+//		case TileInfo.tileType.Forest:
+//			GetTile ().type = TileInfo.tileType.Forest;
+////			GetTile ().color = TileInfo.tileColor.DarkGreen;
+//			break;
+//		case TileInfo.tileType.Grass:
+//			GetTile ().type = TileInfo.tileType.Grass;
+////			GetTile ().color = TileInfo.tileColor.Green;
+//			break;
+//		case TileInfo.tileType.Road:
+//			GetTile ().type = TileInfo.tileType.Road;
+////			GetTile ().color = TileInfo.tileColor.Sand;
+//			break;
+//		case TileInfo.tileType.Mountain:
+//			GetTile ().type = TileInfo.tileType.Mountain;
+////			GetTile ().color = TileInfo.tileColor.Gray;
+//			break;
+//		case TileInfo.tileType.Treasure:
+//			GetTile ().type = TileInfo.tileType.Treasure;
+////			GetTile ().color = TileInfo.tileColor.Gold;
+//			break;
+//    case TileInfo.tileType.Water:
+//      GetTile ().type = TileInfo.tileType.Water;
+//      //      GetTile ().color = TileInfo.tileColor.Gold;
+//      break;
+//		default:
+//			GetTile ().type = TileInfo.tileType.None;
+////			GetTile ().color = TileInfo.tileColor.None;
+//			break;
+//		}
     GetTile ().color = TileInfo.tileColor.None;
 	}
 
@@ -119,19 +126,8 @@ public class HexCell : MonoBehaviour {
       } else {
         sprT.setTile(tile.type);
       }
-
       sprT.setUnit (info);
     }
-
-//    if (info.human) {
-//      sprT.setText ("A0");
-//    } else if (info.playerNo > -1) {
-//      sprT.setText ("A1");
-//    } else if (tile.interaction) {
-//      sprT.setText ("I");
-//    } else {
-//      sprT.setText ("");
-//    }
   }
 
 	public Color getColor() {
@@ -191,24 +187,6 @@ public class HexCell : MonoBehaviour {
 
 	public void SetInfo(UnitInfo info) { 
 		this.info = info; 
-//		if (this.info.type != UnitInfo.unitType.None) {
-//			switch (this.info.type) {
-//			case UnitInfo.unitType.Knight:
-//				label.text = "K" + this.info.health.ToString();
-//				break;
-//			case UnitInfo.unitType.Lancer:
-//				label.text = "L" + this.info.health.ToString();
-//				break;
-//			case UnitInfo.unitType.Swordsman:
-//				label.text = "S" + this.info.health.ToString();
-//				break;
-//			case UnitInfo.unitType.Adventure:
-//				label.text = "A" + this.GetPlayer();
-//				break;
-//			}
-//		} else {
-//			label.text = "";
-//		}
 	}
 
 	public void EndTurn(){
@@ -266,11 +244,14 @@ public class HexCell : MonoBehaviour {
 	}
 
   public void updateUIInfo(){
-    GameObject.Find ("HeaderTxt").GetComponent<Text> ().text = GetCharacterName();
-    GameObject.Find ("CharImage").GetComponent<Image> ().sprite = gameObject.GetComponent<TileSprite> ().GetCharacterImage (GetInfo());
+    GameObject ip = GameObject.Find ("InfoPanel");
 
-    GameObject.Find ("HealthText").GetComponent<Text> ().text = GetInfo().health.ToString();
-    GameObject.Find ("ActionText").GetComponent<Text> ().text = GetInfo().actions.ToString();
+    if (ip == null) {
+      ip.GetComponent<InfoPanel> ().togglePanel(true);
+      ip.GetComponent<InfoPanel> ().updatePanel (GetCharacterName(),
+        gameObject.GetComponent<TileSprite> ().GetCharacterImage (GetInfo()),
+        GetInfo().health,GetInfo().actions,GetInfo().attacks);
+    }
   }
 
 	public void paintNeigbors (){

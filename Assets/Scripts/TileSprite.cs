@@ -31,6 +31,9 @@ public class TileSprite : MonoBehaviour {
   public Sprite[] Treasure;
   public Sprite[] Water;
 
+  public Sprite eSpawn;
+  public Sprite pSpawn;
+
   public void setUnit (UnitInfo unit) {
     SpriteRenderer spRend = gameObject.transform.Find("UnitObject").GetComponent<SpriteRenderer> ();
 
@@ -59,6 +62,33 @@ public class TileSprite : MonoBehaviour {
       }
     } else if (unit.playerNo > -1) {
       spRend.enabled = true;
+    }
+  }
+
+  public Sprite getTile(TileInfo.tileType type) {
+    switch(type){
+    case TileInfo.tileType.Castle:
+      return Castle [Random.Range (0, Castle.Length)];
+    case TileInfo.tileType.City:
+      return City [Random.Range (0, City.Length)];
+    case TileInfo.tileType.Forest:
+      return Forest [Random.Range (0, Forest.Length)];
+    case TileInfo.tileType.Grass:
+      return Grass [Random.Range (0, Grass.Length)];
+    case TileInfo.tileType.Mountain:
+      return Mountain [Random.Range (0, Mountain.Length)];
+    case TileInfo.tileType.Road:
+      return Road [Random.Range (0, Road.Length)];
+    case TileInfo.tileType.Treasure:
+      return Treasure [Random.Range (0, Treasure.Length)];
+    case TileInfo.tileType.Water:
+      return Water [Random.Range (0, Water.Length)];
+    case TileInfo.tileType.eSpawn:
+      return eSpawn;
+    case TileInfo.tileType.pSpawn:
+      return pSpawn;
+    default:
+      return Grass [Random.Range (0, Grass.Length)];
     }
   }
 
@@ -91,7 +121,15 @@ public class TileSprite : MonoBehaviour {
     case TileInfo.tileType.Water:
       spRend.sprite = Water [Random.Range (0, Water.Length)];
       break;
+    case TileInfo.tileType.eSpawn:
+      spRend.sprite = eSpawn;
+      break;
+    case TileInfo.tileType.pSpawn:
+      spRend.sprite = pSpawn;
+      break;
     default:
+      Debug.Log ("default");
+      Debug.Log (type);
       spRend.enabled = false;
       break;
     }

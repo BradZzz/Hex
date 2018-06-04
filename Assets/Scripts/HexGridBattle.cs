@@ -61,16 +61,32 @@ public class HexGridBattle : HexGrid {
 		EndTurn ();
 
 		ResetCells ();
+    ResetBoard ();
 	}
+
+  private void ResetBoard(){
+    GameObject.Find ("InfoPanel").GetComponent<InfoPanel> ().togglePanel(false);
+  }
+
+  protected override void Attacked(HexCell cell){
+    cell.updateUIInfo ();
+  }
+
+  protected override void Deactivated(HexCell cell){
+    ResetBoard ();
+  }
 
   protected override void postEndCheck(int turn) {
     if (turn != 0) {
       PlayAI ();
+      ResetBoard ();
     }
   }
 
   protected override void movedCell(HexCell cell) {
-    cell.updateUIInfo ();
+    if (cell.GetPlayer() == 0) {
+      cell.updateUIInfo ();
+    }
   }
 
 	protected override void checkEnd(){

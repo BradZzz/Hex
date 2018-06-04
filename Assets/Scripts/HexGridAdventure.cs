@@ -46,12 +46,12 @@ public class HexGridAdventure : HexGrid {
   {
   	if (turn == 0) {
   		updateArmyInfo(game);
-    	foreach(HexCell cell in cells) {
-  			if (cell.GetInfo().human){
-            //Toggle this to change how the camera follows the player in adventure mode
-  					moveCamera (cell.gameObject.transform.position + new Vector3(0,45,-45));
-  			}
-      }
+//    	foreach(HexCell cell in cells) {
+//  			if (cell.GetInfo().human){
+//            //Toggle this to change how the camera follows the player in adventure mode
+//  					moveCamera (cell.gameObject.transform.position + new Vector3(0,45,-45));
+//  			}
+//      }
   	} else {
   		GameInfo nGame = new GameInfo ();
   		nGame.name = "Sir Kingsly";
@@ -90,9 +90,9 @@ public class HexGridAdventure : HexGrid {
 			BaseSaver.resetBoard ();
 
 		} else {
-			foreach(HexCell cell in cells) {
-				cell.GetTile ().fog = true;
-			}
+//			foreach(HexCell cell in cells) {
+//				cell.GetTile ().fog = true;
+//			}
 				
 			placePlayer(cells[0], 0, false, UnitInfo.unitType.Adventure, true);
 
@@ -108,15 +108,17 @@ public class HexGridAdventure : HexGrid {
 				placePlayer (cells [width - 1], 3, false, UnitInfo.unitType.Adventure, false);
 			}
 
-			foreach (HexCell cell in cells) {
-				//			cell.setType((TileInfo.tileType) Random.Range(0, 7));
-				cell.setType(TileInfo.tileType.Grass);
-			}
+//			foreach (HexCell cell in cells) {
+//				//			cell.setType((TileInfo.tileType) Random.Range(0, 7));
+//				cell.setType(TileInfo.tileType.Grass);
+//			}
 
-			HexCell[] road = HexAI.aStar (cells, cells[0], cells[cells.Length - 1]);
-			foreach (HexCell cell in road) {
-				cell.setType(TileInfo.tileType.Road);
-			}
+//			HexCell[] road = HexAI.aStar (cells, cells[0], cells[cells.Length - 1]);
+//			foreach (HexCell cell in road) {
+//				cell.setType(TileInfo.tileType.Road);
+//			}
+
+      HexAdventureGenerator.generateMap (cells, height, width);
 
 			int mountain = Random.Range (3, cells.Length - 3);
 			cells [mountain].setType (TileInfo.tileType.Mountain);
@@ -126,24 +128,14 @@ public class HexGridAdventure : HexGrid {
 				}
 			}
 
-			foreach (HexCell cell in cells){
-				if (cell.GetPlayer() == -1) {
-					int chp = Random.Range(0, 4);
-					if (chp == 0) {
-						cell.GetTile ().interaction = true;
-//						cell.setLabel ("I");
-					}
-				}
-			}
 //			foreach (HexCell cell in cells){
 //				if (cell.GetPlayer() == -1) {
 //					int chp = Random.Range(0, 4);
 //					if (chp == 0) {
 //						cell.GetTile ().interaction = true;
-//						cell.setLabel ("I");
+////						cell.setLabel ("I");
 //					}
 //				}
-//      30,55,-60 / 20,0,0
 //			}
 
 			hexMesh.Triangulate(cells);
