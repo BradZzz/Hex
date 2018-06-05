@@ -179,7 +179,7 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	protected void moveCell(HexCell cell, HexDirection dir){
-		if (cell.GetNeighbor (dir).GetInfo().actions > 0) {
+    if (cell.GetNeighbor (dir).GetInfo().actions > 0 && cell.GetNeighbor (dir).canMoveThere(cell.GetTile())) {
 			int player = cell.GetNeighbor (dir).GetPlayer ();
 			UnitInfo parent_info = cell.GetNeighbor (dir).GetInfo ();
 			UnitInfo this_info = cell.GetInfo ();
@@ -258,7 +258,7 @@ public class HexGrid : MonoBehaviour {
 			}
 		} else {
 			HexDirection dir = cell.getActiveNeigbor ();
-			if (dir != HexDirection.None) {
+      if (dir != HexDirection.None) {
 				moveCell(cell, dir);
 			}
 		}

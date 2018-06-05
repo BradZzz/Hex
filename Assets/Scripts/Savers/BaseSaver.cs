@@ -85,6 +85,15 @@ public class BaseSaver {
     return JsonHelper.FromJson<MapInfo>(json);
   }
 
+  public static MapInfo getMap(string name) {
+    foreach(MapInfo map in getMaps()) {
+      if (map.name.Equals(name)) {
+        return map;
+      }
+    }
+    return null;
+  }
+
 	/*
 	 * Player
 	 * 

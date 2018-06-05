@@ -52,9 +52,6 @@ public class HexAI {
     int currMax = -1;
     List<HexCell> mxPts = new List<HexCell> ();
 
-    /*
-     * Loop through all the points and return the point with the smallest array returned
-     */
     foreach(HexCell pt in points){
       HexCell[] thisArr = HexAI.aStar(cells, pt, dest);
       if (thisArr != null) {
@@ -67,6 +64,7 @@ public class HexAI {
         }
       }
     }
+
     return mxPts.Count > 0 ? mxPts [0] : null;
   }
 
@@ -95,7 +93,8 @@ public class HexAI {
 			foreach(HexDirection dir in dirs) {
 				//HexCell neighbor = nxt.GetNeighbor (dir);
 				if (nxt.GetNeighbor (dir)) {
-					if ((start.GetPlayer() == -1 || nxt.GetNeighbor (dir).GetPlayer() != start.GetPlayer()) && !tblStore.ContainsKey(nxt.GetNeighbor (dir))) {
+          if ((start.GetPlayer() == -1 || nxt.GetNeighbor (dir).GetPlayer() != start.GetPlayer()) 
+            && start.canMoveThere(nxt.GetNeighbor (dir).GetTile()) && !tblStore.ContainsKey(nxt.GetNeighbor (dir))) {
 						//The destination here should be different for the swordsman and lancer
 						if (finalDest == null && nxt.GetNeighbor (dir).GetPlayer () != -1) {
 							finalDest = new List<HexCell> ();

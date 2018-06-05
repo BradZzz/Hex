@@ -62,6 +62,23 @@ public class HexGridAdventure : HexGrid {
   	}
   }
 
+  protected override void Awake () {
+    game = BaseSaver.getGame ();
+
+    GameObject.Find ("HeaderTxt").GetComponent<Text> ().text = game.name;
+
+    gridCanvas = GetComponentInChildren<Canvas>();
+    hexMesh = GetComponentInChildren<HexMesh>();
+
+    cells = new HexCell[height * width];
+
+    for (int z = 0, i = 0; z < height; z++) {
+      for (int x = 0; x < width; x++) {
+        CreateCell(x, z, i++);
+      }
+    }
+  }
+
 	void Start () {
 		TileInfo[] bTiles = BaseSaver.getTiles ();
 		UnitInfo[] bUnits = BaseSaver.getUnits ();
@@ -94,19 +111,47 @@ public class HexGridAdventure : HexGrid {
 //				cell.GetTile ().fog = true;
 //			}
 				
-			placePlayer(cells[0], 0, false, UnitInfo.unitType.Adventure, true);
+//			placePlayer(cells[0], 0, false, UnitInfo.unitType.Adventure, true);
+//
+//			cells [0].removeFog ();
+//
+//			placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Adventure, false);
+//
+			MapInfo map = BaseSaver.getMap("Basic Level");
 
-			cells [0].removeFog ();
+      List<int> playerPos = new List<int> ();
+      List<int> enemyPos = new List<int> ();
 
-			placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Adventure, false);
-
-			if (players > 2) {
-				placePlayer(cells[cells.Length - width], 2, false, UnitInfo.unitType.Adventure, false);
+      for (int i = 0; i < cells.Length; i++) {
+        if (map.tiles[i].type == TileInfo.tileType.pSpawn) {
+          cells[i].setType(TileInfo.tileType.Road);
+          playerPos.Add (i);
+        } else if (map.tiles[i].type == TileInfo.tileType.eSpawn) {
+          cells[i].setType(TileInfo.tileType.Road);
+          enemyPos.Add (i);
+        } else {
+          cells[i].setType(map.tiles[i].type);
+        }
 			}
 
-			if (players > 3) {
-				placePlayer (cells [width - 1], 3, false, UnitInfo.unitType.Adventure, false);
-			}
+      int[] pArr = playerPos.ToArray ();
+      int[] eArr = enemyPos.ToArray ();
+
+      HexUtilities.ShuffleArray (pArr);
+      HexUtilities.ShuffleArray (eArr);
+
+      placePlayer(cells[pArr[0]], 0, false, UnitInfo.unitType.Adventure, true);
+      cells [pArr[0]].removeFog ();
+
+      placePlayer(cells[eArr[0]], 1, false, UnitInfo.unitType.Adventure, false);
+
+//			if (players > 2) {
+//				placePlayer(cells[cells.Length - width], 2, false, UnitInfo.unitType.Adventure, false);
+//			}
+//
+//			if (players > 3) {
+//				placePlayer (cells [width - 1], 3, false, UnitInfo.unitType.Adventure, false);
+//			}
 
 //			foreach (HexCell cell in cells) {
 //				//			cell.setType((TileInfo.tileType) Random.Range(0, 7));
@@ -117,16 +162,16 @@ public class HexGridAdventure : HexGrid {
 //			foreach (HexCell cell in road) {
 //				cell.setType(TileInfo.tileType.Road);
 //			}
-
-      HexAdventureGenerator.generateMap (cells, height, width);
-
-			int mountain = Random.Range (3, cells.Length - 3);
-			cells [mountain].setType (TileInfo.tileType.Mountain);
-			foreach(HexDirection dir in cells [mountain].dirs) {
-				if (cells [mountain].GetNeighbor(dir) && TileInfo.tileType.Grass == cells [mountain].GetNeighbor(dir).GetTile().type) {
-					cells [mountain].GetNeighbor (dir).setType (TileInfo.tileType.Forest);
-				}
-			}
+//
+//      HexAdventureGenerator.generateMap (cells, height, width);
+//
+//			int mountain = Random.Range (3, cells.Length - 3);
+//			cells [mountain].setType (TileInfo.tileType.Mountain);
+//			foreach(HexDirection dir in cells [mountain].dirs) {
+//				if (cells [mountain].GetNeighbor(dir) && TileInfo.tileType.Grass == cells [mountain].GetNeighbor(dir).GetTile().type) {
+//					cells [mountain].GetNeighbor (dir).setType (TileInfo.tileType.Forest);
+//				}
+//			}
 
 //			foreach (HexCell cell in cells){
 //				if (cell.GetPlayer() == -1) {

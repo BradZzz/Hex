@@ -275,8 +275,15 @@ public class HexCell : MonoBehaviour {
 		}
 	}
 
+  public bool canMoveThere(TileInfo tile){
+    if (tile.type == TileInfo.tileType.Water || tile.type == TileInfo.tileType.Mountain) {
+      return false;
+    }
+    return true;
+  }
+
 	private void setNeigbor(HexDirection direction){
-    if (GetNeighbor (direction)){
+    if (GetNeighbor (direction) && canMoveThere(GetNeighbor (direction).GetTile())){
       if (GetNeighbor (direction).GetPlayer () == -1) {
         GetNeighbor (direction).color = MOVE_COLOR;
       } else if (GetNeighbor (direction).GetPlayer () != GetInfo().playerNo && GetInfo().attacks > 0) {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class TileSprite : MonoBehaviour {
 
@@ -98,28 +99,44 @@ public class TileSprite : MonoBehaviour {
 
     switch(type){
     case TileInfo.tileType.Castle:
-      spRend.sprite = Castle [Random.Range (0, Castle.Length)];
+      if (!Castle.Contains(spRend.sprite)) {
+        spRend.sprite = Castle [Random.Range (0, Castle.Length)];
+      }
       break;
     case TileInfo.tileType.City:
-      spRend.sprite = City [Random.Range (0, City.Length)];
+      if (!City.Contains(spRend.sprite)) {
+        spRend.sprite = City [Random.Range (0, City.Length)];
+      }
       break;
     case TileInfo.tileType.Forest:
-      spRend.sprite = Forest [Random.Range (0, Forest.Length)];
+      if (!Forest.Contains(spRend.sprite)) {
+        spRend.sprite = Forest [Random.Range (0, Forest.Length)];
+      }
       break;
     case TileInfo.tileType.Grass:
-      spRend.sprite = Grass [Random.Range (0, Grass.Length)];
+      if (!Grass.Contains(spRend.sprite)) {
+        spRend.sprite = Grass [Random.Range (0, Grass.Length)];
+      }
       break;
     case TileInfo.tileType.Mountain:
-      spRend.sprite = Mountain [Random.Range (0, Mountain.Length)];
+      if (!Mountain.Contains(spRend.sprite)) {
+        spRend.sprite = Mountain [Random.Range (0, Mountain.Length)];
+      }
       break;
     case TileInfo.tileType.Road:
-      spRend.sprite = Road [Random.Range (0, Road.Length)];
+      if (!Road.Contains(spRend.sprite)) {
+        spRend.sprite = Road [Random.Range (0, Road.Length)];
+      }
       break;
     case TileInfo.tileType.Treasure:
-      spRend.sprite = Treasure [Random.Range (0, Treasure.Length)];
+      if (!Treasure.Contains(spRend.sprite)) {
+        spRend.sprite = Treasure [Random.Range (0, Treasure.Length)];
+      }
       break;
     case TileInfo.tileType.Water:
-      spRend.sprite = Water [Random.Range (0, Water.Length)];
+      if (!Water.Contains(spRend.sprite)) {
+        spRend.sprite = Water [Random.Range (0, Water.Length)];
+      }
       break;
     case TileInfo.tileType.eSpawn:
       spRend.sprite = eSpawn;
