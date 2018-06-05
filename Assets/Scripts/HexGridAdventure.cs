@@ -107,9 +107,9 @@ public class HexGridAdventure : HexGrid {
 			BaseSaver.resetBoard ();
 
 		} else {
-//			foreach(HexCell cell in cells) {
-//				cell.GetTile ().fog = true;
-//			}
+			foreach(HexCell cell in cells) {
+				cell.GetTile ().fog = true;
+			}
 				
 //			placePlayer(cells[0], 0, false, UnitInfo.unitType.Adventure, true);
 //

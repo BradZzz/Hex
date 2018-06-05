@@ -134,15 +134,20 @@ MonoBehaviour:
   City:
   - {fileID: 21300304, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
   Forest:
-  - {fileID: 21300174, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  - {fileID: 21300218, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  - {fileID: 21300240, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  - {fileID: 21300196, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  - {fileID: 21300240, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
   Grass:
-  - {fileID: 21300010, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  - {fileID: 21300034, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
   Road:
-  - {fileID: 21300036, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  - {fileID: 21300210, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
   Mountain:
-  - {fileID: 21300108, guid: cf9693091c0ba4c2a9c1c51b46505772, type: 3}
+  - {fileID: 21300092, guid: cf9693091c0ba4c2a9c1c51b46505772, type: 3}
+  - {fileID: 21300078, guid: cf9693091c0ba4c2a9c1c51b46505772, type: 3}
+  - {fileID: 21300064, guid: cf9693091c0ba4c2a9c1c51b46505772, type: 3}
   Treasure:
-  - {fileID: 21300014, guid: cf9693091c0ba4c2a9c1c51b46505772, type: 3}
+  - {fileID: 21300116, guid: 84cd89a8d245244368181b452a0a5f6f, type: 3}
   Water:
   - {fileID: 21300000, guid: 8b52d72a024054b3fbf8964d0fc2c4c7, type: 3}
   eSpawn: {fileID: 21300128, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
