@@ -10,6 +10,8 @@ public class BaseSaver {
 
 	private static string BATTLE_INFO = "battle_info";
 
+  private static string LOCATION = "location";
+
 	private static string CHOICE = "choice";
 	private static string CHOICE_PICKED = "choice_pick";
 
@@ -149,6 +151,34 @@ public class BaseSaver {
 		Debug.Log ("Battle got");
 		return JsonUtility.FromJson<BattleInfo> (json);
 	}
+
+  /*
+   * Location
+   * 
+   */
+//
+//  public static void resetLocation() {
+//    PlayerPrefs.SetString (LOCATION, "");
+//
+//    Debug.Log ("Location reset");
+//  }
+//
+//  public static void putLocation(LocationInfo info) {
+//    string json = JsonUtility.ToJson (info);
+//    PlayerPrefs.SetString (LOCATION, json);
+//
+//    Debug.Log ("Location set: " + json);
+//  }
+//
+//
+//  public static LocationInfo getLocation(){
+//    string json = PlayerPrefs.GetString (LOCATION);
+//    if (json.Length == 0) {
+//      return null;
+//    }
+//    Debug.Log ("Location got");
+//    return JsonUtility.FromJson<LocationInfo> (json);
+//  }
 
 	/*
 	 * Choices

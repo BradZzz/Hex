@@ -145,8 +145,8 @@ public class TileSprite : MonoBehaviour {
       spRend.sprite = pSpawn;
       break;
     default:
-      Debug.Log ("default");
-      Debug.Log (type);
+//      Debug.Log ("default");
+//      Debug.Log (type);
       spRend.enabled = false;
       break;
     }

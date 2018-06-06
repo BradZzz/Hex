@@ -1,17 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
-public class LocationInfo {
-  public LocationInfo(LocationInfo loc){
-    name = loc.name;
-    description = loc.description;
-    img = loc.img;
-    nxtScene = loc.nxtScene;
-    nxtRes = loc.nxtRes;
-    needRes = loc.needRes;
-  }
-
+/*
+ * This can't be serializable bc it contains recursive references. C# does not like that
+ */
+public class LocationInfo : MonoBehaviour {
   public LocationInfo[] children;
   public string name;
   [TextArea(3, 3)]
