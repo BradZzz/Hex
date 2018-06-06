@@ -8,28 +8,33 @@ public class LocationPanel : MonoBehaviour {
 
   public GameObject locationMain;
 
-  private LocationInfo thisInfo;
   protected Stack<LocationInfo> tStack;
   private LocationMain locMeta;
   private Sprite locSprite;
   private GameObject[] infoBtns;
   private static int BTNLENGTH = 6;
 
-  private int lClick = -1;
+  private GameObject header;
+  private GameObject description;
+  private GameObject image;
+  private GameObject character;
 
   void Awake(){
     Debug.Log ("Awake");
 
-    tStack = new Stack<LocationInfo>();
-
     locMeta = locationMain.GetComponent<LocationMain> ();
     locSprite = locationMain.GetComponent<SpriteRenderer> ().sprite;
-
-    thisInfo = locMeta.info;
   }
 
   void Start(){
     Debug.Log ("Start");
+
+    header = GameObject.Find ("InfoHeader");
+    description = GameObject.Find ("InfoDescription");
+    image = GameObject.Find ("InfoImage");
+    character = GameObject.Find ("InfoCharacter");
+
+    tStack = new Stack<LocationInfo>();
 
     infoBtns = new GameObject[BTNLENGTH];
     for (int i = 0; i < BTNLENGTH; i++) {
@@ -37,7 +42,9 @@ public class LocationPanel : MonoBehaviour {
       infoBtns [i].SetActive (false);
     }
 
-    PopulateInfo(thisInfo);
+    tStack.Push (locMeta.info);
+
+    PopulateInfo(tStack.Peek());
   }
 
   void OnEnable(){
@@ -45,9 +52,20 @@ public class LocationPanel : MonoBehaviour {
   }
 
   void PopulateInfo(LocationInfo info){
-    GameObject.Find ("InfoHeader").GetComponent<Text> ().text = info.name;
-    GameObject.Find ("InfoDescription").GetComponent<Text> ().text = info.description;
-    GameObject.Find ("InfoImage").GetComponent<Image> ().sprite = locSprite;
+    header.GetComponent<Text> ().text = info.name;
+    description.GetComponent<Text> ().text = info.description;
+    if (LocationInfo.LocType.None != info.img) {
+      Sprite img = info.gameObject.GetComponent<Image> ().sprite;
+      if (info.img == LocationInfo.LocType.Char) {
+        character.SetActive (true);
+        character.GetComponent<Image> ().sprite = img;
+      } else {
+        image.GetComponent<Image> ().sprite = img;
+        character.SetActive (false);
+      }
+    } else {
+      character.SetActive (false);
+    }
 
     PopulateButtons (info);
   }
@@ -61,7 +79,7 @@ public class LocationPanel : MonoBehaviour {
       } else if (info.children == null || info.children.Length == i) {
         infoBtns [i].SetActive (true);
         string txt = "Leave";
-        if (tStack.Count < 1) {
+        if (tStack.Count > 1) {
           txt = "Back";
         }
         infoBtns [i].GetComponentInChildren<Text> ().text = txt;
@@ -69,49 +87,16 @@ public class LocationPanel : MonoBehaviour {
         infoBtns [i].SetActive(false);
       }
     }
-
-//    Debug.Log ("List");
-//    Debug.Log (tList.Count);
   }
-
-//  void Update(){
-//    if (lClick != -1) {
-//      Debug.Log ("Click!: " + lClick.ToString());
-//      if (lClick >= thisInfo.children.Length) {
-//        Debug.Log (thisInfo.name);
-//        if (tList.Count > 0) {
-//          Debug.Log ("Back");
-//          thisInfo = removeItem();
-//          PopulateInfo (thisInfo);
-//        } else {
-//          Debug.Log ("Leave");
-//          SceneManager.LoadScene ("AdventureScene");
-//        }
-//      } else {
-//        Debug.Log (thisInfo.children[lClick].name);
-//
-//        addItem (thisInfo);
-//
-//        thisInfo = thisInfo.children [lClick];
-//        PopulateInfo (thisInfo);
-//      }
-//
-//      lClick = -1;
-//    }
-//    Debug.Log (tList.Count);
-//    Debug.Log ("Click: " + lClick.ToString());
-//  }
 
   private LocationInfo removeItem(){
     Debug.Log ("removeItem");
     return tStack.Pop ();
-//    return BaseSaver.getLocation ();
   }
 
   private void addItem(LocationInfo info){
     Debug.Log ("addItem");
     tStack.Push (info);
-//    BaseSaver.putLocation (info);
   }
 
   public void ButtonClick(int sel){
@@ -120,25 +105,24 @@ public class LocationPanel : MonoBehaviour {
     Debug.Log ("Sel: " + sel.ToString());
     Debug.Log ("Debug.Log (tList.Count);");
     Debug.Log (tStack.Count);
-    Debug.Log ("thisInfo.children.Length: " + thisInfo.children.Length.ToString());
+//    Debug.Log ("thisInfo.children.Length: " + thisInfo.children.Length.ToString());
+//
+    Debug.Log (tStack);
 
-    if (clicked >= thisInfo.children.Length) {
-      Debug.Log (thisInfo.name);
-      if (tStack.Count > 0) {
+    if (clicked >= tStack.Peek().children.Length) {
+      Debug.Log (tStack.Peek().name);
+      if (tStack.Count > 1) {
         Debug.Log ("Back");
-        thisInfo = removeItem();
-        PopulateInfo (thisInfo);
+        removeItem ();
+        PopulateInfo (tStack.Peek());
       } else {
         Debug.Log ("Leave");
         SceneManager.LoadScene ("AdventureScene");
       }
     } else {
-      Debug.Log (thisInfo.children[clicked].name);
-
-      addItem (thisInfo);
-
-      thisInfo = thisInfo.children [clicked];
-      PopulateInfo (thisInfo);
+      Debug.Log (tStack.Peek().children[clicked].name);
+      addItem (tStack.Peek().children [clicked]);
+      PopulateInfo (tStack.Peek());
     }
   }
 }
