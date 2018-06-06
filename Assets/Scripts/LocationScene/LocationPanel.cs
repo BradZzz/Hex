@@ -5,24 +5,81 @@ using UnityEngine.UI;
 
 public class LocationPanel : MonoBehaviour {
 
-  public GameObject LocationMain;
+  public GameObject locationMain;
 
+  private LocationInfo thisInfo;
   private LocationMain locMeta;
   private Sprite locSprite;
+  private GameObject[] infoBtns;
+  private static int BTNLENGTH = 6;
 
   void Awake(){
-    locMeta = LocationMain.GetComponent<LocationMain> ();
-    locSprite = LocationMain.GetComponent<SpriteRenderer> ().sprite;
+    locMeta = locationMain.GetComponent<LocationMain> ();
+    locSprite = locationMain.GetComponent<SpriteRenderer> ().sprite;
+
+    thisInfo = locMeta.info;
   }
 
   void Start(){
-    GameObject.Find ("InfoHeader").GetComponent<Text> ().text = locMeta.info.name;
-    GameObject.Find ("InfoDescription").GetComponent<Text> ().text = locMeta.info.description;
+    infoBtns = new GameObject[BTNLENGTH];
+    for (int i = 0; i < BTNLENGTH; i++) {
+      infoBtns [i] = GameObject.Find ("Button_0" + (i + 1).ToString ());
+      infoBtns [i].SetActive (false);
+    }
+
+    PopulateInfo(thisInfo);
+  }
+
+  void PopulateInfo(LocationInfo info){
+    GameObject.Find ("InfoHeader").GetComponent<Text> ().text = info.name;
+    GameObject.Find ("InfoDescription").GetComponent<Text> ().text = info.description;
     GameObject.Find ("InfoImage").GetComponent<Image> ().sprite = locSprite;
+
+    PopulateButtons (info);
+  }
+
+  void PopulateButtons(LocationInfo info){
+    for(int i = 0; i < BTNLENGTH; i++) {
+      if (info.children.Length > i) {
+        infoBtns [i].SetActive (true);
+        infoBtns [i].GetComponentInChildren<Text> ().text = info.children [i].name;
+      } else if (info.children.Length == i) {
+        infoBtns [i].SetActive (true);
+        string txt = "Leave";
+        if (thisInfo.parent != null) {
+          txt = "Back";
+        }
+        infoBtns [i].GetComponentInChildren<Text> ().text = txt;
+      } else {
+        infoBtns [i].SetActive (false);
+      }
+    }
   }
 
   public void ButtonClick(int sel){
-    Debug.Log ("Sel: " + sel.ToString());
+    int clicked = sel - 1;
+
+    Debug.Log ("Sel: " + clicked.ToString());
+    Debug.Log ("thisInfo.children.Length: " + thisInfo.children.Length.ToString());
+
+    if (clicked >= thisInfo.children.Length) {
+      Debug.Log (thisInfo);
+      if (thisInfo.parent != null) {
+        Debug.Log ("Back");
+        thisInfo = thisInfo.parent[0];
+        PopulateInfo (thisInfo);
+      } else {
+        Debug.Log ("Leave");
+      }
+    } else {
+      Debug.Log (thisInfo.children[clicked].name);
+
+      LocationInfo iTemp = thisInfo;
+      thisInfo = thisInfo.children [clicked];
+      thisInfo.parent = new LocationInfo[]{iTemp};
+
+      PopulateInfo (thisInfo);
+    }
   }
 
 //  public GameObject cGlossary;

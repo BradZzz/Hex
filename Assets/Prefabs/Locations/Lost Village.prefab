@@ -74,14 +74,15 @@ MonoBehaviour:
     - parent: []
       children: []
       name: Bargain Shop
-      description: An old shop sits out of the way. The owner beckons you inside...
+      description: An old shop sits out of the way. The shop is closed for now. Perhaps
+        you'll come back later.
       img: 0
       nxtScene: 
       nxtRes: []
       needRes: []
     name: Lost Village
     description: This village used to be the gem of the empire. Now it has been lost
-      to the world
+      to the world.
     img: 0
     nxtScene: 
     nxtRes: []
@@ -147,7 +148,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
