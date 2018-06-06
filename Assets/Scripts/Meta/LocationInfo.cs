@@ -3,7 +3,15 @@ using UnityEngine;
 
 [Serializable]
 public class LocationInfo {
-  public LocationInfo[] parent;
+  public LocationInfo(LocationInfo loc){
+    name = loc.name;
+    description = loc.description;
+    img = loc.img;
+    nxtScene = loc.nxtScene;
+    nxtRes = loc.nxtRes;
+    needRes = loc.needRes;
+  }
+
   public LocationInfo[] children;
   public string name;
   [TextArea(3, 3)]
@@ -14,6 +22,6 @@ public class LocationInfo {
   public ResInfo[] needRes;
 
   public enum LocType {
-    Market, Inn, Castle, Shop, Arena, None
+    Market, Inn, Castle, Arena, None
   }
 }

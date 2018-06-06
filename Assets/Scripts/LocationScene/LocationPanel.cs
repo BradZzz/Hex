@@ -2,12 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LocationPanel : MonoBehaviour {
+
+  /*
+   * 
+   * 
+   * 
+   */ 
 
   public GameObject locationMain;
 
   private LocationInfo thisInfo;
+  private Stack<LocationInfo> tStack = new Stack<LocationInfo>();
   private LocationMain locMeta;
   private Sprite locSprite;
   private GameObject[] infoBtns;
@@ -21,6 +29,8 @@ public class LocationPanel : MonoBehaviour {
   }
 
   void Start(){
+    tStack = new Stack<LocationInfo>();
+
     infoBtns = new GameObject[BTNLENGTH];
     for (int i = 0; i < BTNLENGTH; i++) {
       infoBtns [i] = GameObject.Find ("Button_0" + (i + 1).ToString ());
@@ -39,14 +49,15 @@ public class LocationPanel : MonoBehaviour {
   }
 
   void PopulateButtons(LocationInfo info){
+    //    tStack.Push (info);
     for(int i = 0; i < BTNLENGTH; i++) {
-      if (info.children.Length > i) {
+      if (info.children != null && info.children.Length > i) {
         infoBtns [i].SetActive (true);
         infoBtns [i].GetComponentInChildren<Text> ().text = info.children [i].name;
-      } else if (info.children.Length == i) {
+      } else if (info.children == null || info.children.Length == i) {
         infoBtns [i].SetActive (true);
         string txt = "Leave";
-        if (thisInfo.parent != null) {
+        if (tStack.Count > 0) {
           txt = "Back";
         }
         infoBtns [i].GetComponentInChildren<Text> ().text = txt;
@@ -64,110 +75,20 @@ public class LocationPanel : MonoBehaviour {
 
     if (clicked >= thisInfo.children.Length) {
       Debug.Log (thisInfo);
-      if (thisInfo.parent != null) {
+      if (tStack.Count > 0) {
         Debug.Log ("Back");
-        thisInfo = thisInfo.parent[0];
+        thisInfo = tStack.Pop ();
         PopulateInfo (thisInfo);
       } else {
         Debug.Log ("Leave");
+        SceneManager.LoadScene ("AdventureScene");
       }
     } else {
       Debug.Log (thisInfo.children[clicked].name);
 
-      LocationInfo iTemp = thisInfo;
+      tStack.Push (thisInfo);
       thisInfo = thisInfo.children [clicked];
-      thisInfo.parent = new LocationInfo[]{iTemp};
-
       PopulateInfo (thisInfo);
     }
   }
-
-//  public GameObject cGlossary;
-//
-//  private ChoiceGlossary glossy;
-//  private GameObject thisPlayer;
-//  private GameObject infoPnl;
-//  private GameObject[] infoBtns;
-//
-//  private OptionInfo[] lstOptions;
-//
-//  //At the start we need to pull out the player 
-//  //and attach it to the panel gameobject 
-//  void Start () {
-//    infoBtns = new GameObject[6];
-//    for (int i = 0; i < 6; i++) {
-//      infoBtns [i] = GameObject.Find ("Button_0" + (i + 1).ToString ());
-//    }
-//    infoPnl = GameObject.Find ("InfoPanel");
-//
-//    glossy = cGlossary.GetComponent<ChoiceGlossary> ();
-//    populateInfoPanel (glossy);
-//
-//    if (BaseSaver.getPicked() > -1) {
-//      Debug.Log ("Picked: " + BaseSaver.getPicked ().ToString ());
-//      selectChoice(BaseSaver.getPicked(), true);
-//    }
-//  }
-//
-//  public void selectChoice(int btn, bool callback) {
-//    ChoiceInfo choice = glossy.choices [0];
-//    OptionInfo option = lstOptions [btn - 1];
-//
-//    if (callback) {
-//      GameObject.Find ("InfoDescription").GetComponent<Text> ().text = BaseSaver.getBattle().won ? choice.winningGreeting : choice.losingGreeting;
-//
-//      OptionInfo final = new OptionInfo ();
-//      final.TextOptions = new string[]{ "Continue" };
-//      final.result = OptionInfo.resultType.None;
-//      final.reaction = "<confirm/>";
-//
-//      populateInfoButtons (new OptionInfo[]{ final });
-//      BaseSaver.resetChoice ();
-//    } else {
-//      if (!option.reaction.Equals ("<confirm/>")) {
-//        GameObject.Find ("InfoDescription").GetComponent<Text> ().text = option.reaction;
-//
-//        OptionInfo final = new OptionInfo ();
-//        final.TextOptions = new string[]{ "Continue" };
-//        final.result = (option.result == OptionInfo.resultType.MiniGame || option.result == OptionInfo.resultType.Battle)
-//          ? option.result : OptionInfo.resultType.None;
-//        final.reaction = "<confirm/>";
-//
-//        populateInfoButtons (new OptionInfo[]{ final });
-//      } else {
-//        if (option.result == OptionInfo.resultType.MiniGame) {
-//          BaseSaver.putChoice(choice, btn);
-//          SceneManager.LoadScene ("MiniGameScene");
-//        } else {
-//          if (option.result == OptionInfo.resultType.Battle) {
-//            BaseSaver.putChoice(choice, btn);
-//            SceneManager.LoadScene ("BattleScene");
-//          } else {
-//            SceneManager.LoadScene ("AdventureScene");
-//          }
-//        }
-//      }
-//    }
-//  }
-//
-//  void populateInfoPanel(ChoiceGlossary glossy){
-//    ChoiceInfo choice = glossy.choices [0];
-//    GameObject.Find ("InfoHeader").GetComponent<Text> ().text = choice.name;
-//    GameObject.Find ("InfoDescription").GetComponent<Text> ().text = choice.openingGreeting;
-//
-//    populateInfoButtons(choice.options);
-//  }
-//
-//  void populateInfoButtons(OptionInfo[] options){
-//    for (int i = 0; i < 6; i++) {
-//      if (i < options.Length) {
-//        infoBtns [i].SetActive (true);
-//        infoBtns [i].transform.transform.Find("Text").GetComponent<Text> ().text = options[i].TextOptions[0];
-//      } else {
-//        infoBtns [i].SetActive (false);
-//      }
-//    }
-//
-//    lstOptions = options;
-//  }
 }

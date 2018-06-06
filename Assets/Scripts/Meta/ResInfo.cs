@@ -2,11 +2,11 @@
 
 [Serializable]
 public class ResInfo {
-  string name;
-  int value;
-  ResType type;
+  public string name;
+  public int value;
+  public ResType type;
 
   public enum ResType {
-    Resource, Object, Upgrade, Quest, None
+    Resource, Object, Upgrade, Quest, Battle, Unit, None
   }
 }
