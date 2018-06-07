@@ -47,7 +47,7 @@ MonoBehaviour:
   header: Bartender
   description: The bartender looks at you with a tired expression. Perhaps a tip would
     help put you in his good graces.
-  img: 4
+  img: 5
   nxtScene: 
   nxtRes: []
   needRes: []

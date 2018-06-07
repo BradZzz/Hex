@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class HexCell : MonoBehaviour {
 
@@ -246,11 +247,12 @@ public class HexCell : MonoBehaviour {
   public void updateUIInfo(){
     GameObject ip = GameObject.Find ("InfoPanel");
 
-    if (ip == null) {
-      ip.GetComponent<InfoPanel> ().togglePanel(true);
-      ip.GetComponent<InfoPanel> ().updatePanel (GetCharacterName(),
-        gameObject.GetComponent<TileSprite> ().GetCharacterImage (GetInfo()),
-        GetInfo().health,GetInfo().actions,GetInfo().attacks);
+    if (ip != null && SceneManager.GetActiveScene ().name.Equals("BattleScene")) {
+      Debug.Log ("Updating Panel...");
+      ip.GetComponent<InfoPanel> ().togglePanel (true);
+      ip.GetComponent<InfoPanel> ().updatePanel (GetCharacterName (),
+        gameObject.GetComponent<TileSprite> ().GetCharacterImage (GetInfo ()),
+        GetInfo ().health, GetInfo ().actions, GetInfo ().attacks);
     }
   }
 

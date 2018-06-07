@@ -10,7 +10,7 @@ public class BaseSaver {
 
 	private static string BATTLE_INFO = "battle_info";
 
-  private static string LOCATION = "location";
+//  private static string LOCATION = "location";
 
 	private static string CHOICE = "choice";
 	private static string CHOICE_PICKED = "choice_pick";

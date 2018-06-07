@@ -10,13 +10,14 @@ public class GameInfo {
 
   public int gold;
 
-	public UnitInfo[] roster;
+	public UnitInfo[] playerRoster;
+  public UnitInfo[] enemyRoster;
 
 	public void PrintInfo() {
 	  Debug.Log("Name: " + name);
 	  Debug.Log("Movement: " + movement.ToString());
 	  Debug.Log("Fatigue: " + fatigue.ToString());
     Debug.Log("Gold: " + gold.ToString());
-	  Debug.Log("Roster: " + roster.Length);
+    Debug.Log("Roster: " + playerRoster.Length);
 	}
 }

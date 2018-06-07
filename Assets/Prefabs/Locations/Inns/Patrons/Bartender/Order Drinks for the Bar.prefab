@@ -45,7 +45,7 @@ MonoBehaviour:
   header: Order Drinks for the Bar
   description: "You order a round of drinks for the bar. The crowd cheers your name.
     \n\n* +1 Reputation *"
-  img: 4
+  img: 5
   nxtScene: 
   nxtRes:
   - name: Reputation

@@ -197,7 +197,7 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
-	protected void attackCell(HexCell attacker, HexCell defender){
+  protected virtual void attackCell(HexCell attacker, HexCell defender){
 		UnitInfo attacker_info = attacker.GetInfo ();
 		if (attacker_info.playerNo == getPTurn() && attacker_info.attacks > 0) {
 			attacker_info.attacks--;
@@ -240,6 +240,7 @@ public class HexGrid : MonoBehaviour {
 
 		HexCell cell = cells [index];
 		if (cell.GetPlayer () > -1) {
+      Clicked(cell);
 			if (cell.GetPlayer () == getPTurn() && (cell.GetInfo().actions > 0 || cell.GetInfo().attacks > 0)) {
 				if (cell.GetActive ()) {
 					ResetCells ();
@@ -264,6 +265,10 @@ public class HexGrid : MonoBehaviour {
 		}
 		hexMesh.Triangulate(cells);
 	}
+
+  protected virtual void Clicked(HexCell cell){
+    Debug.Log("Regular Clicked");
+  }
 
 	protected virtual void moveCamera(Vector3 pos){
 		camera.transform.position = pos;

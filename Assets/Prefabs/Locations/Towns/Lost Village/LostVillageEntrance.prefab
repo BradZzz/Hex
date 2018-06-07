@@ -43,11 +43,12 @@ MonoBehaviour:
   children:
   - {fileID: 114538126264887064, guid: 3d3722f4f1dd24b528a3eb53137d5272, type: 2}
   - {fileID: 114747423445831544, guid: 1c5a73515b14e4dae978a8012bd81872, type: 2}
+  - {fileID: 114747423445831544, guid: 9f4a883ead52d46f38ade65bf9e0d0fe, type: 2}
   name: Lost Village
   header: Lost Village
   description: This village used to be the jewel of the empire. Now it has been lost
     to time.
-  img: 5
+  img: 6
   nxtScene: 
   nxtRes: []
   needRes: []

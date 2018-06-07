@@ -67,10 +67,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dafc59568e56498d9d910270229e3dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  children: []
+  children:
+  - {fileID: 114538126264887064, guid: ba9c3bb79feb8458c936bb8f9b777dec, type: 2}
   name: Bargain Shop
   header: Bargain Shop
-  description: The shop seems to be closed. Perhaps you'll come back later...
+  description: You make your way to the local bargain shop. You can tell this whole
+    area has seen better days
   img: 0
   nxtScene: 
   nxtRes: []

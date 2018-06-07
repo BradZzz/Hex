@@ -16,6 +16,6 @@ public class LocationInfo : MonoBehaviour {
   public ResInfo[] needRes;
 
   public enum LocType {
-    Market, Inn, Castle, Arena, Char, Main, None
+    Market, Inn, Castle, Estate, Arena, Char, Main, None
   }
 }

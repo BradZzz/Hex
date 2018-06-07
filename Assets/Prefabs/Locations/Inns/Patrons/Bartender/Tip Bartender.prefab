@@ -75,7 +75,7 @@ MonoBehaviour:
 
 
     * +1 Quest *'
-  img: 4
+  img: 5
   nxtScene: 
   nxtRes:
   - name: Basic Quest

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 222438995913838004}
   - component: {fileID: 114189042542314532}
   m_Layer: 0
-  m_Name: Basic Shopkeep
+  m_Name: Basic ShopKeep
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
   header: Shopkeep
   description: The shopkeep looks at you with disinterest. Behind him you can see
     the selection...
-  img: 4
+  img: 5
   nxtScene: 
   nxtRes: []
   needRes: []
