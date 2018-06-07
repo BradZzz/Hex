@@ -70,9 +70,10 @@ MonoBehaviour:
   children:
   - {fileID: 114672135007910264, guid: 3a8a8b637247c4f42a466a65d2b70d61, type: 2}
   name: Wild Boar Inn
+  header: Wild Boar Inn
   description: You hear a low noise emanating from the building. Once inside you see
     a few patrons to interact with.
-  img: 0
+  img: 1
   nxtScene: 
   nxtRes: []
   needRes: []
@@ -93,7 +94,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

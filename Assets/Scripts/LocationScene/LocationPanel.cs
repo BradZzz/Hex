@@ -47,18 +47,51 @@ public class LocationPanel : MonoBehaviour {
     PopulateInfo(tStack.Peek());
   }
 
-  void OnEnable(){
-    Debug.Log ("OnEnable");
+  private IEnumerator Jump(GameObject character)
+  {
+    Vector3 startPos = character.transform.position;
+    float t = 0;
+    Vector3 endPos = new Vector3(startPos.x * startPos.y + System.Math.Sign(5), startPos.z);
+    float factor = 1f;
+    float moveSpeed = 1f;
+
+    while (t < 1f)
+    {
+      t += Time.deltaTime * moveSpeed;
+      float y = 0;
+      if (t < .5f) {
+        y = character.transform.position.y + t;
+      } else {
+        y = character.transform.position.y + (t - 1);
+      }
+      Vector3 pos = new Vector3(character.transform.position.x, y, character.transform.position.z);
+      character.transform.position = pos;
+
+      yield return null;
+    }
+
+    while(t < .5f){
+      t += Time.deltaTime * moveSpeed;
+      float y = character.transform.position.y + (.5f - t);
+      Vector3 pos = new Vector3(character.transform.position.x, y, character.transform.position.z);
+      character.transform.position = pos;
+
+      yield return null;
+    }
+
+    yield return 0;
   }
 
   void PopulateInfo(LocationInfo info){
-    header.GetComponent<Text> ().text = info.name;
+    header.GetComponent<Text> ().text = info.header;
     description.GetComponent<Text> ().text = info.description;
     if (LocationInfo.LocType.None != info.img) {
       Sprite img = info.gameObject.GetComponent<Image> ().sprite;
       if (info.img == LocationInfo.LocType.Char) {
         character.SetActive (true);
         character.GetComponent<Image> ().sprite = img;
+
+        StartCoroutine(Jump(character));
       } else {
         image.GetComponent<Image> ().sprite = img;
         character.SetActive (false);

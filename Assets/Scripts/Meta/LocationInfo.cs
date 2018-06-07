@@ -7,6 +7,7 @@ using UnityEngine;
 public class LocationInfo : MonoBehaviour {
   public LocationInfo[] children;
   public string name;
+  public string header;
   [TextArea(3, 3)]
   public string description;
   public LocType img;
