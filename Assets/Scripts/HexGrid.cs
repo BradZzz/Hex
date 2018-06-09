@@ -110,24 +110,28 @@ public class HexGrid : MonoBehaviour {
 		if (player) {
 			bool moved = false;
 			bool attacked = false;
-			if ((player.GetInfo ().type != UnitInfo.unitType.Knight && player.GetInfo ().actions > 0) || 
-				(player.GetInfo ().type == UnitInfo.unitType.Knight && player.GetInfo ().actions > 1)) {
-				HexCell[] path = HexAI.aStar (cells, player);
-				if (path.Length > 0) {
-					for (int i = path.Length - 1; i >= 0; i--) {
-						if (path [i].GetPlayer () == -1 && player.GetNeighborDir (path [i]) != HexDirection.None) {
-							moveCell (player, path [i]);
-							moved = true;
-							break;
-						}
-					}
-				}
-			} 
-			if (!moved && player.getActiveEnemy () != HexDirection.None && player.GetInfo ().attacks > 0) {
-				HexDirection enemyDir = player.getActiveEnemy ();
-				attackCell (player, player.GetNeighbor (enemyDir));
-				attacked = true;
-			} 
+      if (!attacked && (player.GetInfo ().type != UnitInfo.unitType.Knight && player.GetInfo ().actions > 0) || 
+        (player.GetInfo ().type == UnitInfo.unitType.Knight && player.GetInfo ().actions > 1)) {
+        HexCell[] path = HexAI.aStar (cells, player);
+        if (path.Length > 0) {
+          for (int i = path.Length - 1; i >= 0; i--) {
+            if (path [i].GetPlayer () == -1 && player.GetNeighborDir (path [i]) != HexDirection.None) {
+              moveCell (player, path [i]);
+              moved = true;
+              break;
+            }
+          }
+        }
+      }
+      if (!moved && player.getActiveEnemyAttack () != HexDirection.None && player.GetInfo ().attacks > 0) {
+        HexDirection enemyDir = player.getActiveEnemyAttack ();
+        attackCell (player, player.GetNeighbor (enemyDir));
+        if (player.GetInfo().type == UnitInfo.unitType.Lancer && player.GetNeighbor (enemyDir).GetNeighbor (enemyDir)) {
+          attackCell (player, player.GetNeighbor (enemyDir).GetNeighbor (enemyDir));
+        }
+        attacked = true;
+        player.GetInfo().attacks--;
+      }
 			if (!moved && !attacked) {
 				if (player.GetInfo ().type != UnitInfo.unitType.Swordsman && player.GetInfo ().actions > 0
 				    && player.getActiveEnemy () != HexDirection.None) {
@@ -199,21 +203,21 @@ public class HexGrid : MonoBehaviour {
 
   protected virtual void attackCell(HexCell attacker, HexCell defender){
 		UnitInfo attacker_info = attacker.GetInfo ();
-		if (attacker_info.playerNo == getPTurn() && attacker_info.attacks > 0) {
-			attacker_info.attacks--;
+    if (attacker.GetPlayer() > -1 && defender.GetPlayer() > -1 && attacker_info.playerNo == getPTurn() && attacker_info.attacks > 0) {
+//			attacker_info.attacks--;
 			// Swordsman attack strikes around hero
 			if (attacker_info.type == UnitInfo.unitType.Swordsman) {
 				attacker.swordAttackAround (getPTurn());
 			} else {
 				defender.TakeHit ();
 				// Lance attack strikes through enemy
-				if (attacker_info.type == UnitInfo.unitType.Lancer) {
-					HexDirection dir = attacker.GetNeighborDir (defender);
-					HexCell farUnit = defender.GetNeighbor (dir);
-					if (farUnit && farUnit.GetPlayer() > -1 && farUnit.GetPlayer() != getPTurn()) {
-						farUnit.TakeHit ();
-					}
-				}
+//				if (attacker_info.type == UnitInfo.unitType.Lancer) {
+//					HexDirection dir = attacker.GetNeighborDir (defender);
+//					HexCell farUnit = defender.GetNeighbor (dir);
+//					if (farUnit && farUnit.GetPlayer() > -1 && farUnit.GetPlayer() != getPTurn()) {
+//						farUnit.TakeHit ();
+//					}
+//				}
 			}
 
 			ResetCells ();
@@ -250,12 +254,24 @@ public class HexGrid : MonoBehaviour {
 					cell.paintNeigbors ();
 					cell.SetActive (true);
 				}
-			} else if (cell.GetPlayer () != getPTurn()) {
+      } else if (cell.GetPlayer () != getPTurn()) {
 				HexDirection dir = cell.getActiveNeigbor ();
-				if (dir != HexDirection.None) {
-					HexCell attacker = cell.GetNeighbor (dir);
-					attackCell(attacker, cell);
-				}
+        if (dir != HexDirection.None) {
+          HexCell attacker = cell.GetNeighbor (dir);
+          attackCell (attacker, cell);
+          if (attacker.GetInfo().type == UnitInfo.unitType.Lancer && cell.GetNeighbor(HexUtilities.oppositeSide(dir))) {
+            attackCell (attacker, cell.GetNeighbor(HexUtilities.oppositeSide(dir)));
+          }
+          attacker.GetInfo().attacks--;
+        } else {
+          dir = cell.getActiveLancer ();
+          if (dir != HexDirection.None && cell.GetNeighbor (dir).GetNeighbor (dir).GetInfo().type == UnitInfo.unitType.Lancer) {
+            HexCell attacker = cell.GetNeighbor (dir).GetNeighbor (dir);
+            attackCell (attacker, cell);
+            attackCell (attacker, cell.GetNeighbor (dir));
+            attacker.GetInfo().attacks--;
+          }
+        }
 			}
 		} else {
 			HexDirection dir = cell.getActiveNeigbor ();

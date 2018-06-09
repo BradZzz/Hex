@@ -79,7 +79,22 @@ public class HexGridAdventure : HexGrid {
     }
   }
 
+  void checkEndGame(){
+    BattleInfo battle = BaseSaver.getBattle ();
+    if (battle != null) {
+      if (battle.won) {
+        Debug.Log ("Won");
+      } else {
+        Debug.Log ("Lost");
+      }
+      BaseSaver.resetBattle ();
+      SceneManager.LoadScene ("MainMenuScene");
+    }
+  }
+
 	void Start () {
+    checkEndGame ();
+
 		TileInfo[] bTiles = BaseSaver.getTiles ();
 		UnitInfo[] bUnits = BaseSaver.getUnits ();
 
@@ -200,47 +215,49 @@ public class HexGridAdventure : HexGrid {
     }
     BaseSaver.putGame (game);
 
-    //Decide if we need to do anything now that we stepped on the tile
-    switch(cell.GetTile().type){
-    case TileInfo.tileType.Castle:
-      Debug.Log ("Enter Castle");
-      enterLocation ();
-      break;
-    case TileInfo.tileType.City:
-      Debug.Log ("Enter City");
-      enterLocation ();
-      break;
-    case TileInfo.tileType.Forest:
-      Debug.Log ("Enter Forest");
-      if(Random.Range(0, 5) < 1){
-        Debug.Log ("Bear Attack!");
-        createInteraction ();
+    if (cell.GetInfo ().human) {
+      //Decide if we need to do anything now that we stepped on the tile
+      switch (cell.GetTile ().type) {
+      case TileInfo.tileType.Castle:
+        Debug.Log ("Enter Castle");
+        enterLocation ();
+        break;
+      case TileInfo.tileType.City:
+        Debug.Log ("Enter City");
+        enterLocation ();
+        break;
+      case TileInfo.tileType.Forest:
+        Debug.Log ("Enter Forest");
+        if (Random.Range (0, 5) < 1) {
+          Debug.Log ("Bear Attack!");
+          createInteraction ();
+        }
+        break;
+      case TileInfo.tileType.Grass:
+        Debug.Log ("Enter Grass");
+        if (Random.Range (0, 9) < 1) {
+          Debug.Log ("Patrol Attack!");
+          createInteraction ();
+        }
+        break;
+      case TileInfo.tileType.Road:
+        Debug.Log ("Enter Road");
+        if (Random.Range (0, 16) < 1) {
+          Debug.Log ("Robber Attack!");
+          BaseSaver.putBoard (cells);
+          createInteraction ();
+        }
+        break;
+      case TileInfo.tileType.Mountain:
+        Debug.Log ("Enter Mountain");
+        break;
+      case TileInfo.tileType.Treasure:
+        Debug.Log ("Enter Treasure");
+        break;
+      case TileInfo.tileType.Water:
+        Debug.Log ("Enter Water");
+        break;
       }
-      break;
-    case TileInfo.tileType.Grass:
-      Debug.Log ("Enter Grass");
-      if(Random.Range(0, 9) < 1){
-        Debug.Log ("Patrol Attack!");
-        createInteraction ();
-      }
-      break;
-    case TileInfo.tileType.Road:
-      Debug.Log ("Enter Road");
-      if(Random.Range(0, 16) < 1){
-        Debug.Log ("Robber Attack!");
-        BaseSaver.putBoard(cells);
-        createInteraction ();
-      }
-      break;
-    case TileInfo.tileType.Mountain:
-      Debug.Log ("Enter Mountain");
-      break;
-    case TileInfo.tileType.Treasure:
-      Debug.Log ("Enter Treasure");
-      break;
-    case TileInfo.tileType.Water:
-      Debug.Log ("Enter Water");
-      break;
     }
   }
 

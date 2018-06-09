@@ -7,20 +7,25 @@ using UnityEngine.SceneManagement;
 public class HexGridBattle : HexGrid {
 
 	void Start () {
-		Queue<HexCell> availableCells = new Queue<HexCell> ();
-		availableCells.Enqueue (cells[0]);
-    for (int i = 0; i < game.playerRoster.Length; i++) {
-			HexCell cell = availableCells.Dequeue ();
-			foreach(HexDirection dir in cell.dirs){
-				HexCell n = cell.GetNeighbor (dir);
-				if (n) {
-					availableCells.Enqueue (n);
-				}
-			}
-      placePlayer(cell, 0, false, game.playerRoster[i].type, true);
-		}
+    BattleInfo thisBattle = BaseSaver.getBattle ();
 
-		placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Swordsman, false);
+    if (thisBattle != null) {
+//      placeAround(0, thisBattle.playerRoster, 0, true);
+
+      UnitInfo[] roster = new UnitInfo[3];
+      for (int i = 0; i < 3; i++) {
+        UnitInfo info = new UnitInfo ();
+        info.playerNo = 0;
+        info.type = UnitInfo.unitType.Lancer;
+        info.human = true;
+        roster[i] = info;
+      }
+      placeAround(0, roster, 0, true);
+      placeAround(cells.Length - 1, thisBattle.enemyRoster, 1, false);
+    } else {
+      placeAround(0, game.playerRoster, 0, true);
+      placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Lancer, false);
+    }
 
     foreach (HexCell cell in cells) {
       cell.setType(TileInfo.tileType.Road);
@@ -34,6 +39,21 @@ public class HexGridBattle : HexGrid {
 		ResetCells ();
     ResetBoard ();
 	}
+
+  private void placeAround(int idx, UnitInfo[] roster, int player, bool human){
+    Queue<HexCell> availableCells = new Queue<HexCell> ();
+    availableCells.Enqueue (cells[idx]);
+    for (int i = 0; i < roster.Length; i++) {
+      HexCell cell = availableCells.Dequeue ();
+      foreach(HexDirection dir in cell.dirs){
+        HexCell n = cell.GetNeighbor (dir);
+        if (n) {
+          availableCells.Enqueue (n);
+        }
+      }
+      placePlayer(cell, player, false, roster[i].type, human);
+    }
+  }
 
   private void ResetBoard(){
     GameObject.Find ("InfoPanel").GetComponent<InfoPanel> ().togglePanel(false);
@@ -74,12 +94,16 @@ public class HexGridBattle : HexGrid {
 			} else {
 				Debug.Log ("Player Wins!");
 			}
-				
-			BattleInfo battle = new BattleInfo ();
+
+      BattleInfo battle = BaseSaver.getBattle ();
+      if (battle == null) {
+        battle = new BattleInfo ();
+        battle.redirect = "AdventureScene";
+      }
 			battle.won = playersLeft;
 			BaseSaver.putBattle (battle);
 
-			SceneManager.LoadScene ("ChoiceScene");
+      SceneManager.LoadScene (battle.redirect);
 		}
 	}
 }

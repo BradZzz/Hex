@@ -259,7 +259,7 @@ public class HexCell : MonoBehaviour {
 	public void paintNeigbors (){
     updateUIInfo ();
 
-    if (GetInfo().actions > 0) {
+    if (GetInfo().actions > 0 || GetInfo().attacks > 0) {
   		foreach(HexDirection dir in dirs) {
   			setNeigbor(dir);
   		}
@@ -286,10 +286,21 @@ public class HexCell : MonoBehaviour {
 
 	private void setNeigbor(HexDirection direction){
     if (GetNeighbor (direction) && canMoveThere(GetNeighbor (direction).GetTile())){
-      if (GetNeighbor (direction).GetPlayer () == -1) {
+      bool canMove = GetNeighbor (direction).GetPlayer () == -1 && GetInfo ().actions > 0;
+      bool canAttack = GetNeighbor (direction).GetPlayer () > -1 && GetNeighbor (direction).GetPlayer () != GetInfo().playerNo && GetInfo().attacks > 0;
+
+      if (canMove) {
         GetNeighbor (direction).color = MOVE_COLOR;
-      } else if (GetNeighbor (direction).GetPlayer () != GetInfo().playerNo && GetInfo().attacks > 0) {
+      }
+      if (canAttack) {
         GetNeighbor (direction).color = ATTACK_COLOR;
+      }
+      if (GetInfo ().type == UnitInfo.unitType.Lancer) {
+        HexCell neigh = GetNeighbor (direction).GetNeighbor (direction);
+        if (neigh && ((neigh.GetPlayer () > -1 && GetInfo().attacks > 0 && neigh.GetPlayer () != GetInfo().playerNo) || canAttack)) {
+          GetNeighbor (direction).color = ATTACK_COLOR;
+          neigh.color = ATTACK_COLOR;
+        }
       }
 		}
 	}
@@ -302,6 +313,17 @@ public class HexCell : MonoBehaviour {
 		}
 		return HexDirection.None;
 	}
+
+  public HexDirection getActiveLancer (){
+    foreach (HexDirection dir in dirs) {
+      if (GetNeighbor(dir)) {
+        if (getActiveNeigbor (dir) > -1 || GetNeighbor (dir).getActiveNeigbor (dir) > -1) {
+          return dir;
+        }
+      }
+    }
+    return HexDirection.None;
+  }
 
 	public HexDirection getActiveEnemy (int player){
 		foreach (HexDirection dir in dirs) {
@@ -320,6 +342,24 @@ public class HexCell : MonoBehaviour {
 		}
 		return HexDirection.None;
 	}
+
+  public HexDirection getActiveEnemyAttack (){
+    foreach (HexDirection dir in dirs) {
+      if (GetNeighbor (dir)) {
+        HexCell neigh = GetNeighbor (dir);
+        if (GetInfo().type == UnitInfo.unitType.Lancer && neigh.GetNeighbor (dir)) {
+          HexCell relative = GetNeighbor (dir);
+          if (relative.GetPlayer() > -1 && relative.GetPlayer() != GetPlayer()) {
+            return dir;
+          }
+        }
+        if (neigh.GetPlayer() > -1 && neigh.GetPlayer() != GetPlayer()) {
+          return dir;
+        }
+      }
+    }
+    return HexDirection.None;
+  }
 
 	public void swordAttackAround (int pTurn){
 		foreach (HexDirection dir in dirs) {

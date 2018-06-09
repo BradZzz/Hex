@@ -16,6 +16,12 @@ public class ChoicePanel : MonoBehaviour {
 
 	private OptionInfo[] lstOptions;
 
+  UnitInfo.unitType[] choiceArr = new UnitInfo.unitType[] {
+    UnitInfo.unitType.Knight,
+    UnitInfo.unitType.Lancer,
+    UnitInfo.unitType.Swordsman,
+  };
+
 	//At the start we need to pull out the player 
 	//and attach it to the panel gameobject 
 	void Start () {
@@ -47,6 +53,8 @@ public class ChoicePanel : MonoBehaviour {
 			final.reaction = "<confirm/>";
 
 			populateInfoButtons (new OptionInfo[]{ final });
+
+      BaseSaver.resetBattle ();
 			BaseSaver.resetChoice ();
 		} else {
 			if (!option.reaction.Equals ("<confirm/>")) {
@@ -66,6 +74,25 @@ public class ChoicePanel : MonoBehaviour {
 				} else {
 					if (option.result == OptionInfo.resultType.Battle) {
 						BaseSaver.putChoice(choice, btn);
+
+            GameInfo game = BaseSaver.getGame ();
+
+            BattleInfo battle = new BattleInfo ();
+            battle.redirect = "ChoiceScene";
+            battle.playerRoster = game.playerRoster;
+
+            int enemies = 2;
+            battle.enemyRoster = new UnitInfo[enemies];
+            for (int i = 0; i < enemies; i++) {
+              UnitInfo info = new UnitInfo ();
+              info.playerNo = 0;
+              info.type = choiceArr[Random.Range(0, 3)];
+              Debug.Log ("Choice: " + info.type);
+              info.human = true;
+              battle.enemyRoster [i] = info;
+            }
+            BaseSaver.putBattle (battle);
+
 						SceneManager.LoadScene ("BattleScene");
 					} else {
 						SceneManager.LoadScene ("AdventureScene");
