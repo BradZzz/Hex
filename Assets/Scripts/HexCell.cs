@@ -123,9 +123,9 @@ public class HexCell : MonoBehaviour {
     TileSprite sprT = gameObject.GetComponent<TileSprite> ();
     if (sprT) {
       if (tile.fog) {
-        sprT.setTile(TileInfo.tileType.None);
+        sprT.setTile(GetInfo(), TileInfo.tileType.None);
       } else {
-        sprT.setTile(tile.type);
+        sprT.setTile(GetInfo(), tile.type);
       }
       sprT.setUnit (info);
     }
@@ -252,7 +252,7 @@ public class HexCell : MonoBehaviour {
       ip.GetComponent<InfoPanel> ().togglePanel (true);
       ip.GetComponent<InfoPanel> ().updatePanel (GetCharacterName (),
         gameObject.GetComponent<TileSprite> ().GetCharacterImage (GetInfo ()),
-        GetInfo ().health, GetInfo ().actions, GetInfo ().attacks);
+        GetInfo ().health, GetInfo ().actions, GetInfo ().attacks, GetInfo().human);
     }
   }
 
@@ -371,11 +371,13 @@ public class HexCell : MonoBehaviour {
 
 	public void TakeHit(){
 		info.health--;
-		if (info.health < 1) {
-			info.playerNo = -1;
-			info.human = false;
-			info.type = UnitInfo.unitType.None;
-		}
+    if (info.health < 1) {
+      info.playerNo = -1;
+      info.human = false;
+      info.type = UnitInfo.unitType.None;
+    } else {
+      gameObject.GetComponent<TileSprite> ().unitHit ();
+    }
 		SetInfo(info);
 	}
 

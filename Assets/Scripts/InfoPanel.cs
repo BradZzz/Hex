@@ -13,7 +13,7 @@ public class InfoPanel : MonoBehaviour {
     resetP.SetActive (!active);
   }
 	
-  public void updatePanel(string name, Sprite img, int health, int actions, int attacks){
+  public void updatePanel(string name, Sprite img, int health, int actions, int attacks, bool isPlayer){
     resetP.SetActive (false);
 
     toggleP.transform.Find ("CharImage").GetComponent<Image> ().sprite = img;
@@ -23,6 +23,10 @@ public class InfoPanel : MonoBehaviour {
 
     toggleP.transform.Find ("Atk").GetComponent<Image> ().enabled = attacks > 0;
 
-
+    if (isPlayer) {
+      toggleP.transform.parent.gameObject.GetComponent<Image> ().color = new Color (1, 1, 1, .4f);
+    } else {
+      toggleP.transform.parent.gameObject.GetComponent<Image> ().color = new Color (1, .8f, .8f, .8f);
+    }
   }
 }

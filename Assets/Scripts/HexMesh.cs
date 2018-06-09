@@ -47,16 +47,17 @@ public class HexMesh : MonoBehaviour {
 		Vector3 v2 = center + HexMetrics.GetSecondSolidCorner(direction);
 
 		AddTriangle(center, v1, v2);
-		AddTriangleColor(cell.getColor());
+		
+    AddTriangleColor(cell.getColor());
+
+    //AddOutlineColor (Color.red);
 
 //		if (direction <= HexDirection.SE) {
 //			TriangulateConnection(direction, cell, v1, v2);
 //		}
 	}
 
-	void TriangulateConnection (
-		HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2
-	) {
+	void TriangulateConnection (HexDirection direction, HexCell cell, Vector3 v1, Vector3 v2) {
 		HexCell neighbor = cell.GetNeighbor(direction);
 		if (neighbor == null) {
 			return;
@@ -85,6 +86,12 @@ public class HexMesh : MonoBehaviour {
 		triangles.Add(vertexIndex + 1);
 		triangles.Add(vertexIndex + 2);
 	}
+
+  void AddOutlineColor (Color color) {
+    colors.Add(Color.red);
+    colors.Add(Color.red);
+    colors.Add(Color.green);
+  }
 
 	void AddTriangleColor (Color color) {
 		colors.Add(color);

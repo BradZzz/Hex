@@ -1,14 +1,18 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Meta/LocationInfo.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Materials/PencilOutline.shader">
     <Files>
-      <File FileName="Assets/Scripts/Meta/LocationInfo.cs" Line="19" Column="29" />
-      <File FileName="Assets/Scripts/LocationScene/LocationPanel.cs" Line="86" Column="53" />
-      <File FileName="Assets/Scripts/HexGrid.cs" Line="157" Column="33" />
-      <File FileName="Assets/Scripts/Savers/BaseSaver.cs" Line="155" Column="5" />
+      <File FileName="Assets/Scripts/SpriteOutline.cs" Line="49" Column="48" />
+      <File FileName="Assets/Scripts/Savers/BaseSaver.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Meta/LocationInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/LocationScene/LocationPanel.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HexGrid.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HexCell.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/TileSprite.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Meta/ResInfo.cs" Line="12" Column="2" />
+      <File FileName="Assets/Scripts/Meta/ResInfo.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/LocationScene/LocationMain.cs" Line="5" Column="27" />
+      <File FileName="Assets/Scripts/Battle/HexGridBattle.cs" Line="26" Column="50" />
+      <File FileName="Assets/Materials/PencilOutline.shader" Line="17" Column="70" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -45,22 +45,24 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	public void EndTurn(){
-		setPTurn (getPTurn() + 1);
-		if (getPTurn() == players) {
-			setPTurn (0);
-		}
-    GameObject turnI = GameObject.Find ("TurnImg");
-    if (turnI) {
-      turnI.GetComponent<Image>().color = playerColors [getPTurn()];
+    if (!locked){
+  		setPTurn (getPTurn() + 1);
+  		if (getPTurn() == players) {
+  			setPTurn (0);
+  		}
+      GameObject turnI = GameObject.Find ("TurnImg");
+      if (turnI) {
+        turnI.GetComponent<Image>().color = playerColors [getPTurn()];
+      }
+  		foreach (HexCell cell in cells) {
+  			if (cell.GetPlayer () == getPTurn()) {
+  				cell.EndTurn ();
+  			} else {
+  				cell.StripTurn();
+  			}
+  		}
+  		postEndCheck(getPTurn());
     }
-		foreach (HexCell cell in cells) {
-			if (cell.GetPlayer () == getPTurn()) {
-				cell.EndTurn ();
-			} else {
-				cell.StripTurn();
-			}
-		}
-		postEndCheck(getPTurn());
 	}
 
 	public void placePlayer(HexCell cell, int idx, bool active, UnitInfo.unitType type, bool human){
@@ -108,6 +110,7 @@ public class HexGrid : MonoBehaviour {
 	{
 		HexCell player = ai.GetNextPlayer (cells);
 		if (player) {
+      locked = true;
 			bool moved = false;
 			bool attacked = false;
       if (!attacked && (player.GetInfo ().type != UnitInfo.unitType.Knight && player.GetInfo ().actions > 0) || 
@@ -152,6 +155,7 @@ public class HexGrid : MonoBehaviour {
 			yield return new WaitForSeconds(waitTime);
 			PlayAI ();
 		} else {
+      locked = false;
 			EndTurn ();
 		}
 	}

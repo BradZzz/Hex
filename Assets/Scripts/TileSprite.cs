@@ -10,6 +10,8 @@ public class TileSprite : MonoBehaviour {
   public Sprite Lancer;
   public Sprite Swordsman;
 
+  public Sprite Monster;
+
   public Sprite GetCharacterImage(UnitInfo unit) { 
     switch (unit.type) {
     case UnitInfo.unitType.Knight:
@@ -35,6 +37,10 @@ public class TileSprite : MonoBehaviour {
   public Sprite eSpawn;
   public Sprite pSpawn;
 
+  public void unitHit(){
+    gameObject.transform.Find("UnitObject").GetComponent<BattleGui> ().isHit();
+  }
+
   public void setUnit (UnitInfo unit) {
     SpriteRenderer spRend = gameObject.transform.Find("UnitObject").GetComponent<SpriteRenderer> ();
 
@@ -43,9 +49,10 @@ public class TileSprite : MonoBehaviour {
     if (unit.playerNo > -1) {
       spRend.enabled = true;
       switch(unit.type) {
-//      case UnitInfo.unitType.Knight:
-//        spRend.sprite = Knight;
-//        break;
+      case UnitInfo.unitType.Knight:
+        spRend.sprite = Knight;
+        spRend.transform.localPosition = new Vector3(-2, 7, -1);
+        break;
       case UnitInfo.unitType.Lancer:
         spRend.sprite = Lancer;
         spRend.transform.localPosition = new Vector3(1.5f, 7, -1);
@@ -54,6 +61,15 @@ public class TileSprite : MonoBehaviour {
       case UnitInfo.unitType.Swordsman:
         spRend.sprite = Swordsman;
         spRend.transform.localPosition = new Vector3(0, 10, -1);
+        break;
+      case UnitInfo.unitType.Adventure:
+        if (unit.human) {
+          spRend.sprite = Knight;
+          spRend.transform.localPosition = new Vector3(-2, 7, -1);
+        } else {
+          spRend.sprite = Monster;
+          spRend.transform.localPosition = new Vector3(0, 10, -1);
+        }
         break;
       default:
         spRend.sprite = Knight;
@@ -93,7 +109,7 @@ public class TileSprite : MonoBehaviour {
     }
   }
 
-  public void setTile (TileInfo.tileType type) {
+  public void setTile (UnitInfo unit, TileInfo.tileType type) {
     SpriteRenderer spRend = gameObject.transform.Find("TileObject").GetComponent<SpriteRenderer> ();
     spRend.enabled = true;
 
@@ -149,6 +165,11 @@ public class TileSprite : MonoBehaviour {
 //      Debug.Log (type);
       spRend.enabled = false;
       break;
+    }
+    if (unit.human || unit.playerNo == -1) {
+      spRend.color = new Color (1, 1, 1, 1);
+    } else {
+      spRend.color = new Color (1, .8f, .8f, .9f);
     }
   }
 }
