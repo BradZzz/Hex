@@ -263,11 +263,14 @@ public class HexGridAdventure : HexGrid {
 
   private void createInteraction(){
     BaseSaver.putBoard(cells);
+
     SceneManager.LoadScene ("ChoiceScene");
   }
 
   private void enterLocation(){
     BaseSaver.putBoard(cells);
+
+    BaseSaver.putLocation ("Lost Village");
     SceneManager.LoadScene ("LocationScene");
   }
 

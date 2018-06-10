@@ -6,7 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class LocationPanel : MonoBehaviour {
 
-  public GameObject locationMain;
+//  public GameObject locationMain;
+
+  public GameObject startScreen;
+
+  public GameObject[] locations;
 
   protected Stack<LocationInfo> tStack;
   private LocationMain locMeta;
@@ -19,11 +23,40 @@ public class LocationPanel : MonoBehaviour {
   private GameObject image;
   private GameObject character;
 
+  private bool sScreen;
+
+  void getLocation(){
+    locMeta = locations[0].GetComponent<LocationMain> ();
+    locSprite = locations[0].GetComponent<SpriteRenderer> ().sprite;
+
+    string locationName = BaseSaver.getLocation ();
+    Debug.Log ("locationName: " + locationName);
+    sScreen = false;
+
+    if (locationName.Length > 0) {
+      BaseSaver.resetLocation ();
+      if (locationName.Equals ("StartScreen")) {
+        locMeta = startScreen.GetComponent<LocationMain> ();
+        locSprite = startScreen.GetComponent<SpriteRenderer> ().sprite;
+        sScreen = true;
+      } else {
+        foreach (GameObject location in locations) {
+          if (location.name.Equals(locationName)){
+            locMeta = location.GetComponent<LocationMain> ();
+            locSprite = location.GetComponent<SpriteRenderer> ().sprite;
+          }
+        }
+      }
+    }
+  }
+
   void Awake(){
     Debug.Log ("Awake");
 
-    locMeta = locationMain.GetComponent<LocationMain> ();
-    locSprite = locationMain.GetComponent<SpriteRenderer> ().sprite;
+    getLocation ();
+//
+//    locMeta = locations[0].GetComponent<LocationMain> ();
+//    locSprite = locations[0].GetComponent<SpriteRenderer> ().sprite;
   }
 
   void Start(){
@@ -83,6 +116,10 @@ public class LocationPanel : MonoBehaviour {
   }
 
   void PopulateInfo(LocationInfo info){
+    if (info.nxtScene.Length > 0) {
+      SceneManager.LoadScene (info.nxtScene);
+    }
+
     header.GetComponent<Text> ().text = info.header;
     description.GetComponent<Text> ().text = info.description;
     if (LocationInfo.LocType.None != info.img) {
@@ -109,7 +146,7 @@ public class LocationPanel : MonoBehaviour {
       if (info.children != null && info.children.Length > i) {
         infoBtns [i].SetActive (true);
         infoBtns [i].GetComponentInChildren<Text> ().text = info.children [i].name;
-      } else if (info.children == null || info.children.Length == i) {
+      } else if ((info.children == null || info.children.Length == i) && (!sScreen || tStack.Count > 1)) {
         infoBtns [i].SetActive (true);
         string txt = "Leave";
         if (tStack.Count > 1) {

@@ -41,6 +41,7 @@ public class InfoButton : MonoBehaviour {
 		}
 		BaseSaver.putGame (nGame);
 
-		SceneManager.LoadScene ("AdventureScene");
+    BaseSaver.putLocation ("StartScreen");
+		SceneManager.LoadScene ("LocationScene");
 	}
 }
