@@ -214,7 +214,9 @@ public class LocationPanel : MonoBehaviour {
 
   void addAttribute(ResInfo resI, GameInfo gameI){
     List<string> attribs = new List<string> (gameI.attributes);
-    attribs.Add (resI.name);
+    if (!attribs.Contains(resI.name)) {
+      attribs.Add (resI.name);
+    }
     gameI.attributes = attribs.ToArray ();
   }
 
