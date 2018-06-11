@@ -10,17 +10,17 @@ public class HexGridBattle : HexGrid {
     BattleInfo thisBattle = BaseSaver.getBattle ();
 
     if (thisBattle != null) {
-//      placeAround(0, thisBattle.playerRoster, 0, true);
+      placeAround(0, thisBattle.playerRoster, 0, true);
 
-      UnitInfo[] roster = new UnitInfo[3];
-      for (int i = 0; i < 3; i++) {
-        UnitInfo info = new UnitInfo ();
-        info.playerNo = 0;
-        info.type = UnitInfo.unitType.Lancer;
-        info.human = true;
-        roster[i] = info;
-      }
-      placeAround(0, roster, 0, true);
+//      UnitInfo[] roster = new UnitInfo[3];
+//      for (int i = 0; i < 3; i++) {
+//        UnitInfo info = new UnitInfo ();
+//        info.playerNo = 0;
+//        info.type = UnitInfo.unitType.Lancer;
+//        info.human = true;
+//        roster[i] = info;
+//      }
+//      placeAround(0, roster, 0, true);
       placeAround(cells.Length - 1, thisBattle.enemyRoster, 1, false);
     } else {
       placeAround(0, game.playerRoster, 0, true);
