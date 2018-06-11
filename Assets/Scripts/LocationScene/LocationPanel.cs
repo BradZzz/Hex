@@ -88,8 +88,8 @@ public class LocationPanel : MonoBehaviour {
   {
     Vector3 startPos = character.transform.position;
     float t = 0;
-    Vector3 endPos = new Vector3(startPos.x * startPos.y + System.Math.Sign(5), startPos.z);
-    float factor = 1f;
+//    Vector3 endPos = new Vector3(startPos.x * startPos.y + System.Math.Sign(5), startPos.z);
+//    float factor = 1f;
     float moveSpeed = 1f;
 
     while (t < 1f)
@@ -115,6 +115,8 @@ public class LocationPanel : MonoBehaviour {
 
       yield return null;
     }
+
+    character.transform.position = startPos;
 
     yield return 0;
   }
@@ -168,20 +170,23 @@ public class LocationPanel : MonoBehaviour {
     Debug.Log ("removeItem");
 
     if (tStack.Peek().nxtRes.Length > 0) {
+      Debug.Log ("Pop");
       gameState.Pop ();
     }
 
     return tStack.Pop ();
   }
+
+  private GameInfo getDeref(){
+    return JsonUtility.FromJson<GameInfo> (JsonUtility.ToJson (gameState.Peek()));
+  }
     
   private void addItem(LocationInfo info){
     Debug.Log ("addItem");
 
-    //Moving forward here, so populate the player as they need to be populated
-
-    if (info.nxtRes.Length > 0) {
-      GameInfo tGame = gameState.Peek();
-      foreach(ResInfo inf in info.nxtRes){
+    if (tStack.Peek().nxtRes.Length > 0) {
+      GameInfo tGame = getDeref();
+      foreach(ResInfo inf in tStack.Peek().nxtRes){
         switch(inf.type){
         case ResInfo.ResType.Unit:
           composeSquad(inf, tGame);
