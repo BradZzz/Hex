@@ -45,12 +45,19 @@ MonoBehaviour:
   name: Trader
   header: Master Melrose Mouse
   description: "The trader made his money through shrewd negotiations and political
-    backstabbing. Tragically, his foot was eaten off by a human during the last war.
-    Since then he has sworn revenge. \n\nAttributes:\n* Generous\n* Friendly"
+    backstabbing. His foot was eaten off by a human during the last war. Since then
+    he has sworn revenge. \n\nAttributes:\n* Generous\n* Friendly"
   img: 5
   nxtScene: 
-  nxtRes: []
+  nxtRes:
+  - name: Generous
+    value: 1
+    type: 2
+  - name: Friendly
+    value: 1
+    type: 2
   needRes: []
+  applyAtEnd: 1
 --- !u!114 &114713594948097856
 MonoBehaviour:
   m_ObjectHideFlags: 1

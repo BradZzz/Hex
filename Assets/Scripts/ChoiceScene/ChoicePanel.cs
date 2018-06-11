@@ -16,6 +16,8 @@ public class ChoicePanel : MonoBehaviour {
 
 	private OptionInfo[] lstOptions;
 
+  private int idx;
+
   UnitInfo.unitType[] choiceArr = new UnitInfo.unitType[] {
     UnitInfo.unitType.Knight,
     UnitInfo.unitType.Lancer,
@@ -38,10 +40,14 @@ public class ChoicePanel : MonoBehaviour {
 			Debug.Log ("Picked: " + BaseSaver.getPicked ().ToString ());
 			selectChoice(BaseSaver.getPicked(), true);
 		}
+
+    idx = 0;
+
+    GameObject.Find("ForegroundImage").GetComponent<Image>().sprite = glossy.options[idx].GetComponent<Image>().sprite;
 	}
 
 	public void selectChoice(int btn, bool callback) {
-		ChoiceInfo choice = glossy.choices [0];
+    ChoiceInfo choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
 		OptionInfo option = lstOptions [btn - 1];
 
 		if (callback) {
@@ -103,7 +109,7 @@ public class ChoicePanel : MonoBehaviour {
 	}
 
 	void populateInfoPanel(ChoiceGlossary glossy){
-		ChoiceInfo choice = glossy.choices [0];
+    ChoiceInfo choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
 		GameObject.Find ("InfoHeader").GetComponent<Text> ().text = choice.name;
 		GameObject.Find ("InfoDescription").GetComponent<Text> ().text = choice.openingGreeting;
 

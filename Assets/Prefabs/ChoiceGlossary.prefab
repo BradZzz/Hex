@@ -51,40 +51,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9541b20a741b4514a7bf31b079ab9d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  choices:
-  - name: Casual Bear
-    image: bear
-    openingGreeting: You come across a casual bear in the forest. He's looking at
-      you in more than a casual way.
-    winningGreeting: You have swayed the bear with your supreme style and good looks.
-      As you leave you see him setting forest fires in the distance.
-    losingGreeting: The bear looks at you with a blank stare as he slowly douses your
-      mangled corpse in gasoline and lights it on fire. The memory of you is lost
-      in the resulting destruction and millions of dollars in property damages.
-    options:
-    - TextOptions:
-      - Challenge him to a race
-      reaction: The bear accepts your challenge. Prepare to face him in a battle of
-        wits!
-      result: 2
-    - TextOptions:
-      - Ask him where he's going
-      reaction: The bear doesn't understand what you're trying to say. After a few
-        minutes of frustration, he decides to walk away.
-      result: 4
-    - TextOptions:
-      - Direct him to nearest honeycomb
-      reaction: The bear grows angry at the greatest of all bear insults, the inability
-        to find honeycomb for himself.
-      result: 1
-    - TextOptions:
-      - Play your magical fiddle
-      reaction: The fiddle excites the bear in a way he hasn't felt in years. After
-        letting out a dance, he decides to give you an ancient bear amulet!
-      result: 3
-    - TextOptions:
-      - Insult his mother
-      reaction: The bear charges after you, but you are able to avoid his attacks
-        thanks to your good looks and quick thinking. The bear stumbles and falls,
-        giving you a chance to escape
-      result: 0
+  options:
+  - {fileID: 1257351998966050, guid: 5f7de10d7da994671bbb4124d0ccab14, type: 2}

@@ -54,8 +54,15 @@ MonoBehaviour:
     * 2 Mouse Scout'
   img: 5
   nxtScene: 
-  nxtRes: []
+  nxtRes:
+  - name: K
+    value: 2
+    type: 5
+  - name: L
+    value: 1
+    type: 5
   needRes: []
+  applyAtEnd: 1
 --- !u!114 &114713594948097856
 MonoBehaviour:
   m_ObjectHideFlags: 1

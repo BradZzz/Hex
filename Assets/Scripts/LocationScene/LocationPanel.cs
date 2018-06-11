@@ -24,6 +24,7 @@ public class LocationPanel : MonoBehaviour {
   private GameObject character;
 
   private bool sScreen;
+  private Stack<GameInfo> gameState;
 
   void getLocation(){
     locMeta = locations[0].GetComponent<LocationMain> ();
@@ -52,6 +53,9 @@ public class LocationPanel : MonoBehaviour {
 
   void Awake(){
     Debug.Log ("Awake");
+
+    gameState = new Stack<GameInfo> ();
+    gameState.Push (BaseSaver.getGame());
 
     getLocation ();
 //
@@ -117,6 +121,7 @@ public class LocationPanel : MonoBehaviour {
 
   void PopulateInfo(LocationInfo info){
     if (info.nxtScene.Length > 0) {
+      BaseSaver.putGame (gameState.Pop ());
       SceneManager.LoadScene (info.nxtScene);
     }
 
@@ -161,13 +166,58 @@ public class LocationPanel : MonoBehaviour {
 
   private LocationInfo removeItem(){
     Debug.Log ("removeItem");
+
+    if (tStack.Peek().nxtRes.Length > 0) {
+      gameState.Pop ();
+    }
+
     return tStack.Pop ();
   }
-
+    
   private void addItem(LocationInfo info){
     Debug.Log ("addItem");
+
+    //Moving forward here, so populate the player as they need to be populated
+
+    if (info.nxtRes.Length > 0) {
+      GameInfo tGame = gameState.Peek();
+      foreach(ResInfo inf in info.nxtRes){
+        switch(inf.type){
+        case ResInfo.ResType.Unit:
+          composeSquad(inf, tGame);
+          break;
+        case ResInfo.ResType.Upgrade:
+          addAttribute(inf, tGame);
+          break;
+        }
+      }
+
+      gameState.Push (tGame);
+    }
+
     tStack.Push (info);
   }
+
+  void composeSquad(ResInfo resI, GameInfo gameI){
+    List<string> typeArr = new List<string>(new string[]{"K","S","L"});
+    List<UnitInfo> roster = new List<UnitInfo> (gameI.playerRoster);
+
+    for(int i = 0; i < resI.value; i++){
+      UnitInfo unitI = new UnitInfo ();
+      unitI.playerNo = 0;
+      unitI.type = (UnitInfo.unitType)typeArr.IndexOf(resI.name);
+      unitI.human = true;
+      roster.Add (unitI);
+      gameI.playerRoster = roster.ToArray ();
+    }
+  }
+
+  void addAttribute(ResInfo resI, GameInfo gameI){
+    List<string> attribs = new List<string> (gameI.attributes);
+    attribs.Add (resI.name);
+    gameI.attributes = attribs.ToArray ();
+  }
+
 
   public void ButtonClick(int sel){
     int clicked = sel - 1;
@@ -180,6 +230,7 @@ public class LocationPanel : MonoBehaviour {
     Debug.Log (tStack);
 
     if (clicked >= tStack.Peek().children.Length) {
+      //Going back, so pop the gamestate if there is a resource we added
       Debug.Log (tStack.Peek().name);
       if (tStack.Count > 1) {
         Debug.Log ("Back");

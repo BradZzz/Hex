@@ -3,5 +3,5 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ChoiceGlossary : MonoBehaviour {
-	public ChoiceInfo[] choices;
+  public GameObject[] options;
 }

@@ -45,7 +45,7 @@ MonoBehaviour:
   name: Mercenary
   header: Bjornstein Boar
   description: 'You are a battle hardy war boar. Your wife and piglets were brutally
-    killed when your house collapsed.
+    spammed when your house collapsed.
 
 
     Attributes:
@@ -55,8 +55,15 @@ MonoBehaviour:
     * Intimidating'
   img: 5
   nxtScene: 
-  nxtRes: []
+  nxtRes:
+  - name: Sturdy
+    value: 1
+    type: 2
+  - name: Intimidating
+    value: 1
+    type: 2
   needRes: []
+  applyAtEnd: 1
 --- !u!114 &114713594948097856
 MonoBehaviour:
   m_ObjectHideFlags: 1

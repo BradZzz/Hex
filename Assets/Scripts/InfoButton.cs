@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class InfoButton : MonoBehaviour {
 
-	private int armySize = 3;
+	private int armySize = 4;
 
 	public void buttonClicked(int clkBtn){
 		Debug.Log ("Button Clicked: " + clkBtn.ToString());
@@ -29,14 +29,14 @@ public class InfoButton : MonoBehaviour {
 		nGame.name = "General Reginald Longbottom";
 		nGame.movement = 3;
 		nGame.fatigue = 0;
-    nGame.playerRoster = new UnitInfo[armySize];
+//    nGame.playerRoster = new UnitInfo[armySize];
     nGame.enemyRoster = new UnitInfo[armySize];
 		for (int i = 0; i < armySize; i++) {
 			UnitInfo info = new UnitInfo ();
 			info.playerNo = 0;
 			info.type = choiceArr[Random.Range(0, 3)];
 			info.human = true;
-      nGame.playerRoster [i] = info;
+//      nGame.playerRoster [i] = info;
       nGame.enemyRoster [i] = info;
 		}
 		BaseSaver.putGame (nGame);
