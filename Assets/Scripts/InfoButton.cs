@@ -29,14 +29,14 @@ public class InfoButton : MonoBehaviour {
 		nGame.name = "General Reginald Longbottom";
 		nGame.movement = 3;
 		nGame.fatigue = 0;
-//    nGame.playerRoster = new UnitInfo[armySize];
+    nGame.rations = 50;
+    nGame.gold = 250;
     nGame.enemyRoster = new UnitInfo[armySize];
 		for (int i = 0; i < armySize; i++) {
 			UnitInfo info = new UnitInfo ();
 			info.playerNo = 0;
 			info.type = choiceArr[Random.Range(0, 3)];
 			info.human = true;
-//      nGame.playerRoster [i] = info;
       nGame.enemyRoster [i] = info;
 		}
 		BaseSaver.putGame (nGame);

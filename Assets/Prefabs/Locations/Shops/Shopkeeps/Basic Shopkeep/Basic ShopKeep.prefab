@@ -67,7 +67,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dafc59568e56498d9d910270229e3dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  children: []
+  children:
+  - {fileID: 114150536552002168, guid: 18f8a8c5f226649048732a456fe21358, type: 2}
   name: Talk to Shopkeep
   header: Shopkeep
   description: The shopkeep looks at you with disinterest. Behind him you can see

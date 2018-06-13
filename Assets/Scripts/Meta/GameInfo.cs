@@ -9,6 +9,7 @@ public class GameInfo {
 	public int fatigue;
 
   public int gold;
+  public int rations;
 
 	public UnitInfo[] playerRoster;
   public UnitInfo[] enemyRoster;

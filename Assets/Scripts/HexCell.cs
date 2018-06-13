@@ -162,7 +162,7 @@ public class HexCell : MonoBehaviour {
 				this.info.health = 2;
 				break;
 			case UnitInfo.unitType.Lancer:
-				this.info.health = 3;
+				this.info.health = 2;
 				break;
 			case UnitInfo.unitType.Swordsman:
 				this.info.health = 4;

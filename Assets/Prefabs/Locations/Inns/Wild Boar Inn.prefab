@@ -69,6 +69,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   children:
   - {fileID: 114672135007910264, guid: 3a8a8b637247c4f42a466a65d2b70d61, type: 2}
+  - {fileID: 114672135007910264, guid: 30b202d81bcf5411b9189e88430c5863, type: 2}
+  - {fileID: 114672135007910264, guid: 9bc749f301e9f4a35aae9123f4af3bc9, type: 2}
+  - {fileID: 114672135007910264, guid: f0e9a3a4ba74c4187a1896319100b61d, type: 2}
   name: Wild Boar Inn
   header: Wild Boar Inn
   description: You hear a low noise emanating from the building. Once inside you see
@@ -77,6 +80,9 @@ MonoBehaviour:
   nxtScene: 
   nxtRes: []
   needRes: []
+  visible: 1
+  appearChance: 1
+  seen: 0
 --- !u!222 &222125418222985198
 CanvasRenderer:
   m_ObjectHideFlags: 1

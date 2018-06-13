@@ -15,6 +15,11 @@ public class LocationInfo : MonoBehaviour {
   public ResInfo[] nxtRes;
   public ResInfo[] needRes;
 
+  public bool visible = true;
+  public float appearChance = 1;
+  [HideInInspector]
+  public bool seen = false;
+
   public enum LocType {
     Market, Inn, Castle, Estate, Arena, Char, Main, None
   }

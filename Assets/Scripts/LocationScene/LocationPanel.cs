@@ -49,6 +49,8 @@ public class LocationPanel : MonoBehaviour {
         }
       }
     }
+      
+    TraverseMeta(locMeta.info);
   }
 
   void Awake(){
@@ -61,6 +63,41 @@ public class LocationPanel : MonoBehaviour {
 //
 //    locMeta = locations[0].GetComponent<LocationMain> ();
 //    locSprite = locations[0].GetComponent<SpriteRenderer> ().sprite;
+  }
+
+  //Traverse all the nodes of the location and calculate events
+  void TraverseMeta(LocationInfo node){
+    node.visible = true;
+
+    if(node.appearChance < 1){
+      float pick = Random.Range (0, 100);
+      float chance = node.appearChance * 100;
+
+      Debug.Log ("Name: " + node.name);
+      Debug.Log ("Pick: " + pick.ToString());
+      Debug.Log ("Chance: " + chance.ToString());
+
+      if (pick > chance) {
+        node.visible = false;
+        Debug.Log ("Making invisible");
+      }
+    }
+    foreach (LocationInfo child in node.children) {
+      TraverseMeta (child);
+    }
+  }
+
+  LocationInfo[] GetChildNodes(LocationInfo parent){
+    if (parent == null){
+      return null;
+    }
+    List<LocationInfo> children = new List<LocationInfo> ();
+    foreach (LocationInfo child in parent.children) {
+      if (child.visible) {
+        children.Add (child);
+      }
+    }
+    return children.ToArray ();
   }
 
   void Start(){
@@ -150,10 +187,10 @@ public class LocationPanel : MonoBehaviour {
   void PopulateButtons(LocationInfo info){
     //    tStack.Push (info);
     for(int i = 0; i < BTNLENGTH; i++) {
-      if (info.children != null && info.children.Length > i) {
+      if (GetChildNodes(info) != null && GetChildNodes(info).Length > i) {
         infoBtns [i].SetActive (true);
-        infoBtns [i].GetComponentInChildren<Text> ().text = info.children [i].name;
-      } else if ((info.children == null || info.children.Length == i) && (!sScreen || tStack.Count > 1)) {
+        infoBtns [i].GetComponentInChildren<Text> ().text = GetChildNodes(info) [i].name;
+      } else if ((GetChildNodes(info) == null || GetChildNodes(info).Length == i) && (!sScreen || tStack.Count > 1)) {
         infoBtns [i].SetActive (true);
         string txt = "Leave";
         if (tStack.Count > 1) {
@@ -169,7 +206,8 @@ public class LocationPanel : MonoBehaviour {
   private LocationInfo removeItem(){
     Debug.Log ("removeItem");
 
-    if (tStack.Peek().nxtRes.Length > 0) {
+    //
+    if (tStack.Peek().nxtRes.Length > 0 && tStack.Peek().needRes.Length == 0) {
       Debug.Log ("Pop");
       gameState.Pop ();
     }
@@ -184,15 +222,18 @@ public class LocationPanel : MonoBehaviour {
   private void addItem(LocationInfo info){
     Debug.Log ("addItem");
 
-    if (tStack.Peek().nxtRes.Length > 0) {
+    if (info.nxtRes.Length > 0) {
       GameInfo tGame = getDeref();
-      foreach(ResInfo inf in tStack.Peek().nxtRes){
+      foreach(ResInfo inf in info.nxtRes){
         switch(inf.type){
         case ResInfo.ResType.Unit:
           composeSquad(inf, tGame);
           break;
         case ResInfo.ResType.Upgrade:
           addAttribute(inf, tGame);
+          break;
+        case ResInfo.ResType.Resource:
+          addResource(inf, tGame);
           break;
         }
       }
@@ -225,6 +266,35 @@ public class LocationPanel : MonoBehaviour {
     gameI.attributes = attribs.ToArray ();
   }
 
+  void addResource(ResInfo resI, GameInfo gameI){
+    Debug.Log ("Adding Resource: " + resI.name);
+    if (resI.name.Equals("Ration")) {
+      gameI.rations += resI.value;
+      Debug.Log ("Bought Ration");
+    }
+  }
+
+  private bool canAfford(LocationInfo nxtLoc){
+    if (nxtLoc.needRes.Length > 0){
+      foreach(ResInfo res in nxtLoc.needRes){
+        switch(res.type){
+        case ResInfo.ResType.Resource:
+          GameInfo gameI = gameState.Pop ();
+          if (res.name.Equals("Gold")) {
+            if (gameI.gold >= res.value) {
+              gameI.gold-=res.value;
+            } else {
+              gameState.Push(gameI);
+              return false;
+            }
+          }
+          gameState.Push(gameI);
+          break;
+        }
+      }
+    }
+    return true;
+  }
 
   public void ButtonClick(int sel){
     int clicked = sel - 1;
@@ -236,7 +306,8 @@ public class LocationPanel : MonoBehaviour {
 //
     Debug.Log (tStack);
 
-    if (clicked >= tStack.Peek().children.Length) {
+    //We need to check in this if statement to check for resources required for option
+    if (clicked >= GetChildNodes(tStack.Peek()).Length) {
       //Going back, so pop the gamestate if there is a resource we added
       Debug.Log (tStack.Peek().name);
       if (tStack.Count > 1) {
@@ -245,12 +316,17 @@ public class LocationPanel : MonoBehaviour {
         PopulateInfo (tStack.Peek());
       } else {
         Debug.Log ("Leave");
+        BaseSaver.putGame (gameState.Pop());
         SceneManager.LoadScene ("AdventureScene");
       }
     } else {
-      Debug.Log (tStack.Peek().children[clicked].name);
-      addItem (tStack.Peek().children [clicked]);
-      PopulateInfo (tStack.Peek());
+      if (canAfford (GetChildNodes(tStack.Peek ()) [clicked])) {
+        Debug.Log (GetChildNodes(tStack.Peek ())[clicked].name);
+        addItem (GetChildNodes(tStack.Peek ())[clicked]);
+        PopulateInfo (tStack.Peek ());
+      } else {
+        Debug.Log ("Cannot afford");
+      }
     }
   }
 }

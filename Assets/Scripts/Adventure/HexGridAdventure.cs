@@ -37,9 +37,11 @@ public class HexGridAdventure : HexGrid {
   }
 
   void updateArmyInfo(GameInfo game){
-      GameObject.Find ("HeaderTxt").GetComponent<Text> ().text = game.name;
-      GameObject.Find ("armyInfo").GetComponent<Text> ().text = getRecruitStr(game);
-      GameObject.Find ("moveInfo").GetComponent<Text> ().text = getMoveStr(game);
+    GameObject.Find ("HeaderTxt").GetComponent<Text> ().text = game.name;
+    GameObject.Find ("armyInfo").GetComponent<Text> ().text = getRecruitStr(game);
+    GameObject.Find ("moveInfo").GetComponent<Text> ().text = getMoveStr(game);
+    GameObject.Find ("goldInfo").GetComponent<Text> ().text = game.gold > 0 ? "$" + game.gold.ToString() : "";
+    GameObject.Find ("rationInfo").GetComponent<Text> ().text = game.rations > 0 ? "<>" + game.rations.ToString() : "";
   }
 
   void LateUpdate()
@@ -54,9 +56,11 @@ public class HexGridAdventure : HexGrid {
 //      }
   	} else {
   		GameInfo nGame = new GameInfo ();
-  		nGame.name = "Sir Kingsly";
+  		nGame.name = "The Monster";
   		nGame.movement = 0;
   		nGame.fatigue = 0;
+      nGame.gold = 0;
+      nGame.rations = 0;
       nGame.playerRoster = new UnitInfo[0];
   		updateArmyInfo(nGame);
   	}
@@ -122,7 +126,8 @@ public class HexGridAdventure : HexGrid {
 				cell.GetTile ().fog = true;
 			}
 
-			MapInfo map = BaseSaver.getMap("Basic Level");
+//			MapInfo map = BaseSaver.getMap("Basic Level");
+      MapInfo map = BaseSaver.getMap("Level1");
 
       List<int> playerPos = new List<int> ();
       List<int> enemyPos = new List<int> ();
@@ -212,7 +217,9 @@ public class HexGridAdventure : HexGrid {
 
     if (cell.GetInfo().human) {
       game.fatigue++;
+      game.rations--;
     }
+      
     BaseSaver.putGame (game);
 
     if (cell.GetInfo ().human) {
@@ -273,6 +280,17 @@ public class HexGridAdventure : HexGrid {
     BaseSaver.putLocation ("Lost Village");
     SceneManager.LoadScene ("LocationScene");
   }
+
+  protected override bool canMove(HexCell cell){
+    Debug.Log("canMove");
+    return game.rations > 0;
+  }
+
+//  protected override void movedCell(HexCell cell) {
+//    Debug.Log("Regular movedCell");
+//    game.rations--;
+//    BaseSaver.putGame (game);
+//  }
 
 	protected override void postEndCheck(int turn) {
 		this.turn = turn;
