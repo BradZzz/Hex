@@ -205,8 +205,12 @@ public class HexCell : MonoBehaviour {
 				info.actions = 2;
 				info.attacks = 1;
 				break;
-			case UnitInfo.unitType.Adventure:
-				info.actions = 3;
+      case UnitInfo.unitType.Adventure:
+        if (info.human) {
+          info.actions = 3;
+        } else {
+          info.actions = 1;
+        }
 				info.attacks = 1;
 				break;
 			}
