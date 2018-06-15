@@ -17,8 +17,6 @@ public class LocationInfo : MonoBehaviour {
 
   public bool visible = true;
   public float appearChance = 1;
-  [HideInInspector]
-  public bool seen = false;
 
   public enum LocType {
     Market, Inn, Castle, Estate, Arena, Char, Main, None

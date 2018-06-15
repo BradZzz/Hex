@@ -237,21 +237,23 @@ public class HexGridAdventure : HexGrid {
         Debug.Log ("Enter Forest");
         if (Random.Range (0, 5) < 1) {
           Debug.Log ("Bear Attack!");
+          BaseSaver.putChoiceCharacter(TileInfo.tileType.Forest);
           createInteraction ();
         }
         break;
       case TileInfo.tileType.Grass:
         Debug.Log ("Enter Grass");
         if (Random.Range (0, 9) < 1) {
-          Debug.Log ("Patrol Attack!");
+          Debug.Log ("Cow Attack!");
+          BaseSaver.putChoiceCharacter(TileInfo.tileType.Grass);
           createInteraction ();
         }
         break;
       case TileInfo.tileType.Road:
         Debug.Log ("Enter Road");
         if (Random.Range (0, 16) < 1) {
-          Debug.Log ("Robber Attack!");
-          BaseSaver.putBoard (cells);
+          Debug.Log ("Bunny Attack!");
+          BaseSaver.putChoiceCharacter(TileInfo.tileType.Road);
           createInteraction ();
         }
         break;

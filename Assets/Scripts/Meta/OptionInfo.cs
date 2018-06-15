@@ -3,6 +3,7 @@ using UnityEngine;
 
 [Serializable]
 public class OptionInfo {
+  [TextArea(2, 3)]
 	public String[] TextOptions;
 	[TextArea(3, 3)]
 	public String reaction;

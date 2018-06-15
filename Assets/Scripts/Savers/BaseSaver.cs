@@ -13,6 +13,8 @@ public class BaseSaver {
   private static string LOCATION = "location";
 
 	private static string CHOICE = "choice";
+	private static string CHOICE_CHARACTER = "choice_character";
+  private static string CHOICE_CHARACTER_IDX = "choice_character_idx";
 	private static string CHOICE_PICKED = "choice_pick";
 
 	private static string BOARD_UNIT = "board_unit";
@@ -175,14 +177,31 @@ public class BaseSaver {
 
 	public static void resetChoice() {
 		PlayerPrefs.SetString (CHOICE, "");
+		PlayerPrefs.SetString (CHOICE_CHARACTER, "");
+    PlayerPrefs.SetString (CHOICE_CHARACTER_IDX, "");
 		PlayerPrefs.SetString (CHOICE_PICKED, "");
 
 		Debug.Log ("Choices reset");
 	}
 
-	public static void putChoice(ChoiceInfo choice, int picked) {
+  public static void putChoiceCharacter(TileInfo.tileType type){
+    string ty = JsonUtility.ToJson (type);
+    PlayerPrefs.SetString (CHOICE_CHARACTER, ty);
+	}
+
+  public static TileInfo.tileType getChoiceCharacter(){
+    string json = PlayerPrefs.GetString (CHOICE_CHARACTER);
+    if (json.Length == 0) {
+      return TileInfo.tileType.None;
+    }
+    Debug.Log ("Choices got");
+    return JsonUtility.FromJson<TileInfo.tileType> (json);
+	}
+
+	public static void putChoice(ChoiceInfo choice, int charIdx, int picked) {
 		string json = JsonUtility.ToJson (choice);
 		PlayerPrefs.SetString (CHOICE, json);
+    PlayerPrefs.SetString (CHOICE_CHARACTER_IDX, charIdx.ToString());
 		PlayerPrefs.SetString (CHOICE_PICKED, picked.ToString());
 
 		Debug.Log ("Choices set: " + json);
@@ -199,13 +218,20 @@ public class BaseSaver {
 		return JsonUtility.FromJson<ChoiceInfo> (json);
 	}
 
+  public static int getCharIdx(){
+    string json = PlayerPrefs.GetString (CHOICE_CHARACTER_IDX);
+    if (json.Length == 0) {
+      return -1;
+    }
+    return int.Parse (json);
+  }
+
 	public static int getPicked(){
 		string json = PlayerPrefs.GetString (CHOICE_PICKED);
 		if (json.Length == 0) {
 			return -1;
 		}
 		return int.Parse (json);
-
 	}
 
 	/*

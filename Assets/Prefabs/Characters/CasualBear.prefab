@@ -77,6 +77,9 @@ MonoBehaviour:
         thanks to your good looks and quick thinking. The bear stumbles and falls,
         giving you a chance to escape
       result: 0
+    firstLocation: 2
+    secondLocation: 3
+    thirdLocation: 10
 --- !u!114 &114956094416763718
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -96,7 +99,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300094, guid: b91d146509ecb421abdabfe9503fa288, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d2c978ed7e19a4fd0bd2816fb7244184, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -121,7 +124,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

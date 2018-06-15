@@ -24,6 +24,29 @@ public class ChoicePanel : MonoBehaviour {
     UnitInfo.unitType.Swordsman,
   };
 
+  int getCharacterIdx(GameObject[] options, TileInfo.tileType type){
+    int total = 0;
+    Queue<int> chcRng = new Queue<int> ();
+    foreach (GameObject opt in options) {
+      ChoiceInfo chc = opt.GetComponent<ChoiceMain> ().choice;
+      if (chc.firstLocation == type) {
+        total += 4;
+      } else if (chc.secondLocation == type) {
+        total += 2;
+      } else if (chc.thirdLocation == type) {
+        total += 1;
+      }
+      chcRng.Enqueue (total);
+    }
+    int pick = Random.Range(0, total);
+    while (chcRng.Count > 0) {
+      if (chcRng.Dequeue() > pick) {
+        return options.Length - chcRng.Count - 1;
+      }
+    }
+    return options.Length - 1;
+  }
+
 	//At the start we need to pull out the player 
 	//and attach it to the panel gameobject 
 	void Start () {
@@ -34,14 +57,25 @@ public class ChoicePanel : MonoBehaviour {
 		infoPnl = GameObject.Find ("InfoPanel");
 
 		glossy = cGlossary.GetComponent<ChoiceGlossary> ();
+
+    Debug.Log ("Character: " + BaseSaver.getChoiceCharacter ().ToString());
+
+    bool callBack = BaseSaver.getPicked () > -1;
+
+    if (callBack) {
+      idx = BaseSaver.getCharIdx ();
+    } else {
+      idx = getCharacterIdx(glossy.options, BaseSaver.getChoiceCharacter ());
+    }
+
+    Debug.Log ("Populating: " + idx.ToString());
+
 		populateInfoPanel (glossy);
 
-		if (BaseSaver.getPicked() > -1) {
-			Debug.Log ("Picked: " + BaseSaver.getPicked ().ToString ());
-			selectChoice(BaseSaver.getPicked(), true);
-		}
-
-    idx = 0;
+    if (BaseSaver.getPicked () > -1) {
+      Debug.Log ("Picked: " + BaseSaver.getPicked ().ToString ());
+      selectChoice (BaseSaver.getPicked (), true);
+    }
 
     GameObject.Find("ForegroundImage").GetComponent<Image>().sprite = glossy.options[idx].GetComponent<Image>().sprite;
 	}
@@ -75,11 +109,11 @@ public class ChoicePanel : MonoBehaviour {
 				populateInfoButtons (new OptionInfo[]{ final });
 			} else {
 				if (option.result == OptionInfo.resultType.MiniGame) {
-					BaseSaver.putChoice(choice, btn);
+					BaseSaver.putChoice(choice, idx, btn);
 					SceneManager.LoadScene ("MiniGameScene");
 				} else {
 					if (option.result == OptionInfo.resultType.Battle) {
-						BaseSaver.putChoice(choice, btn);
+						BaseSaver.putChoice(choice, idx, btn);
 
             GameInfo game = BaseSaver.getGame ();
 
