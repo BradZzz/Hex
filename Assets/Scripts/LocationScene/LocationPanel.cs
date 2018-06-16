@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class LocationPanel : MonoBehaviour {
 
@@ -70,7 +71,7 @@ public class LocationPanel : MonoBehaviour {
     node.visible = true;
 
     if(node.appearChance < 1){
-      float pick = Random.Range (0, 100);
+      float pick = UnityEngine.Random.Range (0, 100);
       float chance = node.appearChance * 100;
 
       Debug.Log ("Name: " + node.name);
@@ -259,9 +260,15 @@ public class LocationPanel : MonoBehaviour {
   }
 
   void addAttribute(ResInfo resI, GameInfo gameI){
-    List<string> attribs = new List<string> (gameI.attributes);
-    if (!attribs.Contains(resI.name)) {
-      attribs.Add (resI.name);
+    List<CharacterInfo.attributeType> attribs = new List<CharacterInfo.attributeType> (gameI.attributes);
+
+    String[] names = Enum.GetNames (typeof(CharacterInfo.attributeType));
+    //Find the enum that matches the name here
+    for (int i = 0; i < names.Length; i++) {
+      if (names[i].Equals(resI.name)){
+        Debug.Log ("Adding Attribute: " + resI.name);
+        attribs.Add ((CharacterInfo.attributeType)Enum.GetValues(typeof(CharacterInfo.attributeType)).GetValue(i));
+      }
     }
     gameI.attributes = attribs.ToArray ();
   }

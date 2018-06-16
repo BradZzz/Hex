@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 [Serializable]
 public class GameInfo {
@@ -13,7 +14,21 @@ public class GameInfo {
 
 	public UnitInfo[] playerRoster;
   public UnitInfo[] enemyRoster;
-  public string[] attributes;
+  public CharacterInfo.attributeType[] attributes;
+
+  public static CharacterInfo.attributeType getAvailableAttribute(GameInfo gameI){
+    String[] names = Enum.GetNames (typeof(CharacterInfo.attributeType));
+    List<CharacterInfo.attributeType> attribs = new List<CharacterInfo.attributeType> (gameI.attributes);
+
+    //Find the enum that matches the name here
+    for (int i = 0; i < names.Length; i++) {
+      CharacterInfo.attributeType thisAttrib = (CharacterInfo.attributeType) Enum.GetValues (typeof(CharacterInfo.attributeType)).GetValue (i);
+      if (!attribs.Contains(thisAttrib)) {
+        return thisAttrib;
+      }
+    }
+    return CharacterInfo.attributeType.None;
+  }
 
 	public void PrintInfo() {
 	  Debug.Log("Name: " + name);
@@ -22,8 +37,8 @@ public class GameInfo {
     Debug.Log("Gold: " + gold.ToString());
     Debug.Log("Roster: " + playerRoster.Length);
     Debug.Log ("Attributes");
-    foreach(string attribute in attributes){
-      Debug.Log (attribute);
+    foreach(CharacterInfo.attributeType attribute in attributes){
+      Debug.Log (attribute.ToString());
     }
 	}
 }

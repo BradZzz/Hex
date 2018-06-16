@@ -50,20 +50,21 @@ MonoBehaviour:
 
     Attributes:
 
-    * Sturdy
+    * Brawny
 
     * Intimidating'
   img: 5
   nxtScene: 
   nxtRes:
-  - name: Sturdy
+  - name: Brawny
     value: 1
     type: 2
   - name: Intimidating
     value: 1
     type: 2
   needRes: []
-  applyAtEnd: 1
+  visible: 1
+  appearChance: 1
 --- !u!114 &114713594948097856
 MonoBehaviour:
   m_ObjectHideFlags: 1

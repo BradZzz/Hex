@@ -52,18 +52,19 @@ MonoBehaviour:
 
     * Keen
 
-    * Crafty'
+    * Cunning'
   img: 5
   nxtScene: 
   nxtRes:
   - name: Keen
     value: 1
     type: 2
-  - name: Crafty
+  - name: Cunning
     value: 1
     type: 2
   needRes: []
-  applyAtEnd: 1
+  visible: 1
+  appearChance: 1
 --- !u!114 &114713594948097856
 MonoBehaviour:
   m_ObjectHideFlags: 1

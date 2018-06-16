@@ -200,6 +200,15 @@ public class HexGridAdventure : HexGrid {
 		}
 	}
 
+  private void setMessageTxt(string txt){
+    Debug.Log ("Setting Message Text: " + txt);
+    GameObject.Find ("MsgText").GetComponent<Text> ().text = txt;
+  }
+
+  private void resetMessageTxt(){
+    GameObject.Find ("MsgText").GetComponent<Text> ().text = "";
+  }
+
   protected override void attackCell(HexCell attacker, HexCell defender){
     GameInfo game = BaseSaver.getGame ();
 
@@ -212,14 +221,39 @@ public class HexGridAdventure : HexGrid {
     SceneManager.LoadScene ("BattleScene");
   }
 
+  private string receiveTreasure(){
+    GameInfo player = BaseSaver.getGame ();
+    int pick = Random.Range (0,20);
+    if (pick == 0){
+      Debug.Log ("Gained Attribute!");
+      CharacterInfo.attributeType newAttrib = GameInfo.getAvailableAttribute (player);
+      if (newAttrib != CharacterInfo.attributeType.None) {
+        List<CharacterInfo.attributeType> attribs = new List<CharacterInfo.attributeType> (player.attributes);
+        attribs.Add (newAttrib);
+        player.attributes = attribs.ToArray ();
+      }
+      return "Gained Attribute!";
+    } else if (pick < 8){
+      Debug.Log ("Gained Gold!");
+      player.gold += Random.Range (80,220);
+      return "Gained Gold!";
+    } else {
+      Debug.Log ("Gained Rations!");
+      player.rations += Random.Range (200,450);
+      return "Gained Rations!";
+    }
+  }
+
   protected override void movedCell(HexCell cell) {
+    resetMessageTxt ();
+
     Debug.Log ("Moved onto: " + cell.GetTile().type.ToString());
 
     if (cell.GetInfo().human) {
       game.fatigue++;
       game.rations--;
     }
-      
+
     BaseSaver.putGame (game);
 
     if (cell.GetInfo ().human) {
@@ -227,10 +261,12 @@ public class HexGridAdventure : HexGrid {
       switch (cell.GetTile ().type) {
       case TileInfo.tileType.Castle:
         Debug.Log ("Enter Castle");
+        BaseSaver.putLocation ("Great Hayre Junction");
         enterLocation ();
         break;
       case TileInfo.tileType.City:
         Debug.Log ("Enter City");
+        BaseSaver.putLocation ("Lost Village");
         enterLocation ();
         break;
       case TileInfo.tileType.Forest:
@@ -262,6 +298,8 @@ public class HexGridAdventure : HexGrid {
         break;
       case TileInfo.tileType.Treasure:
         Debug.Log ("Enter Treasure");
+        setMessageTxt("Gained Treasure!");
+        cell.setType (TileInfo.tileType.Grass);
         break;
       case TileInfo.tileType.Water:
         Debug.Log ("Enter Water");
@@ -279,7 +317,6 @@ public class HexGridAdventure : HexGrid {
   private void enterLocation(){
     BaseSaver.putBoard(cells);
 
-    BaseSaver.putLocation ("Lost Village");
     SceneManager.LoadScene ("LocationScene");
   }
 
@@ -318,6 +355,7 @@ public class HexGridAdventure : HexGrid {
 			}
 			SceneManager.LoadScene ("MainMenuScene");
 		}
+      
 	}
 
 //	protected override void CheckInteraction() {

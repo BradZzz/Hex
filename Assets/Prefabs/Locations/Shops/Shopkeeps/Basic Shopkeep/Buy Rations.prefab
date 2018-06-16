@@ -43,8 +43,8 @@ MonoBehaviour:
   children: []
   name: Buy 20 Rations ($10)
   header: Bought 20 Rations
-  description: You buy 20 servings of the local raw beetle paste. Your squire packs
-    them carefully into your supplies.
+  description: You buy 20 servings of local taco children. They cry as they are separated
+    from their parents. Your squire packs them carefully into your supplies.
   img: 5
   nxtScene: 
   nxtRes:
@@ -57,7 +57,6 @@ MonoBehaviour:
     type: 0
   visible: 1
   appearChance: 1
-  seen: 0
 --- !u!114 &114764253869120514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -77,7 +76,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 2a4276f0382364cd6853e4439c22f733, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b61d63543548a48769d777e3849c22e1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

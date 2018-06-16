@@ -72,10 +72,12 @@ public class ChoicePanel : MonoBehaviour {
 
 		populateInfoPanel (glossy);
 
-    if (BaseSaver.getPicked () > -1) {
+    if (callBack) {
       Debug.Log ("Picked: " + BaseSaver.getPicked ().ToString ());
       selectChoice (BaseSaver.getPicked (), true);
     }
+
+//    populateInfoPanel (glossy);
 
     GameObject.Find("ForegroundImage").GetComponent<Image>().sprite = glossy.options[idx].GetComponent<Image>().sprite;
 	}
