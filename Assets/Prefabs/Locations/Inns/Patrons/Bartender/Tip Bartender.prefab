@@ -78,13 +78,15 @@ MonoBehaviour:
   img: 5
   nxtScene: 
   nxtRes:
-  - name: Basic Quest
+  - name: Basic
     value: 1
     type: 3
   needRes:
   - name: Gold
     value: 5
     type: 0
+  visible: 1
+  appearChance: 1
 --- !u!222 &222300835624590826
 CanvasRenderer:
   m_ObjectHideFlags: 1

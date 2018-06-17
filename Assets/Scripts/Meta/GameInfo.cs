@@ -11,6 +11,7 @@ public class GameInfo {
 
   public int gold;
   public int rations;
+  public QuestInfo[] quests;
 
 	public UnitInfo[] playerRoster;
   public UnitInfo[] enemyRoster;

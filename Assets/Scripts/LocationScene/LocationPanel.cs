@@ -12,7 +12,9 @@ public class LocationPanel : MonoBehaviour {
   public GameObject startScreen;
 
   public GameObject[] locations;
+  public GameObject[] quests;
 
+  protected List<QuestInfo> availableQuests;
   protected Stack<LocationInfo> tStack;
   private LocationMain locMeta;
   private Sprite locSprite;
@@ -26,6 +28,23 @@ public class LocationPanel : MonoBehaviour {
 
   private bool sScreen;
   private Stack<GameInfo> gameState;
+
+  void Awake(){
+    Debug.Log ("Awake");
+
+    gameState = new Stack<GameInfo> ();
+    availableQuests = new List<QuestInfo> ();
+    foreach(GameObject quest in quests){
+      availableQuests.Add (quest.GetComponent<QuestMain>().quest);
+    }
+
+    gameState.Push (BaseSaver.getGame());
+
+    getLocation ();
+//
+//    locMeta = locations[0].GetComponent<LocationMain> ();
+//    locSprite = locations[0].GetComponent<SpriteRenderer> ().sprite;
+  }
 
   void getLocation(){
     locMeta = locations[0].GetComponent<LocationMain> ();
@@ -50,20 +69,8 @@ public class LocationPanel : MonoBehaviour {
         }
       }
     }
-      
+
     TraverseMeta(locMeta.info);
-  }
-
-  void Awake(){
-    Debug.Log ("Awake");
-
-    gameState = new Stack<GameInfo> ();
-    gameState.Push (BaseSaver.getGame());
-
-    getLocation ();
-//
-//    locMeta = locations[0].GetComponent<LocationMain> ();
-//    locSprite = locations[0].GetComponent<SpriteRenderer> ().sprite;
   }
 
   //Traverse all the nodes of the location and calculate events
@@ -236,6 +243,9 @@ public class LocationPanel : MonoBehaviour {
         case ResInfo.ResType.Resource:
           addResource(inf, tGame);
           break;
+        case ResInfo.ResType.Quest:
+          addQuest(inf, tGame);
+          break;
         }
       }
 
@@ -279,6 +289,37 @@ public class LocationPanel : MonoBehaviour {
       gameI.rations += resI.value;
       Debug.Log ("Bought Ration");
     }
+  }
+
+  void addQuest(ResInfo resI, GameInfo gameI){
+    Debug.Log ("Quest: " + resI.name);
+    List<QuestInfo> playerQuests = new List<QuestInfo> (gameI.quests);
+    List<QuestInfo> validQuests = new List<QuestInfo> ();
+    QuestInfo.QuestGroup thisQ = QuestInfo.QuestGroup.None;
+    String[] names = Enum.GetNames (typeof(QuestInfo.QuestGroup));
+
+    for (int i = 0; i < names.Length; i++) {
+      if (names[i].Equals(resI.name)){
+        thisQ = (QuestInfo.QuestGroup)Enum.GetValues (typeof(QuestInfo.QuestGroup)).GetValue (i);
+        Debug.Log ("Found Quest Type: " + names[i]);
+      }
+    }
+
+    if (thisQ != QuestInfo.QuestGroup.None) {
+      foreach(QuestInfo quest in availableQuests){
+        if (quest.questGroup == thisQ && !playerQuests.Contains(quest)) {
+          validQuests.Add (quest);
+        }
+      }
+      if (validQuests.Count > 0) {
+        QuestInfo[] qArr = validQuests.ToArray ();
+        HexUtilities.ShuffleArray (qArr);
+
+        Debug.Log ("Adding Quest: " + qArr[0].title);
+        playerQuests.Add (qArr[0]);
+      }
+    }
+    gameI.quests = playerQuests.ToArray ();
   }
 
   private bool canAfford(LocationInfo nxtLoc){
