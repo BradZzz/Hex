@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,26 +6,27 @@ public class BaseSaver {
 
   private static string MAPS = "maps";
 
-	private static string GAME = "game";
+  private static string GAME = "game";
 
-	private static string BATTLE_INFO = "battle_info";
+  private static string BATTLE_INFO = "battle_info";
 
   private static string LOCATION = "location";
 
-	private static string CHOICE = "choice";
-	private static string CHOICE_CHARACTER = "choice_character";
+  private static string CHOICE = "choice";
+  private static string CHOICE_CHARACTER = "choice_character";
   private static string CHOICE_CHARACTER_IDX = "choice_character_idx";
-	private static string CHOICE_PICKED = "choice_pick";
+  private static string CHOICE_PICKED = "choice_pick";
 
-	private static string BOARD_UNIT = "board_unit";
-	private static string BOARD_TILE = "board_tile";
+  private static string BOARD_INFO = "board_info";
+  private static string BOARD_UNIT = "board_unit";
+  private static string BOARD_TILE = "board_tile";
 
-	public static void resetAll() {
-		resetGame ();
-		resetBattle ();
-		resetChoice ();
-		resetBoard ();
-	}
+  public static void resetAll() {
+    resetGame ();
+    resetBattle ();
+    resetChoice ();
+    resetBoard ();
+  }
 
   /*
    * Maps
@@ -87,61 +88,61 @@ public class BaseSaver {
     return null;
   }
 
-	/*
-	 * Player
-	 * 
-	 */
+  /*
+   * Player
+   * 
+   */
 
-	public static void resetGame() {
-		PlayerPrefs.SetString (GAME, "");
+  public static void resetGame() {
+    PlayerPrefs.SetString (GAME, "");
 
-		Debug.Log ("Game reset");
-	}
+    Debug.Log ("Game reset");
+  }
 
-	public static void putGame(GameInfo info) {
-		string json = JsonUtility.ToJson (info);
-		PlayerPrefs.SetString (GAME, json);
+  public static void putGame(GameInfo info) {
+    string json = JsonUtility.ToJson (info);
+    PlayerPrefs.SetString (GAME, json);
 
-		Debug.Log ("Game set: " + json);
-	}
-
-
-	public static GameInfo getGame(){
-		string json = PlayerPrefs.GetString (GAME);
-		if (json.Length == 0) {
-			return null;
-		}
-		Debug.Log ("Game got");
-		return JsonUtility.FromJson<GameInfo> (json);
-	}
-
-	/*
-	 * Battle
-	 * 
-	 */
-
-	public static void resetBattle() {
-		PlayerPrefs.SetString (BATTLE_INFO, "");
-
-		Debug.Log ("Battle reset");
-	}
-
-	public static void putBattle(BattleInfo info) {
-		string json = JsonUtility.ToJson (info);
-		PlayerPrefs.SetString (BATTLE_INFO, json);
-
-		Debug.Log ("Battle set: " + json);
-	}
+    Debug.Log ("Game set: " + json);
+  }
 
 
-	public static BattleInfo getBattle(){
-		string json = PlayerPrefs.GetString (BATTLE_INFO);
-		if (json.Length == 0) {
-			return null;
-		}
-		Debug.Log ("Battle got");
-		return JsonUtility.FromJson<BattleInfo> (json);
-	}
+  public static GameInfo getGame(){
+    string json = PlayerPrefs.GetString (GAME);
+    if (json.Length == 0) {
+      return null;
+    }
+    Debug.Log ("Game got");
+    return JsonUtility.FromJson<GameInfo> (json);
+  }
+
+  /*
+   * Battle
+   * 
+   */
+
+  public static void resetBattle() {
+    PlayerPrefs.SetString (BATTLE_INFO, "");
+
+    Debug.Log ("Battle reset");
+  }
+
+  public static void putBattle(BattleInfo info) {
+    string json = JsonUtility.ToJson (info);
+    PlayerPrefs.SetString (BATTLE_INFO, json);
+
+    Debug.Log ("Battle set: " + json);
+  }
+
+
+  public static BattleInfo getBattle(){
+    string json = PlayerPrefs.GetString (BATTLE_INFO);
+    if (json.Length == 0) {
+      return null;
+    }
+    Debug.Log ("Battle got");
+    return JsonUtility.FromJson<BattleInfo> (json);
+  }
 
   /*
    * Location
@@ -170,24 +171,24 @@ public class BaseSaver {
     return str;
   }
 
-	/*
-	 * Choices
-	 *
-	 */
+  /*
+   * Choices
+   *
+   */
 
-	public static void resetChoice() {
-		PlayerPrefs.SetString (CHOICE, "");
-		PlayerPrefs.SetString (CHOICE_CHARACTER, "");
+  public static void resetChoice() {
+    PlayerPrefs.SetString (CHOICE, "");
+    PlayerPrefs.SetString (CHOICE_CHARACTER, "");
     PlayerPrefs.SetString (CHOICE_CHARACTER_IDX, "");
-		PlayerPrefs.SetString (CHOICE_PICKED, "");
+    PlayerPrefs.SetString (CHOICE_PICKED, "");
 
-		Debug.Log ("Choices reset");
-	}
+    Debug.Log ("Choices reset");
+  }
 
   public static void putChoiceCharacter(TileInfo.tileType type){
     string ty = JsonUtility.ToJson (type);
     PlayerPrefs.SetString (CHOICE_CHARACTER, ty);
-	}
+  }
 
   public static TileInfo.tileType getChoiceCharacter(){
     string json = PlayerPrefs.GetString (CHOICE_CHARACTER);
@@ -196,27 +197,27 @@ public class BaseSaver {
     }
     Debug.Log ("Choices got");
     return JsonUtility.FromJson<TileInfo.tileType> (json);
-	}
+  }
 
-	public static void putChoice(ChoiceInfo choice, int charIdx, int picked) {
-		string json = JsonUtility.ToJson (choice);
-		PlayerPrefs.SetString (CHOICE, json);
+  public static void putChoice(ChoiceInfo choice, int charIdx, int picked) {
+    string json = JsonUtility.ToJson (choice);
+    PlayerPrefs.SetString (CHOICE, json);
     PlayerPrefs.SetString (CHOICE_CHARACTER_IDX, charIdx.ToString());
-		PlayerPrefs.SetString (CHOICE_PICKED, picked.ToString());
+    PlayerPrefs.SetString (CHOICE_PICKED, picked.ToString());
 
-		Debug.Log ("Choices set: " + json);
-		Debug.Log ("Choices set: " + picked.ToString());
-	}
+    Debug.Log ("Choices set: " + json);
+    Debug.Log ("Choices set: " + picked.ToString());
+  }
 
 
-	public static ChoiceInfo getChoice(){
-		string json = PlayerPrefs.GetString (CHOICE);
-		if (json.Length == 0) {
-			return null;
-		}
-		Debug.Log ("Choices got");
-		return JsonUtility.FromJson<ChoiceInfo> (json);
-	}
+  public static ChoiceInfo getChoice(){
+    string json = PlayerPrefs.GetString (CHOICE);
+    if (json.Length == 0) {
+      return null;
+    }
+    Debug.Log ("Choices got");
+    return JsonUtility.FromJson<ChoiceInfo> (json);
+  }
 
   public static int getCharIdx(){
     string json = PlayerPrefs.GetString (CHOICE_CHARACTER_IDX);
@@ -226,55 +227,75 @@ public class BaseSaver {
     return int.Parse (json);
   }
 
-	public static int getPicked(){
-		string json = PlayerPrefs.GetString (CHOICE_PICKED);
-		if (json.Length == 0) {
-			return -1;
-		}
-		return int.Parse (json);
-	}
+  public static int getPicked(){
+    string json = PlayerPrefs.GetString (CHOICE_PICKED);
+    if (json.Length == 0) {
+      return -1;
+    }
+    return int.Parse (json);
+  }
 
-	/*
-	 * Board
-	 * 
-	 */
+  /*
+   * Board
+   * 
+   */
 
-	public static void resetBoard(){
-		PlayerPrefs.SetString (BOARD_UNIT, "");
-		PlayerPrefs.SetString (BOARD_TILE, "");
-	}
+  public static void resetBoard(){
+    PlayerPrefs.SetString (BOARD_UNIT, "");
+    PlayerPrefs.SetString (BOARD_TILE, "");
+  }
 
-	public static void putBoard(HexCell[] cells){
-		TileInfo[] tiles = new TileInfo[cells.Length];
-		UnitInfo[] units = new UnitInfo[cells.Length];
+  public static void putBoard(HexCell[] cells, string name, int height, int width){
+    TileInfo[] tiles = new TileInfo[cells.Length];
+    UnitInfo[] units = new UnitInfo[cells.Length];
 
-		for (int i = 0; i < cells.Length; i++) {
-			tiles [i] = cells [i].GetTile ();
-			units [i] = cells [i].GetInfo ();
-		}
+    for (int i = 0; i < cells.Length; i++) {
+      tiles [i] = cells [i].GetTile ();
+      units [i] = cells [i].GetInfo ();
+    }
 
-		string tiles_json = JsonHelper.ToJson(tiles);
-		string units_json = JsonHelper.ToJson(units);
+    BoardInfo boardInfo = new BoardInfo ();
+    boardInfo.name = name;
+    boardInfo.height = height;
+    boardInfo.width = width;
 
-		PlayerPrefs.SetString (BOARD_TILE, tiles_json);
-		PlayerPrefs.SetString (BOARD_UNIT, units_json);
-	}
+    string info_json = JsonUtility.ToJson(boardInfo);
+    string tiles_json = JsonHelper.ToJson(tiles);
+    string units_json = JsonHelper.ToJson(units);
 
-	public static TileInfo[] getTiles(){
-		string json = PlayerPrefs.GetString (BOARD_TILE);
-		if (json.Length == 0) {
-			return null;
-		}
-		TileInfo[] tiles = JsonHelper.FromJson<TileInfo>(json);
-		return tiles;
-	}
+    PlayerPrefs.SetString (BOARD_INFO,info_json);
+    PlayerPrefs.SetString (BOARD_TILE, tiles_json);
+    PlayerPrefs.SetString (BOARD_UNIT, units_json);
+  }
 
-	public static UnitInfo[] getUnits(){
-		string json = PlayerPrefs.GetString (BOARD_UNIT);
-		if (json.Length == 0) {
-			return null;
-		}
-		UnitInfo[] units = JsonHelper.FromJson<UnitInfo>(json);
-		return units;
-	}
+  public static BoardInfo getBoardInfo(){
+    string json = PlayerPrefs.GetString (BOARD_INFO);
+    if (json.Length == 0) {
+      return null;
+    }
+    return JsonUtility.FromJson<BoardInfo>(json);
+  }
+
+  public static void setTiles(TileInfo[] tiles){
+    string tiles_json = JsonHelper.ToJson(tiles);
+    PlayerPrefs.SetString (BOARD_TILE, tiles_json);
+  }
+
+  public static TileInfo[] getTiles(){
+    string json = PlayerPrefs.GetString (BOARD_TILE);
+    if (json.Length == 0) {
+      return null;
+    }
+    TileInfo[] tiles = JsonHelper.FromJson<TileInfo>(json);
+    return tiles;
+  }
+
+  public static UnitInfo[] getUnits(){
+    string json = PlayerPrefs.GetString (BOARD_UNIT);
+    if (json.Length == 0) {
+      return null;
+    }
+    UnitInfo[] units = JsonHelper.FromJson<UnitInfo>(json);
+    return units;
+  }
 }

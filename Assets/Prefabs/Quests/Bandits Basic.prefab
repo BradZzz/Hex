@@ -56,10 +56,11 @@ MonoBehaviour:
     endIdx: 0
     title: Fight the bandits
     startMsg: Help! Bandits have made camp in a forest not far from here. Find them
-      and eleminate them.
+      and eliminate them.
     endMsg: With the bandits defeated, your team makes off with what they find laying
       around the camp
     type: 0
+    questGroup: 0
     locType: 2
     completed: 0
     rewards:

@@ -31,10 +31,10 @@ public class HexGridEdit : HexGrid {
 		gridCanvas = GetComponentInChildren<Canvas>();
 		hexMesh = GetComponentInChildren<HexMesh>();
 
-		cells = new HexCell[height * width];
+    cells = new HexCell[boardHeight * boardWidth];
 
-		for (int z = 0, i = 0; z < height; z++) {
-			for (int x = 0; x < width; x++) {
+    for (int z = 0, i = 0; z < boardHeight; z++) {
+      for (int x = 0; x < boardWidth; x++) {
 				CreateCell(x, z, i++);
 			}
 		}
@@ -47,8 +47,8 @@ public class HexGridEdit : HexGrid {
     List<TileInfo> mTiles = new List<TileInfo> ();
 
     MapInfo map = new MapInfo ();
-    map.h = height;
-    map.w = width;
+    map.h = boardHeight;
+    map.w = boardWidth;
     map.name = GameObject.Find ("MapNameField").GetComponent<InputField> ().text;
 
     foreach(HexCell cell in cells){
@@ -159,7 +159,7 @@ public class HexGridEdit : HexGrid {
   public void PaintTile (Vector3 position, Color color) {
     position = transform.InverseTransformPoint(position);
     HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-    int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
+    int index = coordinates.X + coordinates.Z * boardWidth + coordinates.Z / 2;
 
     HexCell cell = cells [index];
     cell.setType ((TileInfo.tileType) idx);

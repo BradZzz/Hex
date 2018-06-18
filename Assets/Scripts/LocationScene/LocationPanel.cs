@@ -14,6 +14,8 @@ public class LocationPanel : MonoBehaviour {
   public GameObject[] locations;
   public GameObject[] quests;
 
+  public HexCell HexCellPrefab; 
+
   protected List<QuestInfo> availableQuests;
   protected Stack<LocationInfo> tStack;
   private LocationMain locMeta;
@@ -291,6 +293,48 @@ public class LocationPanel : MonoBehaviour {
     }
   }
 
+  QuestInfo fillQuestInfo(QuestInfo quest){
+    QHexBoard qBoard = new QHexBoard(BaseSaver.getBoardInfo().width, BaseSaver.getBoardInfo().height, HexCellPrefab);
+    HexCell[] cells = qBoard.getCells();
+
+    TileInfo[] tiles = BaseSaver.getTiles ();
+    UnitInfo[] units = BaseSaver.getUnits ();
+
+    List<int> dests = new List<int> ();
+    for (int i = 0; i < units.Length; i++) {
+      if (units[i].human) {
+        quest.startIdx = i;
+      }
+    }
+    Debug.Log ("Starting idx: " + quest.startIdx.ToString());
+    for (int i = 0; i < tiles.Length; i++) {
+      if (tiles[i].type == quest.locType && !tiles[i].interaction) {
+        HexCell[] path = HexAI.aStar (cells,cells[quest.startIdx],cells[i]);
+        if(path != null && path.Length < 15){
+          dests.Add (i);
+        }
+//        if(path != null && path.Length > 3 && path.Length < 8){
+//          dests.Add (i);
+//        }
+      }
+    }
+      
+    if (dests.Count > 0) {
+      int[] theseDests = dests.ToArray ();
+      HexUtilities.ShuffleArray (theseDests);
+
+      tiles [theseDests [0]].interaction = true;
+      quest.endIdx = theseDests [0];
+      Debug.Log ("Destination Set: " + quest.endIdx.ToString ());
+      BaseSaver.setTiles (tiles);
+      Debug.Log ("Tiles saved");
+    } else {
+      Debug.Log ("No destinations! Quest invalid...");
+    }
+
+    return quest;
+  }
+
   void addQuest(ResInfo resI, GameInfo gameI){
     Debug.Log ("Quest: " + resI.name);
     List<QuestInfo> playerQuests = new List<QuestInfo> (gameI.quests);
@@ -315,11 +359,14 @@ public class LocationPanel : MonoBehaviour {
         QuestInfo[] qArr = validQuests.ToArray ();
         HexUtilities.ShuffleArray (qArr);
 
-        Debug.Log ("Adding Quest: " + qArr[0].title);
-        playerQuests.Add (qArr[0]);
+        QuestInfo thisQuest = JsonUtility.FromJson<QuestInfo> (JsonUtility.ToJson (qArr[0]));
+
+        Debug.Log ("Adding Quest: " + thisQuest.title);
+
+        playerQuests.Add (fillQuestInfo(thisQuest));
+        gameI.quests = playerQuests.ToArray ();
       }
     }
-    gameI.quests = playerQuests.ToArray ();
   }
 
   private bool canAfford(LocationInfo nxtLoc){
@@ -374,6 +421,55 @@ public class LocationPanel : MonoBehaviour {
         PopulateInfo (tStack.Peek ());
       } else {
         Debug.Log ("Cannot afford");
+      }
+    }
+  }
+
+  class QHexBoard{
+    int height, width;
+    HexCell prefab;
+    HexCell[] cells;
+
+    public QHexBoard(int height, int width, HexCell prefab){
+      this.height = height;
+      this.width = width;
+      this.prefab = prefab;
+      cells = new HexCell[height * width];
+      for (int z = 0, i = 0; z < height; z++) {
+        for (int x = 0; x < width; x++) {
+          CreateCell(x, z, i++);
+        }
+      }
+    }
+
+    public HexCell[] getCells(){
+      return cells;
+    }
+
+    private void CreateCell (int x, int z, int i) {
+      Vector3 position;
+      position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
+      position.y = 0f;
+      position.z = z * (HexMetrics.outerRadius * 1.5f);
+
+      HexCell cell = cells[i] = Instantiate<HexCell>(prefab);
+      cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
+      if (x > 0) {
+        cell.SetNeighbor(HexDirection.W, cells[i - 1]);
+      }
+      if (z > 0) {
+        if ((z & 1) == 0) {
+          cell.SetNeighbor(HexDirection.SE, cells[i - width]);
+          if (x > 0) {
+            cell.SetNeighbor(HexDirection.SW, cells[i - width - 1]);
+          }
+        }
+        else {
+          cell.SetNeighbor(HexDirection.SW, cells[i - width]);
+          if (x < width - 1) {
+            cell.SetNeighbor(HexDirection.SE, cells[i - width + 1]);
+          }
+        }
       }
     }
   }

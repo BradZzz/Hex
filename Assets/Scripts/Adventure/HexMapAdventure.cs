@@ -30,4 +30,8 @@ public class HexMapAdventure : MonoBehaviour {
 	public void PlayAI () {
 		hexGrid.PlayAI ();
 	}
+
+  public void ShowPlayerMenu () {
+    hexGrid.showPlayerMenu ();
+  }
 }

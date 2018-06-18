@@ -123,9 +123,9 @@ public class HexCell : MonoBehaviour {
     TileSprite sprT = gameObject.GetComponent<TileSprite> ();
     if (sprT) {
       if (tile.fog) {
-        sprT.setTile(GetInfo(), TileInfo.tileType.None);
+        sprT.setTile(GetInfo(), TileInfo.tileType.None, false);
       } else {
-        sprT.setTile(GetInfo(), tile.type);
+        sprT.setTile(GetInfo(), tile.type, tile.interaction);
       }
       sprT.setUnit (info);
     }

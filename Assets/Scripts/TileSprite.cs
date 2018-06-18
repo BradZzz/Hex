@@ -109,7 +109,7 @@ public class TileSprite : MonoBehaviour {
     }
   }
 
-  public void setTile (UnitInfo unit, TileInfo.tileType type) {
+  public void setTile (UnitInfo unit, TileInfo.tileType type, bool interaction) {
     SpriteRenderer spRend = gameObject.transform.Find("TileObject").GetComponent<SpriteRenderer> ();
     spRend.enabled = true;
 

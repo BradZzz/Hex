@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class HexGridAdventure : HexGrid {
 
+  public static string MAP_NAME = "Level1";
+
   int turn = 0;
   bool toggle = false;
 
@@ -74,10 +76,10 @@ public class HexGridAdventure : HexGrid {
     gridCanvas = GetComponentInChildren<Canvas>();
     hexMesh = GetComponentInChildren<HexMesh>();
 
-    cells = new HexCell[height * width];
+    cells = new HexCell[boardHeight * boardWidth];
 
-    for (int z = 0, i = 0; z < height; z++) {
-      for (int x = 0; x < width; x++) {
+    for (int z = 0, i = 0; z < boardHeight; z++) {
+      for (int x = 0; x < boardWidth; x++) {
         CreateCell(x, z, i++);
       }
     }
@@ -114,20 +116,26 @@ public class HexGridAdventure : HexGrid {
           }
 			}
 
-			hexMesh.Triangulate(cells);
 			GameObject.Find ("TurnImg").GetComponent<Image>().color = playerColors [0];
 			setPTurn (0);
-			ResetCells ();
 
-			BaseSaver.resetBoard ();
+			ResetCells ();
+      hexMesh.Triangulate(cells);
+//			BaseSaver.resetBoard ();
 
 		} else {
-			foreach(HexCell cell in cells) {
-				cell.GetTile ().fog = true;
-			}
+      Debug.Log ("Maps: ");
+      foreach(MapInfo mp in BaseSaver.getMaps()){
+        Debug.Log (mp.name);
+      }
+
+
+//			foreach(HexCell cell in cells) {
+//				cell.GetTile ().fog = true;
+//			}
 
 //			MapInfo map = BaseSaver.getMap("Basic Level");
-      MapInfo map = BaseSaver.getMap("Level1");
+      MapInfo map = BaseSaver.getMap(MAP_NAME);
 
       List<int> playerPos = new List<int> ();
       List<int> enemyPos = new List<int> ();
@@ -149,6 +157,7 @@ public class HexGridAdventure : HexGrid {
 
       HexUtilities.ShuffleArray (pArr);
       HexUtilities.ShuffleArray (eArr);
+
 
       placePlayer(cells[pArr[0]], 0, false, UnitInfo.unitType.Adventure, true);
       cells [pArr[0]].removeFog ();
@@ -309,15 +318,21 @@ public class HexGridAdventure : HexGrid {
   }
 
   private void createInteraction(){
-    BaseSaver.putBoard(cells);
+    BaseSaver.putBoard(cells, MAP_NAME, boardHeight, boardWidth);
 
     SceneManager.LoadScene ("ChoiceScene");
   }
 
   private void enterLocation(){
-    BaseSaver.putBoard(cells);
+    BaseSaver.putBoard(cells, MAP_NAME, boardHeight, boardWidth);
 
     SceneManager.LoadScene ("LocationScene");
+  }
+
+  public override void showPlayerMenu(){
+    BaseSaver.putBoard(cells, MAP_NAME, boardHeight, boardWidth);
+
+    SceneManager.LoadScene ("QuestScene");
   }
 
   protected override bool canMove(HexCell cell){
@@ -358,15 +373,11 @@ public class HexGridAdventure : HexGrid {
       
 	}
 
-//	protected override void CheckInteraction() {
-////		foreach (HexCell cell in cells) {
-////			if (cell.GetInfo().human && cell.GetTile().interaction) {
-////				cell.GetTile ().interaction = false;
-////
-////				// Save Board Here
-////				BaseSaver.putBoard(cells);
-////				SceneManager.LoadScene ("ChoiceScene");
-////			}
-////		}
-//	}
+	protected override void CheckInteraction() {
+		foreach (HexCell cell in cells) {
+			if (cell.GetTile().interaction) {
+        cell.setColor(new Color (.5f, .15f, .6f, .9f));
+			}
+		}
+	}
 }

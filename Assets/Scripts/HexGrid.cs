@@ -8,8 +8,8 @@ public class HexGrid : MonoBehaviour {
 
 	public GameObject camera;
 
-	public int width = 6;
-	public int height = 6;
+	public int boardWidth = 6;
+	public int boardHeight = 6;
 
 	public Color defaultColor = Color.white;
 
@@ -35,10 +35,10 @@ public class HexGrid : MonoBehaviour {
 		gridCanvas = GetComponentInChildren<Canvas>();
 		hexMesh = GetComponentInChildren<HexMesh>();
 
-		cells = new HexCell[height * width];
+    cells = new HexCell[boardHeight * boardWidth];
 
-		for (int z = 0, i = 0; z < height; z++) {
-			for (int x = 0; x < width; x++) {
+    for (int z = 0, i = 0; z < boardHeight; z++) {
+      for (int x = 0; x < boardWidth; x++) {
 				CreateCell(x, z, i++);
 			}
 		}
@@ -249,7 +249,7 @@ public class HexGrid : MonoBehaviour {
 	public void ColorCell (Vector3 position, Color color) {
 		position = transform.InverseTransformPoint(position);
 		HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-		int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
+    int index = coordinates.X + coordinates.Z * boardWidth + coordinates.Z / 2;
 
 		HexCell cell = cells [index];
 		if (cell.GetPlayer () > -1) {
@@ -303,11 +303,19 @@ public class HexGrid : MonoBehaviour {
 		Debug.Log("Regular CheckInteraction");
 	}
 
+  public virtual void showPlayerMenu(){
+    Debug.Log("Regular showPlayerMenu");
+  }
+
 	protected virtual void ResetCells() {
 		foreach (HexCell cell in cells) {
       cell.setColor(Color.white);
 			cell.SetActive (false);
       cell.updateTile ();
+//      if (cell.GetTile().interaction) {
+//        cell.setColor(new Color (.5f, .15f, .6f, .9f));
+//        Debug.Log ("Interaction cell!");
+//      }
 		}
 		CheckInteraction ();
 		checkEnd ();
@@ -330,15 +338,15 @@ public class HexGrid : MonoBehaviour {
 		}
 		if (z > 0) {
 			if ((z & 1) == 0) {
-				cell.SetNeighbor(HexDirection.SE, cells[i - width]);
+        cell.SetNeighbor(HexDirection.SE, cells[i - boardWidth]);
 				if (x > 0) {
-					cell.SetNeighbor(HexDirection.SW, cells[i - width - 1]);
+          cell.SetNeighbor(HexDirection.SW, cells[i - boardWidth - 1]);
 				}
 			}
 			else {
-				cell.SetNeighbor(HexDirection.SW, cells[i - width]);
-				if (x < width - 1) {
-					cell.SetNeighbor(HexDirection.SE, cells[i - width + 1]);
+        cell.SetNeighbor(HexDirection.SW, cells[i - boardWidth]);
+        if (x < boardWidth - 1) {
+          cell.SetNeighbor(HexDirection.SE, cells[i - boardWidth + 1]);
 				}
 			}
 		}

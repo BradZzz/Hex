@@ -1012,6 +1012,18 @@ Prefab:
       value: 
       objectReference: {fileID: 1093925573400008, guid: cfd763927abb049a0abe75de06953eb7,
         type: 2}
+    - target: {fileID: 114206617508590852, guid: ddba8f2e2a4074ba09d8415f62d929b8,
+        type: 2}
+      propertyPath: HexCell
+      value: 
+      objectReference: {fileID: 1206327386588792, guid: 74aea12a771594a139b25169276c73ac,
+        type: 2}
+    - target: {fileID: 114206617508590852, guid: ddba8f2e2a4074ba09d8415f62d929b8,
+        type: 2}
+      propertyPath: HexCellPrefab
+      value: 
+      objectReference: {fileID: 114641047554444542, guid: 74aea12a771594a139b25169276c73ac,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ddba8f2e2a4074ba09d8415f62d929b8, type: 2}
   m_IsPrefabParent: 0

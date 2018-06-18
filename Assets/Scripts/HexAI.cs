@@ -48,25 +48,25 @@ public class HexAI {
   /*
    * Given a list of points, returns the point which is the closest
    */
-  public static HexCell closestPoint(HexCell[] cells, HexCell[] points, HexCell dest){
-    int currMax = -1;
-    List<HexCell> mxPts = new List<HexCell> ();
-
-    foreach(HexCell pt in points){
-      HexCell[] thisArr = HexAI.aStar(cells, pt, dest);
-      if (thisArr != null) {
-        if (currMax == -1 || thisArr.Length < currMax) {
-          mxPts.Clear ();
-          mxPts.Add (pt);
-          currMax = thisArr.Length;
-        } else if  (thisArr.Length == currMax) {
-          mxPts.Add (pt);
-        }
-      }
-    }
-
-    return mxPts.Count > 0 ? mxPts [0] : null;
-  }
+//  public static HexCell closestPoint(HexCell[] cells, HexCell[] points, HexCell dest){
+//    int currMax = -1;
+//    List<HexCell> mxPts = new List<HexCell> ();
+//
+//    foreach(HexCell pt in points){
+//      HexCell[] thisArr = HexAI.aStar(cells, pt, dest);
+//      if (thisArr != null) {
+//        if (currMax == -1 || thisArr.Length < currMax) {
+//          mxPts.Clear ();
+//          mxPts.Add (pt);
+//          currMax = thisArr.Length;
+//        } else if  (thisArr.Length == currMax) {
+//          mxPts.Add (pt);
+//        }
+//      }
+//    }
+//
+//    return mxPts.Count > 0 ? mxPts [0] : null;
+//  }
 
 	public static HexCell[] aStar(HexCell[] cells, HexCell start, List<HexCell> finalDest){
 		Dictionary<HexCell, int> tblStore = new Dictionary<HexCell, int>();
