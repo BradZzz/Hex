@@ -30,6 +30,7 @@ public class LocationPanel : MonoBehaviour {
 
   private bool sScreen;
   private Stack<GameInfo> gameState;
+  private Vector3 startPos;
 
   void Awake(){
     Debug.Log ("Awake");
@@ -72,14 +73,14 @@ public class LocationPanel : MonoBehaviour {
       }
     }
 
-    TraverseMeta(locMeta.info);
+    TraverseMeta(locMeta.info, true);
   }
 
   //Traverse all the nodes of the location and calculate events
-  void TraverseMeta(LocationInfo node){
+  void TraverseMeta(LocationInfo node, bool calcAppearChance){
     node.visible = true;
 
-    if(node.appearChance < 1){
+    if(calcAppearChance && node.appearChance < 1){
       float pick = UnityEngine.Random.Range (0, 100);
       float chance = node.appearChance * 100;
 
@@ -110,7 +111,7 @@ public class LocationPanel : MonoBehaviour {
     }
 
     foreach (LocationInfo child in node.children) {
-      TraverseMeta (child);
+      TraverseMeta (child, calcAppearChance);
     }
   }
 
@@ -134,6 +135,7 @@ public class LocationPanel : MonoBehaviour {
     description = GameObject.Find ("InfoDescription");
     image = GameObject.Find ("InfoImage");
     character = GameObject.Find ("InfoCharacter");
+    startPos = character.transform.position;
 
     tStack = new Stack<LocationInfo>();
 
@@ -150,7 +152,6 @@ public class LocationPanel : MonoBehaviour {
 
   private IEnumerator Jump(GameObject character)
   {
-    Vector3 startPos = character.transform.position;
     float t = 0;
 //    Vector3 endPos = new Vector3(startPos.x * startPos.y + System.Math.Sign(5), startPos.z);
 //    float factor = 1f;
@@ -263,15 +264,22 @@ public class LocationPanel : MonoBehaviour {
           addResource(inf, tGame);
           break;
         case ResInfo.ResType.Quest:
-          addQuest(inf, tGame);
+          addQuest (inf, tGame);
+          info.visible = false;
           break;
         }
       }
-
       gameState.Push (tGame);
     }
 
     tStack.Push (info);
+
+//    List<LocationInfo> newStack = new List<LocationInfo> (tStack.ToArray());
+//    foreach (LocationInfo loc in newStack) {
+//      TraverseMeta(loc, false);
+//    }
+    //Remove applicable quests from the location after they have been accepted
+    //    TraverseMeta(locMeta.info, false);
   }
 
   void composeSquad(ResInfo resI, GameInfo gameI){
