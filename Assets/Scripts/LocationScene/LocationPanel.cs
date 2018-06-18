@@ -92,6 +92,23 @@ public class LocationPanel : MonoBehaviour {
         Debug.Log ("Making invisible");
       }
     }
+
+    /*
+     * We need to disable the parent to the quest if the quest has already been accepted
+     */
+
+    foreach (LocationInfo child in node.children) {
+      if (child.nxtRes.Length > 0) {
+        foreach (ResInfo res in child.nxtRes) {
+          if (res.type == ResInfo.ResType.Quest) {
+            if (returnValidQ (res, BaseSaver.getGame()).Length < 1){
+              node.visible = false;
+            }
+          }
+        }
+      }
+    }
+
     foreach (LocationInfo child in node.children) {
       TraverseMeta (child);
     }
@@ -335,38 +352,89 @@ public class LocationPanel : MonoBehaviour {
     return quest;
   }
 
-  void addQuest(ResInfo resI, GameInfo gameI){
-    Debug.Log ("Quest: " + resI.name);
-    List<QuestInfo> playerQuests = new List<QuestInfo> (gameI.quests);
-    List<QuestInfo> validQuests = new List<QuestInfo> ();
+  QuestInfo[] returnValidQ (ResInfo resI, GameInfo gameI) {
+    
+    List<string> playerQuestTitles = new List<String> ();
     QuestInfo.QuestGroup thisQ = QuestInfo.QuestGroup.None;
     String[] names = Enum.GetNames (typeof(QuestInfo.QuestGroup));
+    List<QuestInfo> validQuests = new List<QuestInfo> ();
 
+    foreach (QuestInfo quest in gameI.quests) {
+      playerQuestTitles.Add (quest.title);
+    }
     for (int i = 0; i < names.Length; i++) {
       if (names[i].Equals(resI.name)){
         thisQ = (QuestInfo.QuestGroup)Enum.GetValues (typeof(QuestInfo.QuestGroup)).GetValue (i);
-        Debug.Log ("Found Quest Type: " + names[i]);
+        break;
       }
     }
-
     if (thisQ != QuestInfo.QuestGroup.None) {
-      foreach(QuestInfo quest in availableQuests){
-        if (quest.questGroup == thisQ && !playerQuests.Contains(quest)) {
+      foreach (QuestInfo quest in availableQuests) {
+        if (quest.questGroup == thisQ && !playerQuestTitles.Contains (quest.title)) {
           validQuests.Add (quest);
         }
       }
-      if (validQuests.Count > 0) {
-        QuestInfo[] qArr = validQuests.ToArray ();
-        HexUtilities.ShuffleArray (qArr);
-
-        QuestInfo thisQuest = JsonUtility.FromJson<QuestInfo> (JsonUtility.ToJson (qArr[0]));
-
-        Debug.Log ("Adding Quest: " + thisQuest.title);
-
-        playerQuests.Add (fillQuestInfo(thisQuest));
-        gameI.quests = playerQuests.ToArray ();
-      }
     }
+    return validQuests.ToArray ();
+  }
+
+  void addQuest(ResInfo resI, GameInfo gameI){
+
+    List<QuestInfo> playerQuests = new List<QuestInfo> (gameI.quests);
+    QuestInfo[] validQs = returnValidQ(resI, gameI);
+
+    if (validQs.Length > 0) {
+      HexUtilities.ShuffleArray (validQs);
+
+      QuestInfo thisQuest = JsonUtility.FromJson<QuestInfo> (JsonUtility.ToJson (validQs [0]));
+
+      Debug.Log ("Adding Quest: " + thisQuest.title);
+
+      playerQuests.Add (fillQuestInfo (thisQuest));
+      gameI.quests = playerQuests.ToArray ();
+    } else {
+      Debug.Log ("No more valid quests to choose from");
+    }
+
+
+//    Debug.Log ("Quest: " + resI.name);
+//    List<string> playerQuestTitles = new List<String> ();
+//    foreach (QuestInfo quest in gameI.quests) {
+//      playerQuestTitles.Add (quest.title);
+//    }
+//
+//    List<QuestInfo> playerQuests = new List<QuestInfo> (gameI.quests);
+//    List<QuestInfo> validQuests = new List<QuestInfo> ();
+//    QuestInfo.QuestGroup thisQ = QuestInfo.QuestGroup.None;
+//    String[] names = Enum.GetNames (typeof(QuestInfo.QuestGroup));
+//
+//    for (int i = 0; i < names.Length; i++) {
+//      if (names[i].Equals(resI.name)){
+//        thisQ = (QuestInfo.QuestGroup)Enum.GetValues (typeof(QuestInfo.QuestGroup)).GetValue (i);
+//        Debug.Log ("Found Quest Type: " + names[i]);
+//      }
+//    }
+//
+//    if (thisQ != QuestInfo.QuestGroup.None) {
+//      foreach(QuestInfo quest in availableQuests){
+//        if (quest.questGroup == thisQ && !playerQuestTitles.Contains(quest.title)) {
+//          validQuests.Add (quest);
+//        }
+//      }
+//      if (validQuests.Count > 0) {
+//        QuestInfo[] qArr = validQuests.ToArray ();
+//        HexUtilities.ShuffleArray (qArr);
+//
+//        QuestInfo thisQuest = JsonUtility.FromJson<QuestInfo> (JsonUtility.ToJson (qArr [0]));
+//
+//        Debug.Log ("Adding Quest: " + thisQuest.title);
+//
+//        playerQuests.Add (fillQuestInfo (thisQuest));
+//        gameI.quests = playerQuests.ToArray ();
+//      } else {
+//        Debug.Log ("No more valid quests to choose from");
+//      }
+//    }
   }
 
   private bool canAfford(LocationInfo nxtLoc){
