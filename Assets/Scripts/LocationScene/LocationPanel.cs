@@ -64,6 +64,31 @@ public class LocationPanel : MonoBehaviour {
         locSprite = startScreen.GetComponent<SpriteRenderer> ().sprite;
         sScreen = true;
       } else {
+        GameInfo game = BaseSaver.getGame ();
+
+        //Quest rewards need to be checked right here
+        UnitInfo[] units = BaseSaver.getUnits();
+        if (units != null && units.Length > 0) {
+          for (int i = 0; i < units.Length; i++) {
+            if (units[i].human) {
+              QHexBoard qBoard = new QHexBoard(BaseSaver.getBoardInfo().width, BaseSaver.getBoardInfo().height, HexCellPrefab);
+              HexCell[] cells = qBoard.getCells();
+              List<QuestInfo> currentQuests = new List<QuestInfo> ();
+              foreach(QuestInfo quest in game.quests){
+                if (quest.startIdx.Equals(cells[i].coordinates) && quest.completed) {
+                  foreach (ResInfo res in quest.rewards) {
+                    addResource (game, res);
+                  }
+                } else {
+                  currentQuests.Add (quest);
+                }
+              }
+              game.quests = currentQuests.ToArray ();
+              BaseSaver.putGame (game);
+            }
+          }
+        }
+
         foreach (GameObject location in locations) {
           if (location.name.Equals(locationName)){
             locMeta = location.GetComponent<LocationMain> ();
@@ -246,6 +271,23 @@ public class LocationPanel : MonoBehaviour {
   private GameInfo getDeref(){
     return JsonUtility.FromJson<GameInfo> (JsonUtility.ToJson (gameState.Peek()));
   }
+
+  private void addResource(GameInfo tGame, ResInfo res){
+    switch(res.type){
+      case ResInfo.ResType.Unit:
+        composeSquad(res, tGame);
+        break;
+      case ResInfo.ResType.Upgrade:
+        addAttribute(res, tGame);
+        break;
+      case ResInfo.ResType.Resource:
+        addResource(res, tGame);
+        break;
+      case ResInfo.ResType.Quest:
+        addQuest (res, tGame);
+        break;
+    }
+  }
     
   private void addItem(LocationInfo info){
     Debug.Log ("addItem");
@@ -253,33 +295,15 @@ public class LocationPanel : MonoBehaviour {
     if (info.nxtRes.Length > 0) {
       GameInfo tGame = getDeref();
       foreach(ResInfo inf in info.nxtRes){
-        switch(inf.type){
-        case ResInfo.ResType.Unit:
-          composeSquad(inf, tGame);
-          break;
-        case ResInfo.ResType.Upgrade:
-          addAttribute(inf, tGame);
-          break;
-        case ResInfo.ResType.Resource:
-          addResource(inf, tGame);
-          break;
-        case ResInfo.ResType.Quest:
-          addQuest (inf, tGame);
+        addResource(tGame, inf);
+        if (ResInfo.ResType.Quest == inf.type) {
           info.visible = false;
-          break;
         }
       }
       gameState.Push (tGame);
     }
 
     tStack.Push (info);
-
-//    List<LocationInfo> newStack = new List<LocationInfo> (tStack.ToArray());
-//    foreach (LocationInfo loc in newStack) {
-//      TraverseMeta(loc, false);
-//    }
-    //Remove applicable quests from the location after they have been accepted
-    //    TraverseMeta(locMeta.info, false);
   }
 
   void composeSquad(ResInfo resI, GameInfo gameI){
@@ -321,35 +345,40 @@ public class LocationPanel : MonoBehaviour {
   QuestInfo fillQuestInfo(QuestInfo quest){
     QHexBoard qBoard = new QHexBoard(BaseSaver.getBoardInfo().width, BaseSaver.getBoardInfo().height, HexCellPrefab);
     HexCell[] cells = qBoard.getCells();
-
     TileInfo[] tiles = BaseSaver.getTiles ();
     UnitInfo[] units = BaseSaver.getUnits ();
 
-    List<int> dests = new List<int> ();
+    for(int i = 0; i < cells.Length; i++){
+      cells [i].SetTile (tiles [i]);
+      cells [i].SetInfo (units[i]);
+    }
+
+    List<HexCell> dests = new List<HexCell> ();
+
+    int sIdx = 0;
     for (int i = 0; i < units.Length; i++) {
       if (units[i].human) {
-        quest.startIdx = i;
+        quest.startIdx = cells[i].coordinates;
+        sIdx = i; 
+        break;
       }
     }
     Debug.Log ("Starting idx: " + quest.startIdx.ToString());
-    for (int i = 0; i < tiles.Length; i++) {
-      if (tiles[i].type == quest.locType && !tiles[i].interaction) {
-        HexCell[] path = HexAI.aStar (cells,cells[quest.startIdx],cells[i]);
-        if(path != null && path.Length < 15){
-          dests.Add (i);
+    for (int i = 0; i < cells.Length; i++) {
+      if (cells[i].GetTile().type == quest.locType && !cells[i].GetTile().interaction) {
+        HexCell[] path = HexAI.aStar (cells,cells[sIdx],cells[i]);
+        if(path != null && path.Length < 10){
+          dests.Add (cells[i]);
         }
-//        if(path != null && path.Length > 3 && path.Length < 8){
-//          dests.Add (i);
-//        }
       }
     }
       
     if (dests.Count > 0) {
-      int[] theseDests = dests.ToArray ();
+      HexCell[] theseDests = dests.ToArray ();
       HexUtilities.ShuffleArray (theseDests);
 
-      tiles [theseDests [0]].interaction = true;
-      quest.endIdx = theseDests [0];
+      theseDests [0].GetTile().interaction = true;
+      quest.endIdx = theseDests [0].coordinates;
       Debug.Log ("Destination Set: " + quest.endIdx.ToString ());
       BaseSaver.setTiles (tiles);
       Debug.Log ("Tiles saved");
@@ -530,6 +559,11 @@ public class LocationPanel : MonoBehaviour {
 
       HexCell cell = cells[i] = Instantiate<HexCell>(prefab);
       cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
+
+      if (i == 0) {
+        Debug.Log ("First Coordinate Location: " + cell.coordinates.ToString());
+      }
+
       if (x > 0) {
         cell.SetNeighbor(HexDirection.W, cells[i - 1]);
       }

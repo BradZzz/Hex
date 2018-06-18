@@ -5,8 +5,8 @@ using System.Collections.Generic;
 [Serializable]
 public class QuestInfo {
 
-  public int startIdx;
-  public int endIdx;
+  public HexCoordinates startIdx;
+  public HexCoordinates endIdx;
 
   [TextArea(1, 3)]
   public string title;

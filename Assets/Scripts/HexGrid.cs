@@ -333,6 +333,10 @@ public class HexGrid : MonoBehaviour {
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 		cell.setColor(defaultColor);
 
+    if (i == 0) {
+      Debug.Log ("First Coordinate HexGrid: " + cell.coordinates.ToString());
+    }
+
 		if (x > 0) {
 			cell.SetNeighbor(HexDirection.W, cells[i - 1]);
 		}
@@ -351,10 +355,11 @@ public class HexGrid : MonoBehaviour {
 			}
 		}
 
-//		Text label = Instantiate<Text>(cellLabelPrefab);
-//		label.rectTransform.SetParent(gridCanvas.transform, false);
-//		label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
-//		label.text = cell.coordinates.ToStringOnSeparateLines();
+		Text label = Instantiate<Text>(cellLabelPrefab);
+		label.rectTransform.SetParent(gridCanvas.transform, false);
+		label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
+		label.text = cell.coordinates.ToStringOnSeparateLines();
+
 		cell.init (playerColors);
 	}
 }

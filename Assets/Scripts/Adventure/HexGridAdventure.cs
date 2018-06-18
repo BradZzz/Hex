@@ -265,54 +265,88 @@ public class HexGridAdventure : HexGrid {
 
     BaseSaver.putGame (game);
 
+    bool cellFound = false;
+    foreach(HexCell bCell in cells){
+      foreach(QuestInfo quest in BaseSaver.getGame().quests){
+        Debug.Log ("Checking Cell: " + bCell.coordinates.ToString() + " vs " + quest.endIdx.ToString());
+        if(quest.endIdx.Equals(bCell.coordinates)){
+          Debug.Log ("Quest Cell: " + bCell.coordinates.ToString());
+          Debug.Log ("Changing Color");
+          bCell.setColor(new Color (.15f, .55f, .6f, .9f));
+          cellFound = true;
+        }
+      }
+    }
+    if (!cellFound) {
+      Debug.Log ("No valid cells found");
+    }
+
     if (cell.GetInfo ().human) {
-      //Decide if we need to do anything now that we stepped on the tile
-      switch (cell.GetTile ().type) {
-      case TileInfo.tileType.Castle:
-        Debug.Log ("Enter Castle");
-        BaseSaver.putLocation ("Great Hayre Junction");
-        enterLocation ();
-        break;
-      case TileInfo.tileType.City:
-        Debug.Log ("Enter City");
-        BaseSaver.putLocation ("Lost Village");
-        enterLocation ();
-        break;
-      case TileInfo.tileType.Forest:
-        Debug.Log ("Enter Forest");
-        if (Random.Range (0, 5) < 1) {
-          Debug.Log ("Bear Attack!");
-          BaseSaver.putChoiceCharacter(TileInfo.tileType.Forest);
-          createInteraction ();
+
+      if (cell.GetTile ().interaction) {
+        Debug.Log ("Interaction Cell!");
+        Debug.Log ("Cell Coords: " + cell.coordinates.ToString());
+
+        // Check which quest was in this location. When we find the right one, remove it
+        foreach (QuestInfo quest in game.quests) {
+          Debug.Log ("Q Coords: " + quest.endIdx.ToString());
+          if (quest.endIdx.Equals (cell.coordinates)) {
+            Debug.Log ("Cells equal");
+            quest.completed = true;
+            cell.GetTile ().interaction = false;
+          } else {
+            Debug.Log ("Cells not equal");
+          }
         }
-        break;
-      case TileInfo.tileType.Grass:
-        Debug.Log ("Enter Grass");
-        if (Random.Range (0, 9) < 1) {
-          Debug.Log ("Cow Attack!");
-          BaseSaver.putChoiceCharacter(TileInfo.tileType.Grass);
-          createInteraction ();
+      } else {
+        //Decide if we need to do anything now that we stepped on the tile
+        switch (cell.GetTile ().type) {
+        case TileInfo.tileType.Castle:
+          Debug.Log ("Enter Castle");
+          BaseSaver.putLocation ("Great Hayre Junction");
+          enterLocation ();
+          break;
+        case TileInfo.tileType.City:
+          Debug.Log ("Enter City");
+          BaseSaver.putLocation ("Lost Village");
+          enterLocation ();
+          break;
+        case TileInfo.tileType.Forest:
+          Debug.Log ("Enter Forest");
+          if (Random.Range (0, 5) < 1) {
+            Debug.Log ("Bear Attack!");
+            BaseSaver.putChoiceCharacter (TileInfo.tileType.Forest);
+            createInteraction ();
+          }
+          break;
+        case TileInfo.tileType.Grass:
+          Debug.Log ("Enter Grass");
+          if (Random.Range (0, 9) < 1) {
+            Debug.Log ("Cow Attack!");
+            BaseSaver.putChoiceCharacter (TileInfo.tileType.Grass);
+            createInteraction ();
+          }
+          break;
+        case TileInfo.tileType.Road:
+          Debug.Log ("Enter Road");
+          if (Random.Range (0, 16) < 1) {
+            Debug.Log ("Bunny Attack!");
+            BaseSaver.putChoiceCharacter (TileInfo.tileType.Road);
+            createInteraction ();
+          }
+          break;
+        case TileInfo.tileType.Mountain:
+          Debug.Log ("Enter Mountain");
+          break;
+        case TileInfo.tileType.Treasure:
+          Debug.Log ("Enter Treasure");
+          setMessageTxt ("Gained Treasure!");
+          cell.setType (TileInfo.tileType.Grass);
+          break;
+        case TileInfo.tileType.Water:
+          Debug.Log ("Enter Water");
+          break;
         }
-        break;
-      case TileInfo.tileType.Road:
-        Debug.Log ("Enter Road");
-        if (Random.Range (0, 16) < 1) {
-          Debug.Log ("Bunny Attack!");
-          BaseSaver.putChoiceCharacter(TileInfo.tileType.Road);
-          createInteraction ();
-        }
-        break;
-      case TileInfo.tileType.Mountain:
-        Debug.Log ("Enter Mountain");
-        break;
-      case TileInfo.tileType.Treasure:
-        Debug.Log ("Enter Treasure");
-        setMessageTxt("Gained Treasure!");
-        cell.setType (TileInfo.tileType.Grass);
-        break;
-      case TileInfo.tileType.Water:
-        Debug.Log ("Enter Water");
-        break;
       }
     }
   }
@@ -340,7 +374,23 @@ public class HexGridAdventure : HexGrid {
     return game.rations > 0;
   }
 
+//  HexCell[] getQuestCells(int[] idxs){
+//    HexCell[] rCells = new HexCell[idxs.Length];
+//    for(int i =0; i < idxs.Length; i++){
+//      rCells [i] = cells [idxs [i]];
+//    }
+//    return rCells;
+//  }
+
 //  protected override void movedCell(HexCell cell) {
+//    if (cell.GetTile().interaction) {
+//      /*
+//       * Check which quest was in this location. When we find the right one, remove it
+//       */
+//      foreach(QuestInfo quest in game.quests){
+//
+//      }
+//    }
 //    Debug.Log("Regular movedCell");
 //    game.rations--;
 //    BaseSaver.putGame (game);
@@ -374,6 +424,13 @@ public class HexGridAdventure : HexGrid {
 	}
 
 	protected override void CheckInteraction() {
+//    GameInfo gm = BaseSaver.getGame ();
+//    foreach(QuestInfo quest in gm.quests){
+//      if(quest.endIdx.Equals()){
+//
+//      }
+//    }
+//    HexCoordinates[] coors = new 
 		foreach (HexCell cell in cells) {
 			if (cell.GetTile().interaction) {
         cell.setColor(new Color (.5f, .15f, .6f, .9f));

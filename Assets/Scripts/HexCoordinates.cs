@@ -61,6 +61,10 @@ public struct HexCoordinates {
 		return new HexCoordinates(iX, iZ);
 	}
 
+  public bool Equals (HexCoordinates other) {
+    return this.x == other.x && this.Y == other.Y && this.Z == other.Z;
+  }
+
 	public override string ToString () {
 		return "(" +
 			X.ToString() + ", " + Y.ToString() + ", " + Z.ToString() + ")";
