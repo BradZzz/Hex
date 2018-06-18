@@ -19,6 +19,7 @@ public class QuestInfo {
   public QuestGroup questGroup;
   public TileInfo.tileType locType;
   public bool completed;
+  public bool placed;
   public ResInfo[] rewards;
   public ResInfo[] challenges;
 

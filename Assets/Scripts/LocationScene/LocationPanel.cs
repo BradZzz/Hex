@@ -64,30 +64,30 @@ public class LocationPanel : MonoBehaviour {
         locSprite = startScreen.GetComponent<SpriteRenderer> ().sprite;
         sScreen = true;
       } else {
-        GameInfo game = BaseSaver.getGame ();
-
-        //Quest rewards need to be checked right here
-        UnitInfo[] units = BaseSaver.getUnits();
-        if (units != null && units.Length > 0) {
-          for (int i = 0; i < units.Length; i++) {
-            if (units[i].human) {
-              QHexBoard qBoard = new QHexBoard(BaseSaver.getBoardInfo().width, BaseSaver.getBoardInfo().height, HexCellPrefab);
-              HexCell[] cells = qBoard.getCells();
-              List<QuestInfo> currentQuests = new List<QuestInfo> ();
-              foreach(QuestInfo quest in game.quests){
-                if (quest.startIdx.Equals(cells[i].coordinates) && quest.completed) {
-                  foreach (ResInfo res in quest.rewards) {
-                    addResource (game, res);
-                  }
-                } else {
-                  currentQuests.Add (quest);
-                }
-              }
-              game.quests = currentQuests.ToArray ();
-              BaseSaver.putGame (game);
-            }
-          }
-        }
+//        GameInfo game = BaseSaver.getGame ();
+//
+//        //Quest rewards need to be checked right here
+//        UnitInfo[] units = BaseSaver.getUnits();
+//        if (units != null && units.Length > 0) {
+//          for (int i = 0; i < units.Length; i++) {
+//            if (units[i].human) {
+//              QHexBoard qBoard = new QHexBoard(BaseSaver.getBoardInfo().width, BaseSaver.getBoardInfo().height, HexCellPrefab);
+//              HexCell[] cells = qBoard.getCells();
+//              List<QuestInfo> currentQuests = new List<QuestInfo> ();
+//              foreach(QuestInfo quest in game.quests){
+//                if (quest.startIdx.Equals(cells[i].coordinates) && quest.completed) {
+//                  foreach (ResInfo res in quest.rewards) {
+//                    addResource (game, res);
+//                  }
+//                } else {
+//                  currentQuests.Add (quest);
+//                }
+//              }
+//              game.quests = currentQuests.ToArray ();
+//              BaseSaver.putGame (game);
+//            }
+//          }
+//        }
 
         foreach (GameObject location in locations) {
           if (location.name.Equals(locationName)){
@@ -342,52 +342,52 @@ public class LocationPanel : MonoBehaviour {
     }
   }
 
-  QuestInfo fillQuestInfo(QuestInfo quest){
-    QHexBoard qBoard = new QHexBoard(BaseSaver.getBoardInfo().width, BaseSaver.getBoardInfo().height, HexCellPrefab);
-    HexCell[] cells = qBoard.getCells();
-    TileInfo[] tiles = BaseSaver.getTiles ();
-    UnitInfo[] units = BaseSaver.getUnits ();
-
-    for(int i = 0; i < cells.Length; i++){
-      cells [i].SetTile (tiles [i]);
-      cells [i].SetInfo (units[i]);
-    }
-
-    List<HexCell> dests = new List<HexCell> ();
-
-    int sIdx = 0;
-    for (int i = 0; i < units.Length; i++) {
-      if (units[i].human) {
-        quest.startIdx = cells[i].coordinates;
-        sIdx = i; 
-        break;
-      }
-    }
-    Debug.Log ("Starting idx: " + quest.startIdx.ToString());
-    for (int i = 0; i < cells.Length; i++) {
-      if (cells[i].GetTile().type == quest.locType && !cells[i].GetTile().interaction) {
-        HexCell[] path = HexAI.aStar (cells,cells[sIdx],cells[i]);
-        if(path != null && path.Length < 10){
-          dests.Add (cells[i]);
-        }
-      }
-    }
-      
-    if (dests.Count > 0) {
-      HexCell[] theseDests = dests.ToArray ();
-      HexUtilities.ShuffleArray (theseDests);
-
-      theseDests [0].GetTile().interaction = true;
-      quest.endIdx = theseDests [0].coordinates;
-      Debug.Log ("Destination Set: " + quest.endIdx.ToString ());
-      BaseSaver.setTiles (tiles);
-      Debug.Log ("Tiles saved");
-    } else {
-      Debug.Log ("No destinations! Quest invalid...");
-    }
-
-    return quest;
-  }
+//  QuestInfo fillQuestInfo(QuestInfo quest){
+//    QHexBoard qBoard = new QHexBoard(BaseSaver.getBoardInfo().width, BaseSaver.getBoardInfo().height, HexCellPrefab);
+//    HexCell[] cells = qBoard.getCells();
+//    TileInfo[] tiles = BaseSaver.getTiles ();
+//    UnitInfo[] units = BaseSaver.getUnits ();
+//
+//    for(int i = 0; i < cells.Length; i++){
+//      cells [i].SetTile (tiles [i]);
+//      cells [i].SetInfo (units[i]);
+//    }
+//
+//    List<HexCell> dests = new List<HexCell> ();
+//
+//    int sIdx = 0;
+//    for (int i = 0; i < units.Length; i++) {
+//      if (units[i].human) {
+//        quest.startIdx = cells[i].coordinates;
+//        sIdx = i;
+//        break;
+//      }
+//    }
+//    Debug.Log ("Starting idx: " + quest.startIdx.ToString());
+//    for (int i = 0; i < cells.Length; i++) {
+//      if (cells[i].GetTile().type == quest.locType && !cells[i].GetTile().interaction) {
+//        HexCell[] path = HexAI.aStar (cells,cells[sIdx],cells[i]);
+//        if(path != null && path.Length < 10){
+//          dests.Add (cells[i]);
+//        }
+//      }
+//    }
+//
+//    if (dests.Count > 0) {
+//      HexCell[] theseDests = dests.ToArray ();
+//      HexUtilities.ShuffleArray (theseDests);
+//
+//      theseDests [0].GetTile().interaction = true;
+//      quest.endIdx = theseDests [0].coordinates;
+//      Debug.Log ("Destination Set: " + quest.endIdx.ToString ());
+//      BaseSaver.setTiles (tiles);
+//      Debug.Log ("Tiles saved");
+//    } else {
+//      Debug.Log ("No destinations! Quest invalid...");
+//    }
+//
+//    return quest;
+//  }
 
   QuestInfo[] returnValidQ (ResInfo resI, GameInfo gameI) {
     
@@ -427,7 +427,9 @@ public class LocationPanel : MonoBehaviour {
 
       Debug.Log ("Adding Quest: " + thisQuest.title);
 
-      playerQuests.Add (fillQuestInfo (thisQuest));
+      thisQuest.placed = false;
+
+      playerQuests.Add (thisQuest);
       gameI.quests = playerQuests.ToArray ();
     } else {
       Debug.Log ("No more valid quests to choose from");

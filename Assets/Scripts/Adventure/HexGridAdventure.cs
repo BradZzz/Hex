@@ -104,6 +104,8 @@ public class HexGridAdventure : HexGrid {
 		TileInfo[] bTiles = BaseSaver.getTiles ();
 		UnitInfo[] bUnits = BaseSaver.getUnits ();
 
+    HexCell hPos = cells [0];
+
 		if (bTiles != null && bUnits != null) {
 		  game = BaseSaver.getGame ();
 			for (int i = 0; i < cells.Length; i++) {
@@ -113,11 +115,44 @@ public class HexGridAdventure : HexGrid {
           if (bUnits[i].human) {
             int mv = game.movement - game.fatigue;
             cells [i].GetInfo().actions = mv < 0 ? 0 : mv;
+            hPos = cells [i];
           }
 			}
 
 			GameObject.Find ("TurnImg").GetComponent<Image>().color = playerColors [0];
 			setPTurn (0);
+
+			/*
+			  Here is where the new quests need to be calculated if there are any
+			*/
+			foreach(QuestInfo quest in game.quests){
+        if (!quest.placed) {
+          quest.startIdx = hPos.coordinates;
+          List<HexCell> dests = new List<HexCell> ();
+          for (int i = 0; i < cells.Length; i++) {
+            if (cells[i].GetTile().type == quest.locType && !cells[i].GetTile().interaction) {
+              HexCell[] path = HexAI.aStar (cells,hPos,cells[i]);
+              if(path != null && path.Length < 10){
+                dests.Add (cells[i]);
+              }
+            }
+          }
+          if (dests.Count > 0) {
+            HexCell[] theseDests = dests.ToArray ();
+            HexUtilities.ShuffleArray (theseDests);
+            theseDests [0].GetTile().interaction = true;
+            quest.endIdx = theseDests [0].coordinates;
+            quest.placed = true;
+            Debug.Log ("Destination Set: " + quest.endIdx.ToString ());
+            Debug.Log ("Tiles saved");
+            BaseSaver.putBoard (cells, BaseSaver.getBoardInfo().name, 
+              BaseSaver.getBoardInfo().height, BaseSaver.getBoardInfo().width);
+            BaseSaver.putGame (game);
+          } else {
+            Debug.Log ("No destinations! Quest invalid...");
+          }
+        }
+			}
 
 			ResetCells ();
       hexMesh.Triangulate(cells);
@@ -265,21 +300,21 @@ public class HexGridAdventure : HexGrid {
 
     BaseSaver.putGame (game);
 
-    bool cellFound = false;
-    foreach(HexCell bCell in cells){
-      foreach(QuestInfo quest in BaseSaver.getGame().quests){
-        Debug.Log ("Checking Cell: " + bCell.coordinates.ToString() + " vs " + quest.endIdx.ToString());
-        if(quest.endIdx.Equals(bCell.coordinates)){
-          Debug.Log ("Quest Cell: " + bCell.coordinates.ToString());
-          Debug.Log ("Changing Color");
-          bCell.setColor(new Color (.15f, .55f, .6f, .9f));
-          cellFound = true;
-        }
-      }
-    }
-    if (!cellFound) {
-      Debug.Log ("No valid cells found");
-    }
+//    bool cellFound = false;
+//    foreach(HexCell bCell in cells){
+//      foreach(QuestInfo quest in BaseSaver.getGame().quests){
+//        Debug.Log ("Checking Cell: " + bCell.coordinates.ToString() + " vs " + quest.endIdx.ToString());
+//        if(quest.endIdx.Equals(bCell.coordinates)){
+//          Debug.Log ("Quest Cell: " + bCell.coordinates.ToString());
+//          Debug.Log ("Changing Color");
+//          bCell.setColor(new Color (.15f, .55f, .6f, .9f));
+//          cellFound = true;
+//        }
+//      }
+//    }
+//    if (!cellFound) {
+//      Debug.Log ("No valid cells found");
+//    }
 
     if (cell.GetInfo ().human) {
 
