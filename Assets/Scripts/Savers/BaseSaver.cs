@@ -13,6 +13,7 @@ public class BaseSaver {
   private static string LOCATION = "location";
 
   private static string CHOICE = "choice";
+  private static string CHOICE_QUEST = "choice_quest";
   private static string CHOICE_CHARACTER = "choice_character";
   private static string CHOICE_CHARACTER_IDX = "choice_character_idx";
   private static string CHOICE_PICKED = "choice_pick";
@@ -178,6 +179,7 @@ public class BaseSaver {
 
   public static void resetChoice() {
     PlayerPrefs.SetString (CHOICE, "");
+    PlayerPrefs.SetString (CHOICE_QUEST, "");
     PlayerPrefs.SetString (CHOICE_CHARACTER, "");
     PlayerPrefs.SetString (CHOICE_CHARACTER_IDX, "");
     PlayerPrefs.SetString (CHOICE_PICKED, "");
@@ -197,6 +199,20 @@ public class BaseSaver {
     }
     Debug.Log ("Choices got");
     return JsonUtility.FromJson<TileInfo.tileType> (json);
+  }
+
+  public static void putChoiceQuest(ChoiceInfo choice){
+    string ty = JsonUtility.ToJson (choice);
+    PlayerPrefs.SetString (CHOICE_QUEST, ty);
+  }
+
+  public static ChoiceInfo getChoiceQuest(){
+    string json = PlayerPrefs.GetString (CHOICE_QUEST);
+    if (json.Length == 0) {
+      return null;
+    }
+    Debug.Log ("Choices got");
+    return JsonUtility.FromJson<ChoiceInfo> (json);
   }
 
   public static void putChoice(ChoiceInfo choice, int charIdx, int picked) {

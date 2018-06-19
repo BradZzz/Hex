@@ -52,9 +52,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quest:
-    startIdx: 0
-    endIdx: 0
-    title: Fight the bandits
+    startIdx:
+      x: 0
+      z: 0
+    endIdx:
+      x: 0
+      z: 0
+    title: Fight the Bandits
     startMsg: Help! Bandits have made camp in a forest not far from here. Find them
       and eliminate them.
     endMsg: With the bandits defeated, your team makes off with what they find laying
@@ -62,7 +66,19 @@ MonoBehaviour:
     type: 0
     questGroup: 0
     locType: 2
+    confrontation:
+      name: Fight the Bandits
+      image: 
+      openingGreeting: 
+      winningGreeting: 
+      losingGreeting: 
+      options: []
+      firstLocation: 0
+      secondLocation: 0
+      thirdLocation: 0
     completed: 0
+    placed: 0
+    rewardAtNext: 0
     rewards:
     - name: Gold
       value: 130

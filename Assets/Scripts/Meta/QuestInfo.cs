@@ -18,6 +18,7 @@ public class QuestInfo {
   public QuestType type;
   public QuestGroup questGroup;
   public TileInfo.tileType locType;
+  public ChoiceInfo confrontation;
   public bool completed;
   public bool placed;
   public bool rewardAtNext;

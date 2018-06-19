@@ -322,12 +322,15 @@ public class HexGridAdventure : HexGrid {
           Debug.Log ("Q Coords Start: " + quest.startIdx.ToString());
           Debug.Log ("Q Coords End: " + quest.endIdx.ToString());
 
-
           if (quest.endIdx.Equals (cell.coordinates)) {
             Debug.Log ("Cells equal");
             quest.completed = true;
             cell.GetTile ().interaction = false;
             BaseSaver.putGame (game);
+
+            BaseSaver.putChoiceQuest (quest.confrontation);
+            BaseSaver.putChoiceCharacter (TileInfo.tileType.None);
+            createInteraction ();
           } else {
             Debug.Log ("Cells not equal");
           }

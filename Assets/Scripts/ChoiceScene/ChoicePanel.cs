@@ -14,6 +14,7 @@ public class ChoicePanel : MonoBehaviour {
 	private GameObject infoPnl;
 	private GameObject[] infoBtns;
 
+  private ChoiceInfo choice;
 	private OptionInfo[] lstOptions;
 
   private int idx;
@@ -62,13 +63,19 @@ public class ChoicePanel : MonoBehaviour {
 
     bool callBack = BaseSaver.getPicked () > -1;
 
+    int idx = -1;
+
     if (callBack) {
       idx = BaseSaver.getCharIdx ();
+      choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
+    } else if (BaseSaver.getChoiceCharacter () != TileInfo.tileType.None) {
+      idx = getCharacterIdx (glossy.options, BaseSaver.getChoiceCharacter ());
+      choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
     } else {
-      idx = getCharacterIdx(glossy.options, BaseSaver.getChoiceCharacter ());
+      choice = BaseSaver.getChoiceQuest ();
     }
 
-    Debug.Log ("Populating: " + idx.ToString());
+//    Debug.Log ("Populating: " + idx.ToString());
 
 		populateInfoPanel (glossy);
 
@@ -78,12 +85,13 @@ public class ChoicePanel : MonoBehaviour {
     }
 
 //    populateInfoPanel (glossy);
-
-    GameObject.Find("ForegroundImage").GetComponent<Image>().sprite = glossy.options[idx].GetComponent<Image>().sprite;
+    if (idx > -1) {
+      GameObject.Find("ForegroundImage").GetComponent<Image>().sprite = glossy.options[idx].GetComponent<Image>().sprite;
+    }
 	}
 
 	public void selectChoice(int btn, bool callback) {
-    ChoiceInfo choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
+//    ChoiceInfo choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
 		OptionInfo option = lstOptions [btn - 1];
 
 		if (callback) {
@@ -145,7 +153,7 @@ public class ChoicePanel : MonoBehaviour {
 	}
 
 	void populateInfoPanel(ChoiceGlossary glossy){
-    ChoiceInfo choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
+//    ChoiceInfo choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
 		GameObject.Find ("InfoHeader").GetComponent<Text> ().text = choice.name;
 		GameObject.Find ("InfoDescription").GetComponent<Text> ().text = choice.openingGreeting;
 
