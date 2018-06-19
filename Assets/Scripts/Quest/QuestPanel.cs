@@ -24,7 +24,7 @@ public class QuestPanel : MonoBehaviour {
   private int thisSel;
 
   public enum QLocType {
-    Main, Quests, Attribs, Stats, Enemies, None
+    Main, Quests, Attribs, Stats, Enemies, Squad, None
   }
 
   void Start(){
@@ -80,6 +80,9 @@ public class QuestPanel : MonoBehaviour {
       break;
     case QLocType.Stats:
       Debug.Log ("Stats");
+      break;
+    case QLocType.Squad:
+      Debug.Log ("Squad");
       break;
     case QLocType.Enemies:
       Debug.Log ("Enemies");
