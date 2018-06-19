@@ -64,9 +64,26 @@ public class LocationPanel : MonoBehaviour {
         locSprite = startScreen.GetComponent<SpriteRenderer> ().sprite;
         sScreen = true;
       } else {
-//        GameInfo game = BaseSaver.getGame ();
-//
-//        //Quest rewards need to be checked right here
+        GameInfo game = gameState.Pop();
+        List<QuestInfo> currentQuests = new List<QuestInfo> ();
+        foreach(QuestInfo quest in game.quests){
+          if (quest.rewardAtNext) {
+            Debug.Log ("Quest: " + quest.title + " completed!");
+            foreach (ResInfo res in quest.rewards) {
+              addResource (game, res);
+            }
+          } else {
+            Debug.Log ("Quest: " + quest.title + " ongoing...");
+            currentQuests.Add (quest);
+          }
+        }
+
+        game.quests = currentQuests.ToArray ();
+        Debug.Log ("Saving Game Post Quest");
+        gameState.Push (game);
+
+
+        //Quest rewards need to be checked right here
 //        UnitInfo[] units = BaseSaver.getUnits();
 //        if (units != null && units.Length > 0) {
 //          for (int i = 0; i < units.Length; i++) {
@@ -338,7 +355,11 @@ public class LocationPanel : MonoBehaviour {
     Debug.Log ("Adding Resource: " + resI.name);
     if (resI.name.Equals("Ration")) {
       gameI.rations += resI.value;
-      Debug.Log ("Bought Ration");
+      Debug.Log ("Received Ration: " + resI.value.ToString());
+    }
+    if (resI.name.Equals("Gold")) {
+      gameI.gold += resI.value;
+      Debug.Log ("Received Gold" + resI.value.ToString());
     }
   }
 
@@ -427,8 +448,10 @@ public class LocationPanel : MonoBehaviour {
 
       Debug.Log ("Adding Quest: " + thisQuest.title);
 
-      thisQuest.placed = false;
-
+//      thisQuest.placed = false;
+//      thisQuest.completed = false;
+//      thisQuest.rewardAtNext = false;
+//
       playerQuests.Add (thisQuest);
       gameI.quests = playerQuests.ToArray ();
     } else {

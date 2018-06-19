@@ -288,6 +288,16 @@ public class HexGridAdventure : HexGrid {
     }
   }
 
+  void checkQuests(HexCell cell){
+    foreach (QuestInfo quest in game.quests) {
+      if (quest.startIdx.Equals (cell.coordinates) && quest.completed) {
+        Debug.Log ("Beginning of quest found. Setting reward");
+        quest.rewardAtNext = true;
+        BaseSaver.putGame (game);
+      }
+    }
+  }
+
   protected override void movedCell(HexCell cell) {
     resetMessageTxt ();
 
@@ -300,22 +310,6 @@ public class HexGridAdventure : HexGrid {
 
     BaseSaver.putGame (game);
 
-//    bool cellFound = false;
-//    foreach(HexCell bCell in cells){
-//      foreach(QuestInfo quest in BaseSaver.getGame().quests){
-//        Debug.Log ("Checking Cell: " + bCell.coordinates.ToString() + " vs " + quest.endIdx.ToString());
-//        if(quest.endIdx.Equals(bCell.coordinates)){
-//          Debug.Log ("Quest Cell: " + bCell.coordinates.ToString());
-//          Debug.Log ("Changing Color");
-//          bCell.setColor(new Color (.15f, .55f, .6f, .9f));
-//          cellFound = true;
-//        }
-//      }
-//    }
-//    if (!cellFound) {
-//      Debug.Log ("No valid cells found");
-//    }
-
     if (cell.GetInfo ().human) {
 
       if (cell.GetTile ().interaction) {
@@ -324,11 +318,16 @@ public class HexGridAdventure : HexGrid {
 
         // Check which quest was in this location. When we find the right one, remove it
         foreach (QuestInfo quest in game.quests) {
-          Debug.Log ("Q Coords: " + quest.endIdx.ToString());
+
+          Debug.Log ("Q Coords Start: " + quest.startIdx.ToString());
+          Debug.Log ("Q Coords End: " + quest.endIdx.ToString());
+
+
           if (quest.endIdx.Equals (cell.coordinates)) {
             Debug.Log ("Cells equal");
             quest.completed = true;
             cell.GetTile ().interaction = false;
+            BaseSaver.putGame (game);
           } else {
             Debug.Log ("Cells not equal");
           }
@@ -338,11 +337,13 @@ public class HexGridAdventure : HexGrid {
         switch (cell.GetTile ().type) {
         case TileInfo.tileType.Castle:
           Debug.Log ("Enter Castle");
+          checkQuests(cell);
           BaseSaver.putLocation ("Great Hayre Junction");
           enterLocation ();
           break;
         case TileInfo.tileType.City:
           Debug.Log ("Enter City");
+          checkQuests(cell);
           BaseSaver.putLocation ("Lost Village");
           enterLocation ();
           break;
