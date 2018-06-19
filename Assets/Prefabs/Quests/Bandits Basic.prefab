@@ -68,14 +68,22 @@ MonoBehaviour:
     locType: 2
     confrontation:
       name: Fight the Bandits
-      image: 
-      openingGreeting: 
-      winningGreeting: 
-      losingGreeting: 
-      options: []
-      firstLocation: 0
-      secondLocation: 0
-      thirdLocation: 0
+      image: bandits
+      openingGreeting: The bandits are having a great time by the camp fire. What
+        would you like to do?
+      winningGreeting: The bandits lay slain at your feet. The bartender will be please
+        to hear he doesn't have to worry about them anymore.
+      losingGreeting: You look up at the sky. The last thing you see is a bandit raise
+        his axe before your head gets sliced off.
+      options:
+      - TextOptions:
+        - Sneak up on them
+        reaction: The bandits see you walking through the trees. The leader attacks
+          without warning.
+        result: 1
+      firstLocation: 10
+      secondLocation: 10
+      thirdLocation: 10
     completed: 0
     placed: 0
     rewardAtNext: 0

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class ChoicePanel : MonoBehaviour {
 
 	public GameObject cGlossary;
+  public Sprite QuestLogo;
 
 	private ChoiceGlossary glossy;
 
@@ -51,28 +52,30 @@ public class ChoicePanel : MonoBehaviour {
 	//At the start we need to pull out the player 
 	//and attach it to the panel gameobject 
 	void Start () {
-		infoBtns = new GameObject[6];
-		for (int i = 0; i < 6; i++) {
-			infoBtns [i] = GameObject.Find ("Button_0" + (i + 1).ToString ());
-		}
-		infoPnl = GameObject.Find ("InfoPanel");
+    infoBtns = new GameObject[6];
+    for (int i = 0; i < 6; i++) {
+      infoBtns [i] = GameObject.Find ("Button_0" + (i + 1).ToString ());
+    }
+    infoPnl = GameObject.Find ("InfoPanel");
 
-		glossy = cGlossary.GetComponent<ChoiceGlossary> ();
+    glossy = cGlossary.GetComponent<ChoiceGlossary> ();
 
-    Debug.Log ("Character: " + BaseSaver.getChoiceCharacter ().ToString());
+    Debug.Log ("Character: " + BaseSaver.getChoiceCharacter ().ToString ());
 
     bool callBack = BaseSaver.getPicked () > -1;
 
     int idx = -1;
 
-    if (callBack) {
+    if (BaseSaver.getChoiceQuest () != null) {
+      choice = BaseSaver.getChoiceQuest ();
+    } else if (callBack) {
       idx = BaseSaver.getCharIdx ();
-      choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
+      choice = glossy.options [idx].GetComponent<ChoiceMain> ().choice;
     } else if (BaseSaver.getChoiceCharacter () != TileInfo.tileType.None) {
       idx = getCharacterIdx (glossy.options, BaseSaver.getChoiceCharacter ());
-      choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
+      choice = glossy.options [idx].GetComponent<ChoiceMain> ().choice;
     } else {
-      choice = BaseSaver.getChoiceQuest ();
+      Debug.Log ("Error ChoicePanel");
     }
 
 //    Debug.Log ("Populating: " + idx.ToString());
@@ -86,7 +89,9 @@ public class ChoicePanel : MonoBehaviour {
 
 //    populateInfoPanel (glossy);
     if (idx > -1) {
-      GameObject.Find("ForegroundImage").GetComponent<Image>().sprite = glossy.options[idx].GetComponent<Image>().sprite;
+      GameObject.Find ("ForegroundImage").GetComponent<Image> ().sprite = glossy.options [idx].GetComponent<Image> ().sprite;
+    } else {
+      GameObject.Find ("ForegroundImage").GetComponent<Image> ().sprite = QuestLogo;
     }
 	}
 

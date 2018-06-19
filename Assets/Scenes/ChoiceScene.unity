@@ -933,6 +933,12 @@ Prefab:
       propertyPath: cGlossary
       value: 
       objectReference: {fileID: 258732764}
+    - target: {fileID: 114371036453954236, guid: 429f5277c647c4291a3b5fc41fc5ead6,
+        type: 2}
+      propertyPath: QuestLogo
+      value: 
+      objectReference: {fileID: 21300000, guid: 014db908c7adb401b8c32f05e6efea78,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 429f5277c647c4291a3b5fc41fc5ead6, type: 2}
   m_IsPrefabParent: 0
