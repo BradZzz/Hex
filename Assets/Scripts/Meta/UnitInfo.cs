@@ -21,4 +21,16 @@ public class UnitInfo {
 	public enum unitType {
 		Knight, Swordsman, Lancer, Adventure, None
 	}
+
+  public string unitSymbol(){
+    switch(type){
+    case UnitInfo.unitType.Knight:
+      return "K";
+    case UnitInfo.unitType.Lancer:
+      return "L";
+    case UnitInfo.unitType.Swordsman:
+      return "S";
+    }
+    return "";
+  }
 }

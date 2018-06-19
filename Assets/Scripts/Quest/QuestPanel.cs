@@ -24,7 +24,7 @@ public class QuestPanel : MonoBehaviour {
   private int thisSel;
 
   public enum QLocType {
-    Main, Quests, Attribs, Stats, Enemies, Squad, None
+    Main, Quests, Stats, Enemies, Squad, None
   }
 
   void Start(){
@@ -42,10 +42,15 @@ public class QuestPanel : MonoBehaviour {
     }
 
     thisLoc = QLocType.Main;
-    mainButtons = new string[]{ "Quests" };
+    mainButtons = new string[]{ "Stats", "Quests" };
     thisSel = -1;
 
     PopulateInfo(thisLoc, thisSel);
+  }
+
+  void populateInfo(string title, string desc){
+    header.GetComponent<Text> ().text = title;
+    description.GetComponent<Text> ().text = desc;
   }
 
   void PopulateInfo(QLocType screen, int selection){
@@ -55,19 +60,24 @@ public class QuestPanel : MonoBehaviour {
     switch(screen){
     case QLocType.Main:
       Debug.Log ("Main");
-      header.GetComponent<Text> ().text = "Player Menu";
-      description.GetComponent<Text> ().text = "Click on the buttons on the side to see the current information about your character.";
+      populateInfo("Player Menu", "Click on the buttons on the side to see the current information about your character.");
       PopulateButtons (mainButtons);
       break;
     case QLocType.Quests:
       Debug.Log ("Quests");
       if (selection > -1){
-        header.GetComponent<Text> ().text = game.quests[selection].title;
-        description.GetComponent<Text> ().text = game.quests[selection].startMsg;
+        string msg = game.quests [selection].startMsg + "\n\n";
+        msg += "Status: " + (game.quests [selection].completed ? "Completed" : "Active") + "\n";
+        msg += "Quest Type: " + game.quests [selection].type.ToString() + "\n";
+        msg += "Rewards:\n";
+        foreach (ResInfo res in game.quests [selection].rewards) {
+          msg += "\t" + res.type.ToString() + "\n";
+        }
+
+        populateInfo(game.quests[selection].title, msg);
         PopulateButtons (new string[]{});
       } else {
-        header.GetComponent<Text> ().text = "Quests";
-        description.GetComponent<Text> ().text = "Here are your character's active quests. Click on one to see more information and make it active.";
+        populateInfo("Quests", "Here are your character's active quests. Click on one to see more information and make it active.");
         string[] qsts = new string[game.quests.Length];
         for(int i = 0; i < game.quests.Length; i++){
           qsts [i] = game.quests [i].title;
@@ -75,10 +85,9 @@ public class QuestPanel : MonoBehaviour {
         PopulateButtons (qsts);
       }
       break;
-    case QLocType.Attribs:
-      Debug.Log ("Attribs");
-      break;
     case QLocType.Stats:
+      populateInfo("Stats", BaseSaver.getGame().RetInfo());
+      PopulateButtons (new string[0]);
       Debug.Log ("Stats");
       break;
     case QLocType.Squad:

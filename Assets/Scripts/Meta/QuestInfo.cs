@@ -25,6 +25,10 @@ public class QuestInfo {
   public ResInfo[] rewards;
   public ResInfo[] challenges;
 
+  public enum DistanceType {
+    Cold, Warmer, Burning, None
+  }
+
   public enum QuestType {
    Battle, Assist, Travel, None
   }

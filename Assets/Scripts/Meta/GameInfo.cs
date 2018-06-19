@@ -34,7 +34,7 @@ public class GameInfo {
 	public void PrintInfo() {
 	  Debug.Log("Name: " + name);
 	  Debug.Log("Movement: " + movement.ToString());
-	  Debug.Log("Fatigue: " + fatigue.ToString());
+    Debug.Log("Fatigue: " + movement.ToString() + "(" + (movement - fatigue).ToString() + ")");
     Debug.Log("Gold: " + gold.ToString());
     Debug.Log("Roster: " + playerRoster.Length);
     Debug.Log ("Attributes");
@@ -42,4 +42,24 @@ public class GameInfo {
       Debug.Log (attribute.ToString());
     }
 	}
+
+  public string RetInfo() {
+    string msg = "Name: " + name + "\n\n";
+    msg += "Movement: " + movement.ToString() + "\n";
+    msg += "Fatigue: " + movement.ToString() + "(" + (movement - fatigue).ToString() + ")\n";
+    msg += "Gold: " + gold.ToString() + "\n";
+    msg += "Rations: " + rations.ToString() + "\n";
+    List<string> roster = new List<string>();
+    foreach(UnitInfo unit in playerRoster){
+      roster.Add(unit.unitSymbol());
+    }
+    msg += "Roster: " + string.Join (",", roster.ToArray()) + "\n\n";
+    msg += "Qualities:\n\t";
+    List<string> arrs = new List<string>();
+    foreach(CharacterInfo.attributeType attribute in attributes){
+      arrs.Add(attribute.ToString ());
+    }
+    msg += string.Join (",", arrs.ToArray());
+    return msg;
+  }
 }
