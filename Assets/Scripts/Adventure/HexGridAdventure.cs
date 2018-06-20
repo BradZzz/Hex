@@ -288,6 +288,38 @@ public class HexGridAdventure : HexGrid {
     }
   }
 
+  void calcDistance(){
+    foreach (QuestInfo quest in game.quests) {
+      HexCell start = cells [0];
+      HexCell finish = cells [0];
+      foreach (HexCell tCell in cells) {
+        if (tCell.coordinates.Equals(quest.startIdx)) {
+          print ("Found start");
+          start = tCell;
+        }
+        if (tCell.coordinates.Equals(quest.endIdx)){
+          print ("Found finish");
+          finish = tCell;
+        }
+      }
+
+      HexCell[] path = HexAI.aStar (cells,start,finish);
+      if (path != null) {
+        print ("Proximity Length: " + path.Length.ToString ());
+        if (path.Length < 5) {
+          quest.distance = QuestInfo.DistanceType.Burning;
+        } else if (path.Length < 8) {
+          quest.distance = QuestInfo.DistanceType.Warmer;
+        } else {
+          quest.distance = QuestInfo.DistanceType.Cold;
+        }
+        BaseSaver.putGame (game);
+      } else {
+        print ("No path found to goal");
+      }
+    }
+  }
+
   void checkQuests(HexCell cell){
     foreach (QuestInfo quest in game.quests) {
       if (quest.startIdx.Equals (cell.coordinates) && quest.completed) {
@@ -403,6 +435,8 @@ public class HexGridAdventure : HexGrid {
   }
 
   public override void showPlayerMenu(){
+    calcDistance ();
+
     BaseSaver.putBoard(cells, MAP_NAME, boardHeight, boardWidth);
 
     SceneManager.LoadScene ("QuestScene");

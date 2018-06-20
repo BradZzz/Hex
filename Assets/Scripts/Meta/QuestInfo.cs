@@ -24,6 +24,7 @@ public class QuestInfo {
   public bool rewardAtNext;
   public ResInfo[] rewards;
   public ResInfo[] challenges;
+  public DistanceType distance;
 
   public enum DistanceType {
     Cold, Warmer, Burning, None

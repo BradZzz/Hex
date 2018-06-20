@@ -67,6 +67,7 @@ public class QuestPanel : MonoBehaviour {
       Debug.Log ("Quests");
       if (selection > -1){
         string msg = game.quests [selection].startMsg + "\n\n";
+        msg += "Proximity: " + game.quests [selection].distance.ToString() + "\n";
         msg += "Status: " + (game.quests [selection].completed ? "Completed" : "Active") + "\n";
         msg += "Quest Type: " + game.quests [selection].type.ToString() + "\n";
         msg += "Rewards:\n";
