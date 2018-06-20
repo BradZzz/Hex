@@ -31,6 +31,7 @@ public class LocationPanel : MonoBehaviour {
   private bool sScreen;
   private Stack<GameInfo> gameState;
   private Vector3 startPos;
+  private string locationName;
 
   void Awake(){
     Debug.Log ("Awake");
@@ -53,7 +54,7 @@ public class LocationPanel : MonoBehaviour {
     locMeta = locations[0].GetComponent<LocationMain> ();
     locSprite = locations[0].GetComponent<SpriteRenderer> ().sprite;
 
-    string locationName = BaseSaver.getLocation ();
+    locationName = BaseSaver.getLocation ();
     Debug.Log ("locationName: " + locationName);
     sScreen = false;
 
@@ -323,17 +324,47 @@ public class LocationPanel : MonoBehaviour {
     tStack.Push (info);
   }
 
-  void composeSquad(ResInfo resI, GameInfo gameI){
+  void composeSquad(ResInfo resI, GameInfo tGame){
     List<string> typeArr = new List<string>(new string[]{"K","S","L"});
-    List<UnitInfo> roster = new List<UnitInfo> (gameI.playerRoster);
-
+    List<UnitInfo> roster = new List<UnitInfo> (tGame.playerRoster);
+    roster = new List<UnitInfo> (tGame.playerRoster);
     for(int i = 0; i < resI.value; i++){
       UnitInfo unitI = new UnitInfo ();
       unitI.playerNo = 0;
       unitI.type = (UnitInfo.unitType)typeArr.IndexOf(resI.name);
       unitI.human = true;
       roster.Add (unitI);
-      gameI.playerRoster = roster.ToArray ();
+      tGame.playerRoster = roster.ToArray ();
+    }
+
+
+
+    if (!locationName.Equals ("StartScreen")) {
+      tStack.Peek ().visible = false;
+      tStack.Pop ();
+//      roster = new List<UnitInfo> (tGame.playerRoster);
+//      for(int i = 0; i < resI.value; i++){
+//        UnitInfo unitI = new UnitInfo ();
+//        unitI.playerNo = 0;
+//        unitI.type = (UnitInfo.unitType)typeArr.IndexOf(resI.name);
+//        unitI.human = true;
+//        roster.Add (unitI);
+//        tGame.playerRoster = roster.ToArray ();
+//      }
+//    } else {
+//      GameInfo game = gameState.Pop();
+//      roster = new List<UnitInfo> (game.playerRoster);
+//      for(int i = 0; i < resI.value; i++){
+//        UnitInfo unitI = new UnitInfo ();
+//        unitI.playerNo = 0;
+//        unitI.type = (UnitInfo.unitType)typeArr.IndexOf(resI.name);
+//        unitI.human = true;
+//        roster.Add (unitI);
+//        game.playerRoster = roster.ToArray ();
+//      }
+//      gameState.Push (game);
+//      tStack.Peek ().visible = false;
+//      tStack.Pop ();
     }
   }
 

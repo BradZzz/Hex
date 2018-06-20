@@ -222,6 +222,7 @@ public class BaseSaver {
     PlayerPrefs.SetString (CHOICE_PICKED, picked.ToString());
 
     Debug.Log ("Choices set: " + json);
+    Debug.Log ("Choices set: " + charIdx.ToString());
     Debug.Log ("Choices set: " + picked.ToString());
   }
 

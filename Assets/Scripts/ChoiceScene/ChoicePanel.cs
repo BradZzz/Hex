@@ -64,15 +64,20 @@ public class ChoicePanel : MonoBehaviour {
 
     bool callBack = BaseSaver.getPicked () > -1;
 
-    int idx = -1;
+    idx = -1;
 
     if (BaseSaver.getChoiceQuest () != null) {
+      Debug.Log ("Quest Callback");
       choice = BaseSaver.getChoiceQuest ();
     } else if (callBack) {
+      Debug.Log ("Character Callback");
       idx = BaseSaver.getCharIdx ();
+      Debug.Log ("IDX: " + idx.ToString());
       choice = glossy.options [idx].GetComponent<ChoiceMain> ().choice;
     } else if (BaseSaver.getChoiceCharacter () != TileInfo.tileType.None) {
+      Debug.Log ("Tile Character Select");
       idx = getCharacterIdx (glossy.options, BaseSaver.getChoiceCharacter ());
+      Debug.Log ("IDX: " + idx.ToString());
       choice = glossy.options [idx].GetComponent<ChoiceMain> ().choice;
     } else {
       Debug.Log ("Error ChoicePanel");
@@ -84,7 +89,7 @@ public class ChoicePanel : MonoBehaviour {
 
     if (callBack) {
       Debug.Log ("Picked: " + BaseSaver.getPicked ().ToString ());
-      selectChoice (BaseSaver.getPicked (), true);
+      selectChoice (BaseSaver.getPicked (), idx, true);
     }
 
 //    populateInfoPanel (glossy);
@@ -95,7 +100,11 @@ public class ChoicePanel : MonoBehaviour {
     }
 	}
 
-	public void selectChoice(int btn, bool callback) {
+  public void btnClick(int btn){
+    selectChoice(btn, idx, BaseSaver.getPicked () > -1);
+  }
+
+	public void selectChoice(int btn, int idx, bool callback) {
 //    ChoiceInfo choice = glossy.options[idx].GetComponent<ChoiceMain>().choice;
 		OptionInfo option = lstOptions [btn - 1];
 

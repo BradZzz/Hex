@@ -235,9 +235,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114370869455170056, guid: 85cdaa20e1169489fbbb1f2ca7c81083,
-          type: 2}
-        m_MethodName: buttonClicked
+      - m_Target: {fileID: 1425366420}
+        m_MethodName: btnClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1228,9 +1227,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114370869455170056, guid: 85cdaa20e1169489fbbb1f2ca7c81083,
-          type: 2}
-        m_MethodName: buttonClicked
+      - m_Target: {fileID: 1425366420}
+        m_MethodName: btnClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1345,6 +1343,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1420483277}
+--- !u!114 &1425366420 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114371036453954236, guid: 429f5277c647c4291a3b5fc41fc5ead6,
+    type: 2}
+  m_PrefabInternal: {fileID: 819117784}
+  m_Script: {fileID: 11500000, guid: b9825b8acb0c54e64b36e4a47e517264, type: 3}
 --- !u!1 &1460209248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1421,9 +1425,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114370869455170056, guid: 85cdaa20e1169489fbbb1f2ca7c81083,
-          type: 2}
-        m_MethodName: buttonClicked
+      - m_Target: {fileID: 1425366420}
+        m_MethodName: btnClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1674,9 +1677,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114370869455170056, guid: 85cdaa20e1169489fbbb1f2ca7c81083,
-          type: 2}
-        m_MethodName: buttonClicked
+      - m_Target: {fileID: 1425366420}
+        m_MethodName: btnClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1901,9 +1903,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114370869455170056, guid: 85cdaa20e1169489fbbb1f2ca7c81083,
-          type: 2}
-        m_MethodName: buttonClicked
+      - m_Target: {fileID: 1425366420}
+        m_MethodName: btnClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2024,9 +2025,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114370869455170056, guid: 85cdaa20e1169489fbbb1f2ca7c81083,
-          type: 2}
-        m_MethodName: buttonClicked
+      - m_Target: {fileID: 1425366420}
+        m_MethodName: btnClick
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
