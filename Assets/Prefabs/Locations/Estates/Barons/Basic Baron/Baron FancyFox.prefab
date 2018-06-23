@@ -67,7 +67,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dafc59568e56498d9d910270229e3dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  children: []
+  children:
+  - {fileID: 114747423445831544, guid: cb03c37ae0456494ba924d27b839a242, type: 2}
   name: Meet Baron FancyFox
   header: Baron FancyFox
   description: The Baron steps out of his house and looks you over.
@@ -75,6 +76,8 @@ MonoBehaviour:
   nxtScene: 
   nxtRes: []
   needRes: []
+  visible: 1
+  appearChance: 1
 --- !u!222 &222125418222985198
 CanvasRenderer:
   m_ObjectHideFlags: 1

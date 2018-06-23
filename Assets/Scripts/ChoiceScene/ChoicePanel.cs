@@ -146,6 +146,27 @@ public class ChoicePanel : MonoBehaviour {
             battle.playerRoster = game.playerRoster;
 
             int enemies = 2;
+            battle.height = 5;
+            battle.width = 7;
+
+            switch(choice.difficulty){
+            case ChoiceInfo.DifficultyType.Medium:
+              enemies = 4;
+              battle.height = 6;
+              battle.width = 8;
+              break;
+            case ChoiceInfo.DifficultyType.Hard:
+              enemies = 6;
+              battle.height = 7;
+              battle.width = 9;
+              break;
+            case ChoiceInfo.DifficultyType.Insane:
+              enemies = 10;
+              battle.height = 10;
+              battle.width = 12;
+              break;
+            }
+              
             battle.enemyRoster = new UnitInfo[enemies];
             for (int i = 0; i < enemies; i++) {
               UnitInfo info = new UnitInfo ();

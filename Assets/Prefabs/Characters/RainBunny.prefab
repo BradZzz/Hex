@@ -64,6 +64,7 @@ MonoBehaviour:
       - Ignore him
       reaction: The bunny drives off without noticing you...
       result: 0
+    difficulty: 2
     firstLocation: 4
     secondLocation: 2
     thirdLocation: 7

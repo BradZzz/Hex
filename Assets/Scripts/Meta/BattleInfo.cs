@@ -3,6 +3,9 @@ using UnityEngine;
 
 [Serializable]
 public class BattleInfo {
+  public int height;
+  public int width;
+
   public UnitInfo[] playerRoster;
   public UnitInfo[] enemyRoster;
 

@@ -30,6 +30,7 @@ public class InfoButton : MonoBehaviour {
 		nGame.movement = 3;
 		nGame.fatigue = 0;
     nGame.rations = 50;
+    nGame.reputation = 0;
     nGame.gold = 250;
     nGame.enemyRoster = new UnitInfo[armySize];
 		for (int i = 0; i < armySize; i++) {

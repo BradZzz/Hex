@@ -3,14 +3,14 @@ sceneSetups:
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/AdventureScene.unity
-  isLoaded: 0
-  isActive: 0
+  isLoaded: 1
+  isActive: 1
 - path: Assets/Scenes/ChoiceScene.unity
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/MainMenuScene.unity
-  isLoaded: 1
-  isActive: 1
+  isLoaded: 0
+  isActive: 0
 - path: Assets/Scenes/MiniGameScene.unity
   isLoaded: 0
   isActive: 0

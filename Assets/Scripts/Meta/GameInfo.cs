@@ -9,6 +9,7 @@ public class GameInfo {
 	public int movement;
 	public int fatigue;
 
+  public int reputation;
   public int gold;
   public int rations;
   public QuestInfo[] quests;
@@ -47,6 +48,7 @@ public class GameInfo {
     string msg = "Name: " + name + "\n\n";
     msg += "Movement: " + movement.ToString() + "\n";
     msg += "Fatigue: " + movement.ToString() + "(" + (movement - fatigue).ToString() + ")\n";
+    msg += "Reputation: " + reputation.ToString() + "\n";
     msg += "Gold: " + gold.ToString() + "\n";
     msg += "Rations: " + rations.ToString() + "\n";
     List<string> roster = new List<string>();

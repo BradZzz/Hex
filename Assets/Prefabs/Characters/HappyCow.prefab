@@ -64,6 +64,7 @@ MonoBehaviour:
       - Ignore Cow
       reaction: MOOOoooooo.....
       result: 0
+    difficulty: 1
     firstLocation: 3
     secondLocation: 4
     thirdLocation: 5

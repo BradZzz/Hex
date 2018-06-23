@@ -12,6 +12,7 @@ public class ChoiceInfo {
 	[TextArea(3, 3)]
 	public string losingGreeting;
 	public OptionInfo[] options;
+  public DifficultyType difficulty;
 
   //Odds of character appearing on this type of tile = 100%
   public TileInfo.tileType firstLocation;
@@ -19,4 +20,8 @@ public class ChoiceInfo {
   public TileInfo.tileType secondLocation;
   //Odds of character appearing on this type of tile = 25% other chars
   public TileInfo.tileType thirdLocation;
+
+  public enum DifficultyType {
+    Easy, Medium, Hard, Insane, None
+  }
 }

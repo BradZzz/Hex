@@ -392,6 +392,10 @@ public class LocationPanel : MonoBehaviour {
       gameI.gold += resI.value;
       Debug.Log ("Received Gold" + resI.value.ToString());
     }
+    if (resI.name.Equals("Reputation")) {
+      gameI.reputation += resI.value;
+      Debug.Log ("Received Reputation" + resI.value.ToString());
+    }
   }
 
 //  QuestInfo fillQuestInfo(QuestInfo quest){
@@ -539,6 +543,24 @@ public class LocationPanel : MonoBehaviour {
           if (res.name.Equals("Gold")) {
             if (gameI.gold >= res.value) {
               gameI.gold-=res.value;
+            } else {
+              gameState.Push(gameI);
+              return false;
+            }
+          }
+          if (res.name.Equals("Reputation")) {
+            //We don't want to take aware reputation if it's required
+            //Just need to check that it's there
+            if (gameI.reputation >= res.value) {
+//              gameI.reputation-=res.value;
+            } else {
+              gameState.Push(gameI);
+              return false;
+            }
+          }
+          if (res.name.Equals("Ration")) {
+            if (gameI.rations >= res.value) {
+              gameI.rations-=res.value;
             } else {
               gameState.Push(gameI);
               return false;

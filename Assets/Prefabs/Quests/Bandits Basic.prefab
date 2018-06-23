@@ -92,7 +92,10 @@ MonoBehaviour:
       value: 130
       type: 0
     - name: Ration
-      value: 250
+      value: 35
+      type: 0
+    - name: Reputation
+      value: 10
       type: 0
     challenges:
     - name: L
@@ -101,3 +104,4 @@ MonoBehaviour:
     - name: K
       value: 2
       type: 5
+    distance: 0
