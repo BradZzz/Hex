@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraPerspective : MonoBehaviour {
 
-  bool toggle = false;
+  public bool toggle = false;
 
   void Start() {
     tPer ();

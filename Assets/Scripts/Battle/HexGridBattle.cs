@@ -15,8 +15,13 @@ public class HexGridBattle : HexGrid {
     hexMesh = GetComponentInChildren<HexMesh>();
 
     BattleInfo thisBattle = BaseSaver.getBattle ();
-    boardHeight = thisBattle.height > 0 ? thisBattle.height : 10;
-    boardWidth = thisBattle.width > 0 ? thisBattle.width : 10;
+    if (thisBattle != null) {
+      boardHeight = thisBattle.height > 0 ? thisBattle.height : 10;
+      boardWidth = thisBattle.width > 0 ? thisBattle.width : 10;
+    } else {
+      boardHeight = 6;
+      boardWidth = 8;
+    }
 
     cells = new HexCell[boardHeight * boardWidth];
 
@@ -43,8 +48,10 @@ public class HexGridBattle : HexGrid {
 //      }
 //      placeAround(0, roster, 0, true);
       placeAround(cells.Length - 2 - boardWidth, thisBattle.enemyRoster, 1, false);
+      focusOnCell(cells[boardWidth + 1]);
     } else {
       placeAround(0, game.playerRoster, 0, true);
+      focusOnCell(cells[0]);
       placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Lancer, false);
     }
 
@@ -60,6 +67,40 @@ public class HexGridBattle : HexGrid {
 		ResetCells ();
     ResetBoard ();
 	}
+
+  private IEnumerator MoveCamera(Vector3 pos)
+  {
+//    Maincamera.transform.position = Vector3.Lerp (transform.position, Targetposition.transform.position, speed * Time.deltaTime);
+
+    float t = 0;
+//    Vector3 startPos = GameObject.Find("BattleSceneCamera").transform.position;
+    //    float factor = 1f;
+    float speed = 1f;
+
+    while (t < 1f)
+    {
+      t += Time.deltaTime * speed;
+      GameObject.Find("BattleSceneCamera").transform.position = Vector3.Lerp (GameObject.Find("BattleSceneCamera").transform.position, pos, speed * Time.deltaTime);
+      yield return null;
+    }
+
+    yield return 0;
+  }
+
+  private void focusOnCell(HexCell cell){
+//    bool perspective = GameObject.Find ("BattleSceneCamera").GetComponent<CameraPerspective> ().toggle;
+//    Vector3 angle = new Vector3(0,55,-70);
+//    if (perspective) {
+//      angle = new Vector3(0,70,-40);
+//    }
+//    Vector3 newPos = cell.gameObject.transform.position + angle;
+    Vector3 newPos = GameObject.Find("BattleSceneCamera").transform.position;
+    newPos.x = cell.gameObject.transform.position.x;
+    StartCoroutine(MoveCamera(newPos));
+//    newPos.y -= 5;
+//    newPos.z -= 20;
+//    GameObject.Find("BattleSceneCamera").transform.position = newPos;
+  }
 
   private void placeAround(int idx, UnitInfo[] roster, int player, bool human){
     Debug.Log ("Roster Size: " + roster.Length);
@@ -93,7 +134,19 @@ public class HexGridBattle : HexGrid {
   }
 
   protected override void Clicked(HexCell cell){
+//    Debug.Log ("Clicked");
     cell.updateUIInfo ();
+    focusOnCell (cell);
+//    Vector3 pos = camera.transform.position;
+//    pos.x = cell.gameObject.transform.position.x;
+//    Debug.Log("Before");
+//    Debug.Log(GameObject.Find("BattleSceneCamera").transform.position.ToString());
+//    Vector3 newPos = cell.gameObject.transform.position + new Vector3(0,45,-45);
+//    newPos.y -= 10;
+//    newPos.z -= 10;
+//    GameObject.Find("BattleSceneCamera").transform.position = newPos;
+//    Debug.Log("After");
+//    Debug.Log(GameObject.Find("BattleSceneCamera").transform.position.ToString());
   }
 
   protected override void Deactivated(HexCell cell){
@@ -110,6 +163,7 @@ public class HexGridBattle : HexGrid {
   protected override void movedCell(HexCell cell) {
     if (cell.GetPlayer() == 0) {
       cell.updateUIInfo ();
+      focusOnCell (cell);
     }
   }
 

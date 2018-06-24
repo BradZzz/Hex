@@ -43,7 +43,7 @@ MonoBehaviour:
   children:
   - {fileID: 114538126264887064, guid: 3d3722f4f1dd24b528a3eb53137d5272, type: 2}
   - {fileID: 114747423445831544, guid: 1c5a73515b14e4dae978a8012bd81872, type: 2}
-  - {fileID: 114747423445831544, guid: 9f4a883ead52d46f38ade65bf9e0d0fe, type: 2}
+  - {fileID: 114747423445831544, guid: 24bedf2f35f8b4048aaf62356204c6c3, type: 2}
   name: Great Hayre Junction
   header: Great Hayre Junction
   description: Built from the ruins of  Hayre Junction. GHJ is the hub of commerce
@@ -73,7 +73,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 7432580fb5c01417c9bbe93970787d6d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e6adc809f5e9e4b25b7f45567ef7dc8a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
