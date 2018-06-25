@@ -4,8 +4,9 @@ using System.Collections.Generic;
 
 [Serializable]
 public class QuestInfo {
-
+  [HideInInspector]
   public HexCoordinates startIdx;
+  [HideInInspector]
   public HexCoordinates endIdx;
 
   [TextArea(1, 3)]
@@ -19,11 +20,15 @@ public class QuestInfo {
   public QuestGroup questGroup;
   public TileInfo.tileType locType;
   public ChoiceInfo confrontation;
+  [HideInInspector]
   public bool completed;
+  [HideInInspector]
   public bool placed;
+  [HideInInspector]
   public bool rewardAtNext;
   public ResInfo[] rewards;
   public ResInfo[] challenges;
+  [HideInInspector]
   public DistanceType distance;
 
   public enum DistanceType {

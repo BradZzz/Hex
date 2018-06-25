@@ -4,6 +4,7 @@ using UnityEngine;
 [Serializable]
 public class ChoiceInfo {
 	public string name;
+  [HideInInspector]
 	public string image;
 	[TextArea(3, 3)]
 	public string openingGreeting;
