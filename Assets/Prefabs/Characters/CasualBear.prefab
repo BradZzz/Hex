@@ -77,9 +77,10 @@ MonoBehaviour:
         thanks to your good looks and quick thinking. The bear stumbles and falls,
         giving you a chance to escape
       result: 0
+    difficulty: 0
     firstLocation: 2
     secondLocation: 3
-    thirdLocation: 10
+    thirdLocation: 7
 --- !u!114 &114956094416763718
 MonoBehaviour:
   m_ObjectHideFlags: 1

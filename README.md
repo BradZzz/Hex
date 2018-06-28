@@ -16,4 +16,4 @@ Work in progress
 
 #### license
 
-MIT. Copyright (c) Episource LLC
+MIT. Copyright (c) Brad Zimmerman
