@@ -332,6 +332,10 @@ public class HexGrid : MonoBehaviour {
 		cell.transform.localPosition = position;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 		cell.setColor(defaultColor);
+//
+//    Image ground = GetComponent<Image> ();
+//    ground.transform.localPosition = position;
+//    ground.transform.SetParent(cell.transform, false);
 
     if (i == 0) {
       Debug.Log ("First Coordinate HexGrid: " + cell.coordinates.ToString());
