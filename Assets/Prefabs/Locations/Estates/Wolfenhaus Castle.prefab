@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   children:
-  - {fileID: 114747423445831544, guid: 90d965d59bebd4d95aeb89e10a1ac9cd, type: 2}
+  - {fileID: 114747423445831544, guid: c734b81d416314d1eb6cea3e158968bc, type: 2}
   name: Wolfenhaus Castle
   header: Wolfenhaus Castle
   description: Wolfenhouse Castle overlooks the town, protecting it's inhabitants

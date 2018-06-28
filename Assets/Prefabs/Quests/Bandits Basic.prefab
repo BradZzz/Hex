@@ -81,6 +81,7 @@ MonoBehaviour:
         reaction: The bandits see you walking through the trees. The leader attacks
           without warning.
         result: 1
+      difficulty: 0
       firstLocation: 10
       secondLocation: 10
       thirdLocation: 10
@@ -89,13 +90,10 @@ MonoBehaviour:
     rewardAtNext: 0
     rewards:
     - name: Gold
-      value: 130
-      type: 0
-    - name: Ration
-      value: 35
+      value: 60
       type: 0
     - name: Reputation
-      value: 10
+      value: 20
       type: 0
     challenges:
     - name: L

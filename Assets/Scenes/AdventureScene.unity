@@ -318,6 +318,18 @@ GameObject:
   m_PrefabParentObject: {fileID: 1019547557977058, guid: 861adf4b5dc484ded8e00c96f6bf0946,
     type: 2}
   m_PrefabInternal: {fileID: 209667457}
+--- !u!114 &68505624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 68505623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c43a69ca0a844a7c8e590375f845b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggle: 0
 --- !u!1 &126535777
 GameObject:
   m_ObjectHideFlags: 0
@@ -2207,6 +2219,7 @@ MonoBehaviour:
     name: 
     movement: 0
     fatigue: 0
+    reputation: 0
     gold: 0
     rations: 0
     quests: []

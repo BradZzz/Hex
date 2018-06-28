@@ -80,6 +80,7 @@ MonoBehaviour:
         - Ask them to move before you move them
         reaction: The soldiers laugh and turn to fight your measly squad.
         result: 1
+      difficulty: 1
       firstLocation: 10
       secondLocation: 10
       thirdLocation: 10
@@ -88,13 +89,10 @@ MonoBehaviour:
     rewardAtNext: 0
     rewards:
     - name: Gold
-      value: 340
-      type: 0
-    - name: Ration
-      value: 130
+      value: 180
       type: 0
     - name: Reputation
-      value: 80
+      value: 60
       type: 0
     challenges:
     - name: L
@@ -104,6 +102,6 @@ MonoBehaviour:
       value: 2
       type: 5
     - name: S
-      value: 4
+      value: 2
       type: 5
     distance: 0

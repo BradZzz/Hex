@@ -1,15 +1,19 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Battle/HexGridBattle.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Meta/UnitInfo.cs">
     <Files>
-      <File FileName="Assets/Scripts/Battle/HexGridBattle.cs" Line="79" Column="5" />
-      <File FileName="Assets/Scripts/Camera/CameraPerspective.cs" Line="26" Column="51" />
-      <File FileName="Assets/Scripts/HexGrid.cs" Line="299" Column="9" />
-      <File FileName="Assets/Scripts/Adventure/HexGridAdventure.cs" Line="56" Column="80" />
-      <File FileName="Assets/Scripts/ChoiceScene/ChoicePanel.cs" Line="166" Column="32" />
-      <File FileName="Assets/Scripts/HexMapBattle.cs" Line="16" Column="1" />
-      <File FileName="Assets/Scripts/Camera/CameraMove.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/LocationScene/LocationPanel.cs" Line="246" Column="41" />
+      <File FileName="Assets/Scripts/Meta/CharacterInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Meta/ChoiceInfo.cs" Line="8" Column="22" />
+      <File FileName="Assets/Scripts/Meta/GameInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Meta/LocationInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Meta/MapInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Meta/MiniGameInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Meta/OptionInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Meta/OutcomeInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Meta/QuestInfo.cs" Line="31" Column="20" />
+      <File FileName="Assets/Scripts/Meta/ResInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Meta/TileInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Meta/UnitInfo.cs" Line="29" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

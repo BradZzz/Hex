@@ -11,6 +11,32 @@ public class HexGridAdventure : HexGrid {
   int turn = 0;
   bool toggle = false;
 
+  private IEnumerator MoveCamera(Vector3 pos)
+  {
+    //    Maincamera.transform.position = Vector3.Lerp (transform.position, Targetposition.transform.position, speed * Time.deltaTime);
+
+    float t = 0;
+    //    Vector3 startPos = GameObject.Find("BattleSceneCamera").transform.position;
+    //    float factor = 1f;
+    float speed = 1f;
+
+    while (t < 1f)
+    {
+      t += Time.deltaTime * speed;
+      GameObject.Find("AdventureSceneCamera").transform.position = Vector3.Lerp (GameObject.Find("AdventureSceneCamera").transform.position, pos, speed * Time.deltaTime);
+      yield return null;
+    }
+
+    yield return 0;
+  }
+
+  private void focusOnCell(HexCell cell){
+    Vector3 newPos = GameObject.Find("AdventureSceneCamera").transform.position;
+    newPos.x = cell.gameObject.transform.position.x;
+    newPos.z = cell.gameObject.transform.position.z - 80;
+    StartCoroutine(MoveCamera(newPos));
+  }
+
   string getRecruitStr(GameInfo game){
     string army = "";
     foreach(UnitInfo unit in game.playerRoster){
@@ -116,6 +142,7 @@ public class HexGridAdventure : HexGrid {
             int mv = game.movement - game.fatigue;
             cells [i].GetInfo().actions = mv < 0 ? 0 : mv;
             hPos = cells [i];
+            focusOnCell(cells [i]);
           }
 			}
 
@@ -343,6 +370,8 @@ public class HexGridAdventure : HexGrid {
     BaseSaver.putGame (game);
 
     if (cell.GetInfo ().human) {
+
+      focusOnCell (cell);
 
       if (cell.GetTile ().interaction) {
         Debug.Log ("Interaction Cell!");

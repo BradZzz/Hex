@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraPerspective : MonoBehaviour {
 
+  [HideInInspector]
   public bool toggle = false;
 
   void Start() {

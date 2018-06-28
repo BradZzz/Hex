@@ -945,7 +945,7 @@ Prefab:
     - target: {fileID: 114206617508590852, guid: ddba8f2e2a4074ba09d8415f62d929b8,
         type: 2}
       propertyPath: quests.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114206617508590852, guid: ddba8f2e2a4074ba09d8415f62d929b8,
         type: 2}
@@ -1029,6 +1029,12 @@ Prefab:
       propertyPath: quests.Array.data[1]
       value: 
       objectReference: {fileID: 1093925573400008, guid: b4911cec182f441f0999a27fa89b3967,
+        type: 2}
+    - target: {fileID: 114206617508590852, guid: ddba8f2e2a4074ba09d8415f62d929b8,
+        type: 2}
+      propertyPath: quests.Array.data[2]
+      value: 
+      objectReference: {fileID: 1093925573400008, guid: 11cec9357aefb4c0e9c2adb93a8e24eb,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ddba8f2e2a4074ba09d8415f62d929b8, type: 2}
