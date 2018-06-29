@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   children: []
-  name: Tip Bartender ($5)
+  name: Tip Bartender [$5]
   header: Tip Bartender
   description: 'The bartender takes your money and puts it into his greasy pockets.
     He pulls you to the side and tells you of a strange occurance not far from here.

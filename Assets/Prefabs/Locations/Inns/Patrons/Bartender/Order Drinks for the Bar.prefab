@@ -41,7 +41,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   children: []
-  name: Order Drinks for the Bar ($50)
+  name: Order Drinks for the Bar [$50]
   header: Order Drinks for the Bar
   description: "You order a round of drinks for the bar. The crowd cheers your name.
     \n\n* +1 Reputation *"
@@ -55,6 +55,8 @@ MonoBehaviour:
   - name: Gold
     value: 50
     type: 0
+  visible: 1
+  appearChance: 1
 --- !u!114 &114764253869120514
 MonoBehaviour:
   m_ObjectHideFlags: 1

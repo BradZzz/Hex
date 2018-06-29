@@ -41,7 +41,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   children: []
-  name: Hire Mercenary ($100)
+  name: Hire Mercenary [$100]
   header: Mercenary Hired
   description: "\"I will smash the human babies with my mighty hammer\" \n\n* Boar
     Mercenary joins squad"
@@ -57,7 +57,6 @@ MonoBehaviour:
     type: 0
   visible: 1
   appearChance: 1
-  seen: 0
 --- !u!114 &114764253869120514
 MonoBehaviour:
   m_ObjectHideFlags: 1

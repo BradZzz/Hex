@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   children: []
-  name: Ask about quests that need doing (R80)
+  name: Ask about quests that need doing [!80]
   header: Visicount Wolfenhaus
   description: 'The Visicount steps inside the door. Within seconds his advisor approaches
     you with a well packaged folder. You vow to return with the quest completed or

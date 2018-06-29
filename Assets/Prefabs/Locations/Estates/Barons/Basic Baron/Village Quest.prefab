@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   children: []
-  name: Ask about trouble in area (R30)
+  name: Ask about trouble in area [!30]
   header: Baron FancyFox
   description: 'The baron leans back and pulls a file from the stack of papers on
     his desk. "Do this quickly for me and I''ll see that you''re well taken care of."

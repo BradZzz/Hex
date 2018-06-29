@@ -69,7 +69,7 @@ public class HexGridAdventure : HexGrid {
     GameObject.Find ("armyInfo").GetComponent<Text> ().text = getRecruitStr(game);
     GameObject.Find ("moveInfo").GetComponent<Text> ().text = getMoveStr(game);
     GameObject.Find ("goldInfo").GetComponent<Text> ().text = game.gold > 0 ? "$" + game.gold.ToString() : "";
-    GameObject.Find ("rationInfo").GetComponent<Text> ().text = game.rations > 0 ? "<>" + game.rations.ToString() : "";
+    GameObject.Find ("rationInfo").GetComponent<Text> ().text = game.rations > 0 ? "@" + game.rations.ToString() : "";
   }
 
   void LateUpdate()

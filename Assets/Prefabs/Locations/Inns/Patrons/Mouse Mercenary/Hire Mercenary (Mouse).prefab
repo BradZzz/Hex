@@ -41,7 +41,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   children: []
-  name: Hire Mercenary ($100)
+  name: Hire Mercenary [$100]
   header: Mercenary Hired
   description: "\"Let's squeek some human bitches!\" \n\n* Mouse Mercenary joins squad"
   img: 5

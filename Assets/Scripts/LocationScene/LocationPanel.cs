@@ -171,6 +171,12 @@ public class LocationPanel : MonoBehaviour {
     return children.ToArray ();
   }
 
+  void Update(){
+    GameObject.Find ("RepTxt").GetComponent<Text> ().text = "!: " + gameState.Peek().reputation.ToString();
+    GameObject.Find ("GoldTxt").GetComponent<Text> ().text = "$: " + gameState.Peek().gold.ToString();
+    GameObject.Find ("RationTxt").GetComponent<Text> ().text = "@: " + gameState.Peek().rations.ToString();
+  }
+
   void Start(){
     Debug.Log ("Start");
 

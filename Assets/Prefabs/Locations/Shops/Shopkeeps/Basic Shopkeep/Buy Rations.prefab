@@ -41,7 +41,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   children: []
-  name: Buy 20 Rations ($10)
+  name: Buy 20 Rations [$10]
   header: Bought 20 Rations
   description: You buy 20 servings of local taco children. They cry as they are separated
     from their parents. Your squire packs them carefully into your supplies.
