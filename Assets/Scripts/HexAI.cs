@@ -99,7 +99,7 @@ public class HexAI {
 						if (finalDest == null && nxt.GetNeighbor (dir).GetPlayer () != -1) {
 							finalDest = new List<HexCell> ();
 							switch (start.GetInfo ().type) {
-								case UnitInfo.unitType.Lancer:
+                case UnitInfo.unitType.Lancer:
 									//Look at each side around this cell and check to see if there any other sides with an enemy attached
 									HexDirection[] goodLancer = nxt.GetNeighbor (dir).GetLancerDirs (start.GetPlayer ());
 									if (goodLancer.Length > 0) {
@@ -112,6 +112,19 @@ public class HexAI {
 										choices.Enqueue (nxt.GetNeighbor (dir));
 									}
 									break;
+              case UnitInfo.unitType.Monster:
+                //Look at each side around this cell and check to see if there any other sides with an enemy attached
+                HexDirection[] goodMonster = nxt.GetNeighbor (dir).GetLancerDirs (start.GetPlayer ());
+                if (goodMonster.Length > 0) {
+                  foreach (HexDirection lDir in goodMonster) {
+                    finalDest.Add (nxt.GetNeighbor (dir).GetNeighbor (lDir));
+                  }
+                } else {
+                  finalDest.Add (nxt.GetNeighbor (dir));
+                  tblStore.Add (nxt.GetNeighbor (dir), turn);
+                  choices.Enqueue (nxt.GetNeighbor (dir));
+                }
+                break;
 								case UnitInfo.unitType.Swordsman:
 										//Look at each cell around this cell and see if another is occupied. Move to 
 									HexDirection[] goodSwordsman = nxt.GetNeighbor (dir).GetSwordDirs (start.GetPlayer ());

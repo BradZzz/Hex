@@ -129,7 +129,7 @@ public class HexGrid : MonoBehaviour {
       if (!moved && player.getActiveEnemyAttack () != HexDirection.None && player.GetInfo ().attacks > 0) {
         HexDirection enemyDir = player.getActiveEnemyAttack ();
         attackCell (player, player.GetNeighbor (enemyDir));
-        if (player.GetInfo().type == UnitInfo.unitType.Lancer && player.GetNeighbor (enemyDir).GetNeighbor (enemyDir)) {
+        if (player.checkRanged() && player.GetNeighbor (enemyDir).GetNeighbor (enemyDir)) {
           attackCell (player, player.GetNeighbor (enemyDir).GetNeighbor (enemyDir));
         }
         attacked = true;
@@ -268,13 +268,13 @@ public class HexGrid : MonoBehaviour {
         if (dir != HexDirection.None) {
           HexCell attacker = cell.GetNeighbor (dir);
           attackCell (attacker, cell);
-          if (attacker.GetInfo().type == UnitInfo.unitType.Lancer && cell.GetNeighbor(HexUtilities.oppositeSide(dir))) {
+          if (attacker.checkRanged() && cell.GetNeighbor(HexUtilities.oppositeSide(dir))) {
             attackCell (attacker, cell.GetNeighbor(HexUtilities.oppositeSide(dir)));
           }
           attacker.GetInfo().attacks--;
         } else {
           dir = cell.getActiveLancer ();
-          if (dir != HexDirection.None && cell.GetNeighbor (dir).GetNeighbor (dir).GetInfo().type == UnitInfo.unitType.Lancer) {
+          if (dir != HexDirection.None && cell.GetNeighbor (dir).GetNeighbor (dir).checkRanged()) {
             HexCell attacker = cell.GetNeighbor (dir).GetNeighbor (dir);
             attackCell (attacker, cell);
             attackCell (attacker, cell.GetNeighbor (dir));

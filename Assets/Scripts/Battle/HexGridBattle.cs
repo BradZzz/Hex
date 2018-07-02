@@ -52,7 +52,7 @@ public class HexGridBattle : HexGrid {
     } else {
       placeAround(0, game.playerRoster, 0, true);
       focusOnCell(cells[0]);
-      placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Lancer, false);
+      placePlayer(cells[cells.Length - 1], 1, false, UnitInfo.unitType.Monster, false);
     }
 
     foreach (HexCell cell in cells) {

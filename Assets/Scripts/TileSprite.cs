@@ -20,6 +20,8 @@ public class TileSprite : MonoBehaviour {
       return Lancer;
     case UnitInfo.unitType.Swordsman:
       return Swordsman;
+    case UnitInfo.unitType.Monster:
+      return Monster;
     default:
       return Knight;
     }
@@ -60,6 +62,10 @@ public class TileSprite : MonoBehaviour {
         break;
       case UnitInfo.unitType.Swordsman:
         spRend.sprite = Swordsman;
+        spRend.transform.localPosition = new Vector3(0, 10, -1);
+        break;
+      case UnitInfo.unitType.Monster:
+        spRend.sprite = Monster;
         spRend.transform.localPosition = new Vector3(0, 10, -1);
         break;
       case UnitInfo.unitType.Adventure:

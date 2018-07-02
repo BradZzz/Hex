@@ -167,6 +167,9 @@ public class HexCell : MonoBehaviour {
 			case UnitInfo.unitType.Swordsman:
 				this.info.health = 4;
 				break;
+      case UnitInfo.unitType.Monster:
+        this.info.health = 8;
+        break;
 			case UnitInfo.unitType.Adventure:
 				this.info.health = 1;
 				break;
@@ -181,6 +184,8 @@ public class HexCell : MonoBehaviour {
       return "Frontline Fox";
     case UnitInfo.unitType.Swordsman:
       return "Hack n' Hog";
+    case UnitInfo.unitType.Monster:
+      return "Human Menace";
     default:
       return "";
     }
@@ -205,6 +210,10 @@ public class HexCell : MonoBehaviour {
 				info.actions = 2;
 				info.attacks = 1;
 				break;
+      case UnitInfo.unitType.Monster:
+        info.actions = 2;
+        info.attacks = 2;
+        break;
       case UnitInfo.unitType.Adventure:
         if (info.human) {
           info.actions = 3;
@@ -288,6 +297,10 @@ public class HexCell : MonoBehaviour {
     return true;
   }
 
+  public bool checkRanged(){
+    return GetInfo ().type == UnitInfo.unitType.Lancer || GetInfo ().type == UnitInfo.unitType.Monster;
+  }
+
 	private void setNeigbor(HexDirection direction){
     if (GetNeighbor (direction) && canMoveThere(GetNeighbor (direction).GetTile())){
       bool canMove = GetNeighbor (direction).GetPlayer () == -1 && GetInfo ().actions > 0;
@@ -299,7 +312,7 @@ public class HexCell : MonoBehaviour {
       if (canAttack) {
         GetNeighbor (direction).color = ATTACK_COLOR;
       }
-      if (GetInfo ().type == UnitInfo.unitType.Lancer) {
+      if (checkRanged()) {
         HexCell neigh = GetNeighbor (direction).GetNeighbor (direction);
         if (neigh && ((neigh.GetPlayer () > -1 && GetInfo().attacks > 0 && neigh.GetPlayer () != GetInfo().playerNo) || canAttack)) {
           GetNeighbor (direction).color = ATTACK_COLOR;
@@ -351,11 +364,9 @@ public class HexCell : MonoBehaviour {
     foreach (HexDirection dir in dirs) {
       if (GetNeighbor (dir)) {
         HexCell neigh = GetNeighbor (dir);
-        if (GetInfo().type == UnitInfo.unitType.Lancer && neigh.GetNeighbor (dir)) {
-          HexCell relative = GetNeighbor (dir);
-          if (relative.GetPlayer() > -1 && relative.GetPlayer() != GetPlayer()) {
-            return dir;
-          }
+        if (checkRanged() && neigh.GetNeighbor (dir) 
+          && neigh.GetNeighbor (dir).GetPlayer() > -1 && neigh.GetNeighbor (dir).GetPlayer() != GetPlayer()) {
+          return dir;
         }
         if (neigh.GetPlayer() > -1 && neigh.GetPlayer() != GetPlayer()) {
           return dir;
