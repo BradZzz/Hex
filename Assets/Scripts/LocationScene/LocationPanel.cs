@@ -61,6 +61,7 @@ public class LocationPanel : MonoBehaviour {
     if (locationName.Length > 0) {
       BaseSaver.resetLocation ();
       if (locationName.Equals ("StartScreen")) {
+        GameObject.Find ("InfoGame").SetActive (false);
         locMeta = startScreen.GetComponent<LocationMain> ();
         locSprite = startScreen.GetComponent<SpriteRenderer> ().sprite;
         sScreen = true;

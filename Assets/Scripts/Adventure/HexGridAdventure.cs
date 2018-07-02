@@ -315,19 +315,31 @@ public class HexGridAdventure : HexGrid {
     }
   }
 
-  void calcDistance(){
+  void calcDistance(HexCell[] cells){
     foreach (QuestInfo quest in game.quests) {
       HexCell start = cells [0];
       HexCell finish = cells [0];
       foreach (HexCell tCell in cells) {
-        if (tCell.coordinates.Equals(quest.startIdx)) {
-          print ("Found start");
+        if (tCell.GetInfo ().human) {
           start = tCell;
         }
-        if (tCell.coordinates.Equals(quest.endIdx)){
-          print ("Found finish");
-          finish = tCell;
+        if (quest.completed) {
+          if (tCell.coordinates.Equals (quest.startIdx)) {
+            finish = tCell;
+          }
+        } else {
+          if (tCell.coordinates.Equals (quest.endIdx)) {
+            finish = tCell;
+          }
         }
+//        if (tCell.coordinates.Equals(quest.startIdx)) {
+//          print ("Found start");
+//          start = tCell;
+//        }
+//        if (tCell.coordinates.Equals(quest.endIdx)){
+//          print ("Found finish");
+//          finish = tCell;
+//        }
       }
 
       HexCell[] path = HexAI.aStar (cells,start,finish);
@@ -391,7 +403,17 @@ public class HexGridAdventure : HexGrid {
 
             BaseSaver.putChoiceQuest (quest.confrontation);
             BaseSaver.putChoiceCharacter (TileInfo.tileType.None);
+
+            foreach (HexCell tCell in cells){
+              if (quest.startIdx.Equals (tCell.coordinates)) {
+                tCell.GetTile ().interaction = true;
+              }
+            }
+
             createInteraction ();
+          } else if (quest.startIdx.Equals (cell.coordinates)) {
+            cell.GetTile ().interaction = false;
+            movedCell (cell);
           } else {
             Debug.Log ("Cells not equal");
           }
@@ -464,7 +486,7 @@ public class HexGridAdventure : HexGrid {
   }
 
   public override void showPlayerMenu(){
-    calcDistance ();
+    calcDistance (cells);
 
     BaseSaver.putBoard(cells, MAP_NAME, boardHeight, boardWidth);
 

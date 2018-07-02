@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class InfoButton : MonoBehaviour {
 
-	private int armySize = 4;
+	private int armySize = 6;
 
 	public void buttonClicked(int clkBtn){
 		Debug.Log ("Button Clicked: " + clkBtn.ToString());
@@ -36,7 +36,11 @@ public class InfoButton : MonoBehaviour {
 		for (int i = 0; i < armySize; i++) {
 			UnitInfo info = new UnitInfo ();
 			info.playerNo = 0;
-			info.type = choiceArr[Random.Range(0, 3)];
+      if (i < 2) {
+        info.type = UnitInfo.unitType.Monster;
+      } else {
+			  info.type = choiceArr[Random.Range(0, 3)];
+      }
 			info.human = true;
       nGame.enemyRoster [i] = info;
 		}
