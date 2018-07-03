@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using System.Linq;
 
 public class LocationPanel : MonoBehaviour {
 
@@ -50,6 +51,15 @@ public class LocationPanel : MonoBehaviour {
 //    locSprite = locations[0].GetComponent<SpriteRenderer> ().sprite;
   }
 
+  IEnumerator WaitPanel()
+  {
+    yield return new WaitForSeconds(10);
+    GameObject qPanel = GameObject.Find ("QuestPanel");
+    if (qPanel != null) {
+      qPanel.SetActive (false);
+    }
+  }
+
   void getLocation(){
     locMeta = locations[0].GetComponent<LocationMain> ();
     locSprite = locations[0].GetComponent<SpriteRenderer> ().sprite;
@@ -59,6 +69,8 @@ public class LocationPanel : MonoBehaviour {
     sScreen = false;
 
     if (locationName.Length > 0) {
+      GameObject qPanel = GameObject.Find ("QuestPanel");
+      qPanel.SetActive (false);
       BaseSaver.resetLocation ();
       if (locationName.Equals ("StartScreen")) {
         GameObject.Find ("InfoGame").SetActive (false);
@@ -67,17 +79,37 @@ public class LocationPanel : MonoBehaviour {
         sScreen = true;
       } else {
         GameInfo game = gameState.Pop();
+        Dictionary<string, int> rewards = new Dictionary<string, int>();
         List<QuestInfo> currentQuests = new List<QuestInfo> ();
         foreach(QuestInfo quest in game.quests){
           if (quest.rewardAtNext) {
             Debug.Log ("Quest: " + quest.title + " completed!");
             foreach (ResInfo res in quest.rewards) {
               addResource (game, res);
+              if (rewards.ContainsKey (res.name)) {
+                rewards [res.name] += res.value;
+              } else {
+                rewards.Add (res.name, res.value);
+              }
             }
           } else {
             Debug.Log ("Quest: " + quest.title + " ongoing...");
             currentQuests.Add (quest);
           }
+        }
+
+        if (rewards.Keys.Count > 0) {
+          qPanel.SetActive (true);
+
+          for (int i = 0; i < 4; i++) {
+            if (rewards.Keys.Count > i) {
+              GameObject.Find ("QItem0" + (i + 1)).GetComponent<Text>().text = rewards.Keys.ToList()[i]  + ": " + rewards[rewards.Keys.ToList()[i]].ToString();
+            } else {
+              GameObject.Find ("QItem0" + (i + 1)).SetActive (false);
+            }
+          }
+
+          StartCoroutine(WaitPanel());
         }
 
         game.quests = currentQuests.ToArray ();
@@ -173,9 +205,11 @@ public class LocationPanel : MonoBehaviour {
   }
 
   void Update(){
-    GameObject.Find ("RepTxt").GetComponent<Text> ().text = "!: " + gameState.Peek().reputation.ToString();
-    GameObject.Find ("GoldTxt").GetComponent<Text> ().text = "$: " + gameState.Peek().gold.ToString();
-    GameObject.Find ("RationTxt").GetComponent<Text> ().text = "@: " + gameState.Peek().rations.ToString();
+    if (GameObject.Find ("InfoGame") != null) {
+      GameObject.Find ("RepTxt").GetComponent<Text> ().text = "!: " + gameState.Peek().reputation.ToString();
+      GameObject.Find ("GoldTxt").GetComponent<Text> ().text = "$: " + gameState.Peek().gold.ToString();
+      GameObject.Find ("RationTxt").GetComponent<Text> ().text = "@: " + gameState.Peek().rations.ToString();
+    }
   }
 
   void Start(){
