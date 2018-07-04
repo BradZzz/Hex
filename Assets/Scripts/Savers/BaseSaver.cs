@@ -11,6 +11,7 @@ public class BaseSaver {
   private static string BATTLE_INFO = "battle_info";
 
   private static string LOCATION = "location";
+  private static string LOCATION_TILE = "location_tile";
 
   private static string CHOICE = "choice";
   private static string CHOICE_QUEST = "choice_quest";
@@ -152,12 +153,21 @@ public class BaseSaver {
 
   public static void resetLocation() {
     PlayerPrefs.SetString (LOCATION, "");
+    PlayerPrefs.SetString (LOCATION_TILE, "");
 
     Debug.Log ("Location reset");
   }
 
   public static void putLocation(string info) {
     PlayerPrefs.SetString (LOCATION, info);
+
+    Debug.Log ("Location set: " + info);
+  }
+
+  public static void putLocation(string info, TileInfo tile) {
+    PlayerPrefs.SetString (LOCATION, info);
+    string tle = JsonUtility.ToJson (tile);
+    PlayerPrefs.SetString (LOCATION_TILE, tle);
 
     Debug.Log ("Location set: " + info);
   }
@@ -170,6 +180,15 @@ public class BaseSaver {
     }
     Debug.Log ("Location got");
     return str;
+  }
+
+  public static TileInfo getLocationTile(){
+    string json = PlayerPrefs.GetString (LOCATION_TILE);
+    if (json.Length == 0) {
+      return null;
+    }
+    Debug.Log ("LocationTileInfo got");
+    return JsonUtility.FromJson<TileInfo> (json);
   }
 
   /*

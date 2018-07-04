@@ -65,12 +65,14 @@ public class LocationPanel : MonoBehaviour {
     locSprite = locations[0].GetComponent<SpriteRenderer> ().sprite;
 
     locationName = BaseSaver.getLocation ();
+
     Debug.Log ("locationName: " + locationName);
     sScreen = false;
 
     if (locationName.Length > 0) {
       GameObject qPanel = GameObject.Find ("QuestPanel");
       qPanel.SetActive (false);
+      TileInfo outsideTileInfo = BaseSaver.getLocationTile ();
       BaseSaver.resetLocation ();
       if (locationName.Equals ("StartScreen")) {
         GameObject.Find ("InfoGame").SetActive (false);
@@ -141,9 +143,18 @@ public class LocationPanel : MonoBehaviour {
 //        }
 
         foreach (GameObject location in locations) {
-          if (location.name.Equals(locationName)){
+          LocationMain main = location.GetComponent<LocationMain> ();
+
+          Debug.Log ("Loc: " + main.area.ToString());
+          Debug.Log ("LocFind: " + locationName);
+
+          if (main.area.ToString().Equals(locationName)){
             locMeta = location.GetComponent<LocationMain> ();
             locSprite = location.GetComponent<SpriteRenderer> ().sprite;
+            if (outsideTileInfo != null) {
+              Debug.Log ("Changing Name to: " + outsideTileInfo.meta);
+              locMeta.info.header = outsideTileInfo.meta;
+            }
           }
         }
       }

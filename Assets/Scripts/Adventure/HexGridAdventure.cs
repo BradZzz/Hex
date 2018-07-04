@@ -211,6 +211,10 @@ public class HexGridAdventure : HexGrid {
           enemyPos.Add (i);
         } else {
           cells[i].setType(map.tiles[i].type);
+          if(cells[i].GetTile().type == TileInfo.tileType.Castle || cells[i].GetTile().type == TileInfo.tileType.City){
+            cells [i].GetTile ().meta = StaticNames.getTownName ();
+            Debug.Log ("Town Name: " + cells [i].GetTile ().meta);
+          }
         }
 			}
 
@@ -424,13 +428,13 @@ public class HexGridAdventure : HexGrid {
         case TileInfo.tileType.Castle:
           Debug.Log ("Enter Castle");
           checkQuests(cell);
-          BaseSaver.putLocation ("Great Hayre Junction");
+          BaseSaver.putLocation ("Castle", cell.GetTile());
           enterLocation ();
           break;
         case TileInfo.tileType.City:
           Debug.Log ("Enter City");
           checkQuests(cell);
-          BaseSaver.putLocation ("Lost Village");
+          BaseSaver.putLocation ("Village", cell.GetTile());
           enterLocation ();
           break;
         case TileInfo.tileType.Forest:

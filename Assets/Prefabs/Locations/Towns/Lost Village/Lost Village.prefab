@@ -42,6 +42,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info: {fileID: 114389508751863804, guid: 6badd2cbea95347948d77d6989931493, type: 2}
+  area: 1
 --- !u!114 &114596964549875560
 MonoBehaviour:
   m_ObjectHideFlags: 1
