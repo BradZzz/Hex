@@ -5,6 +5,7 @@ using UnityEngine;
 public class BaseSaver {
 
   private static string MAPS = "maps";
+  private static string MAPS_NEXT = "maps_next";
 
   private static string GAME = "game";
 
@@ -82,12 +83,24 @@ public class BaseSaver {
   }
 
   public static MapInfo getMap(string name) {
+    Debug.Log ("Looking: " + name);
     foreach(MapInfo map in getMaps()) {
+      Debug.Log ("Found: " + map.name);
       if (map.name.Equals(name)) {
         return map;
       }
     }
     return null;
+  }
+
+  public static void putNextMap(string name) {
+    Debug.Log ("Next Level: " + name);
+
+    PlayerPrefs.SetString (MAPS_NEXT, name);
+  }
+
+  public static string getNextMap() {
+    return PlayerPrefs.GetString (MAPS_NEXT);
   }
 
   /*

@@ -9,6 +9,8 @@ public class HexGridEdit : HexGrid {
 
   int idx = 0;
   static int ELENGTH = Enum.GetNames(typeof(TileInfo.tileType)).Length;
+  Dropdown m_Dropdown;
+  List<string> m_DropOptions;
 
   public void moveIdx(int mv){
     idx += mv;
@@ -66,10 +68,35 @@ public class HexGridEdit : HexGrid {
     foreach(MapInfo mp in BaseSaver.getMaps ()){
       Debug.Log (mp.name);
     }
+
+    refreshMapDropDown ();
   }
 
   public void ResetMaps(){
     BaseSaver.resetMaps ();
+  }
+
+  public void LoadMaps(){
+    Debug.Log ("Load: " + m_DropOptions[m_Dropdown.value]);
+
+    MapInfo map = BaseSaver.getMap(m_DropOptions[m_Dropdown.value]);
+   
+    if (map != null) {
+//      cells = new HexCell[map.tiles.Length];
+//
+//      for (int z = 0, i = 0; z < map.h; z++) {
+//        for (int x = 0; x < map.w; x++) {
+//          CreateCell(x, z, i++);
+//        }
+//      }
+
+      for (int i = 0; i < cells.Length; i++) {
+        Debug.Log ("Setting: " + map.tiles[i].type.ToString());
+        cells[i].setType(map.tiles[i].type);
+      }
+      hexMesh.Triangulate(cells);
+      ResetCells ();
+    }
   }
 
 //  int turn = 0;
@@ -128,15 +155,28 @@ public class HexGridEdit : HexGrid {
 //  	}
 //  }
 
+  void refreshMapDropDown(){
+    m_DropOptions = new List<string>();
+    //Fetch the Dropdown GameObject the script is attached to
+    m_Dropdown = GameObject.Find("LevelDropdown").GetComponent<Dropdown>();
+    //Clear the old options of the Dropdown menu
+    m_Dropdown.ClearOptions();
+    foreach(MapInfo map in BaseSaver.getMaps()){ m_DropOptions.Add (map.name);}
+    //Add the options created in the List above
+    m_Dropdown.AddOptions(m_DropOptions);
+  }
+
 	void Start () {
-	    Debug.Log("Start board");
+    refreshMapDropDown ();
 
-			foreach (HexCell cell in cells) {
-				cell.setType(TileInfo.tileType.Grass);
-			}
+    Debug.Log("Start board");
 
-			hexMesh.Triangulate(cells);
-      ResetCells ();
+		foreach (HexCell cell in cells) {
+			cell.setType(TileInfo.tileType.Grass);
+		}
+
+		hexMesh.Triangulate(cells);
+    ResetCells ();
 	}
 
 //  protected override void movedCell(HexCell cell) {
@@ -164,8 +204,25 @@ public class HexGridEdit : HexGrid {
     HexCell cell = cells [index];
     cell.setType ((TileInfo.tileType) idx);
 
+    Debug.Log ("Setting type: " + ((TileInfo.tileType) idx).ToString());
+    Debug.Log ("idx: " + idx.ToString());
+
     hexMesh.Triangulate(cells);
     ResetCells ();
+  }
+
+  protected override void ResetCells() {
+    foreach (HexCell cell in cells) {
+//      cell.setColor(Color.white);
+//      cell.SetActive (false);
+      cell.updateTile ();
+      //      if (cell.GetTile().interaction) {
+      //        cell.setColor(new Color (.5f, .15f, .6f, .9f));
+      //        Debug.Log ("Interaction cell!");
+      //      }
+    }
+//    CheckInteraction ();
+//    checkEnd ();
   }
 
 	protected override void checkEnd(){

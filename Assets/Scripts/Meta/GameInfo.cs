@@ -12,6 +12,8 @@ public class GameInfo {
   public int reputation;
   public int gold;
   public int rations;
+  public int enemiesDefeated;
+
   public QuestInfo[] quests;
 
 	public UnitInfo[] playerRoster;

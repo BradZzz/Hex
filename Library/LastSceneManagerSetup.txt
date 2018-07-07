@@ -15,11 +15,14 @@ sceneSetups:
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/EditHexScene.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/Scenes/LocationScene.unity
   isLoaded: 1
   isActive: 1
+- path: Assets/Scenes/LocationScene.unity
+  isLoaded: 0
+  isActive: 0
 - path: Assets/Scenes/QuestScene.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/EndGameScene.unity
   isLoaded: 0
   isActive: 0

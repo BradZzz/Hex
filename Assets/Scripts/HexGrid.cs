@@ -19,7 +19,7 @@ public class HexGrid : MonoBehaviour {
 	public HexCell cellPrefab;
 	public Text cellLabelPrefab;
 
-	protected HexCell[] cells;
+  protected HexCell[] cells;
 	protected Canvas gridCanvas;
 	protected HexMesh hexMesh;
 	protected int pTurn;

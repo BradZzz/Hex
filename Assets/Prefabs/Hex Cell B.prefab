@@ -161,12 +161,18 @@ MonoBehaviour:
   - {fileID: 21300092, guid: cf9693091c0ba4c2a9c1c51b46505772, type: 3}
   - {fileID: 21300078, guid: cf9693091c0ba4c2a9c1c51b46505772, type: 3}
   - {fileID: 21300064, guid: cf9693091c0ba4c2a9c1c51b46505772, type: 3}
+  Sand:
+  - {fileID: 21300256, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  - {fileID: 21300234, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  - {fileID: 21300212, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  - {fileID: 21300278, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
   Treasure:
-  - {fileID: 21300116, guid: 84cd89a8d245244368181b452a0a5f6f, type: 3}
+  - {fileID: 21300016, guid: 84cd89a8d245244368181b452a0a5f6f, type: 3}
+  - {fileID: 21300088, guid: 84cd89a8d245244368181b452a0a5f6f, type: 3}
   Water:
   - {fileID: 21300000, guid: 8b52d72a024054b3fbf8964d0fc2c4c7, type: 3}
-  eSpawn: {fileID: 21300128, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
-  pSpawn: {fileID: 21300210, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  eSpawn: {fileID: 21300014, guid: 39ddb2373b2994f31bd17a9d9683d4cb, type: 3}
+  pSpawn: {fileID: 21300128, guid: 84cd89a8d245244368181b452a0a5f6f, type: 3}
 --- !u!212 &212489759138779224
 SpriteRenderer:
   m_ObjectHideFlags: 1

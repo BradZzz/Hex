@@ -5,7 +5,8 @@ using UnityEngine;
 public class StaticNames {
 
   public static string[] prefix = new string[] {
-    "Great", "New", "Noble", "Los", "Flowering", "Gilded", "Glorious", "Withering", "Decaying", "Old", "Plagued", "Lawless"
+    "Fort", "Great", "New", "Noble", "Los", "Flowering", "Gilded", 
+    "Glorious", "Withering", "Decaying", "Old", "Plagued", "Lawless"
   };
 
   public static string[] name = new string[] {
@@ -63,12 +64,12 @@ public class StaticNames {
   };
 
   public static string[] suffix = new string[] {
-    "Castle", "Village", "Town", "Duchy", "Market", "Bazaar", "City", "Outpost"
+    "Town", "Duchy", "Market", "Bazaar", "City", "Outpost"
   };
 
   public static string getTownName(){
     string pre = Random.Range (0, 10) > 1 ? "" : (prefix[Random.Range (0, prefix.Length)] + " ");
-    string suf = Random.Range (0, 10) > 1 ? "" : (" " + suffix[Random.Range (0, suffix.Length)]);
+    string suf = Random.Range (0, 20) > 1 ? "" : (" " + suffix[Random.Range (0, suffix.Length)]);
     return pre + name [Random.Range (0, name.Length)] + suf;
   }
 }

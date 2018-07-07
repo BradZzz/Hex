@@ -30,6 +30,8 @@ public class TileInfo {
         return "Road";
       case tileType.Mountain:
         return "Mountain";
+      case tileType.Sand:
+        return "Sand";
       case tileType.Treasure:
         return "Treasure";
       case tileType.Water:
@@ -44,10 +46,10 @@ public class TileInfo {
 	}
 
 	public enum tileType {
-		Castle, City, Forest, Grass, Road, Mountain, Treasure, Water, eSpawn, pSpawn, None
+		Castle, City, Forest, Grass, Road, Mountain, Sand, Treasure, Water, eSpawn, pSpawn, None
 	}
 
 	public enum tileColor {
-		Purple, Brown, DarkGreen, Green, Sand, Gray, Gold, Blue, White, Blurple, None
+		Purple, Brown, DarkGreen, Green, Sand, Gray, Gold, Black, Blue, White, Blurple, None
 	}
 }

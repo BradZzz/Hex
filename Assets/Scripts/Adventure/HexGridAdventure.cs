@@ -120,7 +120,7 @@ public class HexGridAdventure : HexGrid {
         Debug.Log ("Lost");
       }
       BaseSaver.resetBattle ();
-      SceneManager.LoadScene ("MainMenuScene");
+      SceneManager.LoadScene ("EndGameScene");
     }
   }
 
@@ -197,7 +197,11 @@ public class HexGridAdventure : HexGrid {
 //			}
 
 //			MapInfo map = BaseSaver.getMap("Basic Level");
-      MapInfo map = BaseSaver.getMap(MAP_NAME);
+//      MapInfo map = BaseSaver.getMap(MAP_NAME);
+
+      Debug.Log ("Next Map: " + BaseSaver.getNextMap());
+
+      MapInfo map = BaseSaver.getMap(BaseSaver.getNextMap());
 
       List<int> playerPos = new List<int> ();
       List<int> enemyPos = new List<int> ();
@@ -460,6 +464,9 @@ public class HexGridAdventure : HexGrid {
             BaseSaver.putChoiceCharacter (TileInfo.tileType.Road);
             createInteraction ();
           }
+          break;
+        case TileInfo.tileType.Sand:
+          Debug.Log ("Enter Sand");
           break;
         case TileInfo.tileType.Mountain:
           Debug.Log ("Enter Mountain");

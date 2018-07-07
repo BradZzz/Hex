@@ -33,6 +33,7 @@ public class TileSprite : MonoBehaviour {
   public Sprite[] Grass;
   public Sprite[] Road;
   public Sprite[] Mountain;
+  public Sprite[] Sand;
   public Sprite[] Treasure;
   public Sprite[] Water;
 
@@ -102,6 +103,8 @@ public class TileSprite : MonoBehaviour {
       return Mountain [Random.Range (0, Mountain.Length)];
     case TileInfo.tileType.Road:
       return Road [Random.Range (0, Road.Length)];
+    case TileInfo.tileType.Sand:
+      return Sand [Random.Range (0, Sand.Length)];
     case TileInfo.tileType.Treasure:
       return Treasure [Random.Range (0, Treasure.Length)];
     case TileInfo.tileType.Water:
@@ -150,6 +153,11 @@ public class TileSprite : MonoBehaviour {
         spRend.sprite = Road [Random.Range (0, Road.Length)];
       }
       break;
+    case TileInfo.tileType.Sand:
+      if (!Sand.Contains(spRend.sprite)) {
+        spRend.sprite = Sand [Random.Range (0, Sand.Length)];
+      }
+      break;
     case TileInfo.tileType.Treasure:
       if (!Treasure.Contains(spRend.sprite)) {
         spRend.sprite = Treasure [Random.Range (0, Treasure.Length)];
@@ -167,8 +175,8 @@ public class TileSprite : MonoBehaviour {
       spRend.sprite = pSpawn;
       break;
     default:
-//      Debug.Log ("default");
-//      Debug.Log (type);
+      Debug.Log ("default");
+      Debug.Log (type.ToString());
       spRend.enabled = false;
       break;
     }
